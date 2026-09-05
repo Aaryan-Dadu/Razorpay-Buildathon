@@ -1,0 +1,140 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300&display=swap">
+<style>
+:root{
+  --paper:#E9ECE3; --panel:#F2F4EC; --sunk:#DCE1D4;
+  --ink:#12151A; --ink2:#3E4642; --ink3:#6C756E; --rule:#C2C9B6;
+  --slip:#2C5D89; --red:#B0362A; --ochre:#8A6110; --carton:#4E5C34; --teal:#2C6154;
+  --ft:"Newsreader",Georgia,serif; --fd:"IBM Plex Mono",monospace;
+}
+*{box-sizing:border-box;margin:0}
+body{width:1920px;height:1080px;background:var(--paper);color:var(--ink);
+  font-family:var(--ft);padding:46px 56px;position:relative;overflow:hidden}
+.hd{display:flex;align-items:flex-end;gap:26px;border-bottom:2px solid var(--ink);
+  padding-bottom:16px;margin-bottom:30px}
+h1{font-size:52px;font-weight:300;letter-spacing:-.02em;line-height:1}
+.hd p{font-size:21px;color:var(--ink2);font-style:italic;max-width:58ch;padding-bottom:5px}
+.hd .tag{margin-left:auto;font-family:var(--fd);font-size:15px;color:var(--ink3);
+  text-align:right;line-height:1.7;padding-bottom:4px}
+.stage{font-family:var(--fd);font-size:13px;color:var(--ink3);
+  letter-spacing:.1em;margin-bottom:11px}
+.grid{display:grid;grid-template-columns:452px 1fr 452px;gap:40px;height:690px}
+.col{display:flex;flex-direction:column;justify-content:space-between}
+
+.sys{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  overflow:hidden}
+.sys-h{display:flex;align-items:center;gap:10px;padding:11px 15px;
+  border-bottom:1px solid var(--rule)}
+.sys-h i{width:11px;height:11px;border-radius:50%;flex:none}
+.sys-h b{font-size:20px;font-weight:600}
+.sys-h span{margin-left:auto;font-family:var(--fd);font-size:13px;color:var(--ink3)}
+.sys-b{padding:9px 15px 12px;font-family:var(--fd);font-size:14.5px;line-height:1.65}
+.sys-b .k{color:var(--ink3)}
+.sys-b .no{color:var(--red);font-weight:600}
+
+.step{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  padding:13px 17px;position:relative}
+.step.deter{border-left:4px solid var(--teal)}
+.step.model{border-left:4px solid var(--slip)}
+.step.llm{border-left:4px solid var(--ochre)}
+.step.human{border-left:4px solid var(--ink3);background:var(--sunk)}
+.step b{font-size:20px;font-weight:600;display:block}
+.step p{font-size:16px;color:var(--ink2);margin-top:3px;line-height:1.45}
+.step .m{font-family:var(--fd);font-size:14px;color:var(--ink3);margin-top:5px;display:block}
+.arrow{text-align:center;color:var(--ink3);font-size:20px;line-height:1;margin:0}
+
+.out{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  padding:15px 18px}
+.out.hero{border:2px solid var(--red);background:color-mix(in srgb,var(--red) 6%,var(--panel))}
+.out b{font-size:21px;font-weight:600;display:block;margin-bottom:5px}
+.out p{font-size:16px;color:var(--ink2);line-height:1.48}
+.out .eq{font-family:var(--fd);font-size:15px;color:var(--ink);margin-top:9px;
+  padding-top:9px;border-top:1px dashed var(--rule);line-height:1.7}
+.out .eq em{color:var(--red);font-style:normal;font-weight:600}
+
+.foot{position:absolute;left:56px;right:56px;bottom:40px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule)}
+.f{background:var(--paper);padding:14px 17px}
+.f b{font-family:var(--fd);font-size:29px;font-weight:500;display:block;letter-spacing:-.01em}
+.f b.r{color:var(--red)} .f b.g{color:var(--teal)}
+.f span{font-size:15px;color:var(--ink3);display:block;margin-top:3px;line-height:1.35}
+</style></head><body>
+
+<div class="hd">
+  <h1>Double&#8209;Dip&nbsp;Sentinel</h1>
+  <p>Four systems pay the same customer back. None of them share a key, so the
+     second payout leaves unseen.</p>
+  <div class="tag">RAZORPAY AI BUILDATHON<br>TRACK 02, AI RISK MANAGER</div>
+</div>
+
+<div class="grid">
+  <div class="col">
+    <div class="stage">FOUR SYSTEMS, FOUR KEYS, NO SHARED ONE</div>
+    <div class="sys"><div class="sys-h"><i style="background:var(--slip)"></i>
+      <b>Refund</b><span>PSP</span></div>
+      <div class="sys-b"><span class="k">payment_id</span> pay_0061731<br>
+      <span class="k">order_id</span> ord_0061728</div></div>
+    <div class="sys"><div class="sys-h"><i style="background:var(--red)"></i>
+      <b>Chargeback</b><span>card network</span></div>
+      <div class="sys-b"><span class="k">arn</span> ARN664027104839<br>
+      <span class="k">card</span> 414367&bull;&bull;&bull;&bull;2201<br>
+      <span class="k">order_id</span> <span class="no">absent, 272 of 272</span></div></div>
+    <div class="sys"><div class="sys-h"><i style="background:var(--ochre)"></i>
+      <b>Goodwill credit</b><span>support desk</span></div>
+      <div class="sys-b"><span class="k">ticket</span> TKT-88213<br>
+      <span class="k">note</span> &ldquo;never arrived, credited&rdquo;<br>
+      <span class="k">order_id</span> <span class="no">absent, 2,778 of 3,255</span></div></div>
+    <div class="sys"><div class="sys-h"><i style="background:var(--carton)"></i>
+      <b>Replacement</b><span>fulfilment</span></div>
+      <div class="sys-b"><span class="k">awb</span> AWB4471902663</div></div>
+  </div>
+
+  <div class="col">
+    <div class="stage">RESOLUTION CASCADE, CHEAPEST FIRST</div>
+    <div class="step deter"><b>Deterministic join</b>
+      <p>Exact identifier agreement. No model, no threshold, fully auditable.</p>
+      <span class="m">1,587 events &middot; 100% correct</span></div>
+    <div class="arrow">&#8595; residual</div>
+    <div class="step model"><b>Learned pairwise scorer</b>
+      <p>Gradient boosting over blocked candidates. Abstains when the top match
+         is weak or too close to the runner-up.</p>
+      <span class="m">724 events &middot; 97.4% correct</span></div>
+    <div class="arrow">&#8595; residual</div>
+    <div class="step llm"><b>Language model on the prose</b>
+      <p>Support-ticket reading comprehension, restricted to a closed candidate
+         set. Allowed to answer &ldquo;cannot tell&rdquo;.</p>
+      <span class="m">~6% of the stream &middot; hallucinated ids discarded</span></div>
+    <div class="arrow">&#8595; residual</div>
+    <div class="step human"><b>Human queue</b>
+      <p>Named, counted, never hidden inside &ldquo;no duplicate found&rdquo;.</p>
+      <span class="m">568 events</span></div>
+  </div>
+
+  <div class="col">
+    <div class="stage">WHAT THE JOIN MAKES POSSIBLE</div>
+    <div class="out hero"><b>The remediation ledger</b>
+      <p>One append-only view of how much value has flowed back on this order,
+         across every channel. The artefact no merchant has today.</p>
+      <div class="eq">returned &divide; order value &nbsp;&#8805;&nbsp; 1.25&times;
+        &nbsp;&#8594;&nbsp; <em>paid twice</em></div></div>
+    <div class="out"><b>Hazard model</b>
+      <p>Chargebacks land 8 to 150 days late, so recent orders are unfinished,
+         not clean. Discrete-time survival on right-censored data.</p>
+      <div class="eq">reported 2.25% &nbsp;&#8594;&nbsp; corrected <em>2.82%</em></div></div>
+    <div class="out"><b>The gate</b>
+      <p>Expected value in rupees, not a score. Deliberately not a model: the
+         merchant will be asked why a refund was held.</p>
+      <div class="eq">cost of paying &nbsp;vs&nbsp; cost of holding<br>
+        a false positive <em>manufactures</em> the chargeback</div></div>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="f"><b class="r">54%</b><span>of events on duplicated orders carry no joinable key</span></div>
+  <div class="f"><b>21:1</b><span>planted confusers per real duplicate</span></div>
+  <div class="f"><b class="g">96.6%</b><span>precision at 90.3% recall, held out</span></div>
+  <div class="f"><b>14.4%</b><span>precision for the join merchants run today</span></div>
+  <div class="f"><b class="g">&#8377;3.34L</b><span>net saved per 25,000 orders</span></div>
+</div>
+</body></html>
