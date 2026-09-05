@@ -27,6 +27,15 @@ Three things you operate rather than read:
 
 Every figure, case, alert and curve is exported from an actual run.
 
+## Documentation
+
+[docs/PROJECT.md](docs/PROJECT.md) is the full write-up: the loss class and why
+merchants cannot see it, the approach, the pipeline, where a model is and is
+not used, every measured result, and the nine bugs that inflated a number
+before they were found.
+
+![Architecture](docs/architecture.png)
+
 ## Deploying
 
 The site is two self-contained files. No build step on the host, no runtime
