@@ -813,21 +813,58 @@ function render(c){
 }
 render(D.cases[0]);
 
-/* ---- 03 gate ---- */
-var g=D.decisions.find(function(d){return d.verdict==="block"&&d.was_duplicate;})||D.decisions[0];
-var mx=Math.max(g.allow_cost,g.block_cost,1);
-document.getElementById("gate").innerHTML=
-  '<div class="gate-h"><span class="gate-v gv-'+g.verdict+'">'+({block:'Hold the payout',allow:'Let it through',hold:'Ask a human'})[g.verdict]+'</span>'+
-  '<span class="mono" style="font-size:13px;font-weight:600">'+g.order_id+'</span>'+
-  '<span class="mono" style="font-size:12px;color:var(--ink-3)">P(duplicate) = '+
-  g.p_duplicate.toFixed(2)+', ledger '+g.ratio_before.toFixed(2)+'× → '+g.ratio_after.toFixed(2)+'×</span></div>'+
-  '<ul class="rat">'+g.rationale.map(function(r){return "<li>"+r+"</li>";}).join("")+'</ul>'+
-  '<div class="scale">'+
-  '<span>cost of paying</span><div class="bar bar-allow" style="width:'+
-    (g.allow_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+rs(g.allow_cost)+'</span>'+
-  '<span>cost of holding</span><div class="bar bar-block" style="width:'+
-    Math.max(0.6,g.block_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+rs(g.block_cost)+'</span>'+
-  '</div>';
+/* ---- 03 gate: a deck, not one cherry-picked call ---- */
+(function(){
+  var G=D.decisions||[]; if(!G.length) return;
+  var box=document.getElementById("gate"), pos=document.getElementById("g-pos"),
+      prev=document.getElementById("g-prev"), next=document.getElementById("g-next");
+  var i=0;
+  var LABEL={block:"Hold the payout",allow:"Let it through",hold:"Ask a human"};
+
+  function show(){
+    var g=G[i], mx=Math.max(g.allow_cost,g.block_cost,1);
+    var correct = (g.verdict==="block") === g.was_duplicate;
+    box.innerHTML=
+      '<div class="gate-h"><span class="gate-v gv-'+g.verdict+'">'+LABEL[g.verdict]+
+      '</span><span class="mono" style="font-size:13px;font-weight:600">'+g.order_id+'</span>'+
+      '<span class="gate-truth '+(correct?"gt-right":"gt-wrong")+'">'+
+      (g.was_duplicate?"this order really was paid twice":"this order was legitimate")+
+      (correct?"":", so the gate was wrong")+'</span>'+
+      '<span style="font-size:15px;color:var(--ink-3)">likelihood it is a duplicate '+
+      '<b class="mono">'+g.p_duplicate.toFixed(2)+'</b>, ledger moving from '+
+      '<b class="mono">'+g.ratio_before.toFixed(2)+'×</b> to <b class="mono">'+
+      g.ratio_after.toFixed(2)+'×</b></span></div>'+
+      '<ul class="rat">'+g.rationale.map(function(r){return "<li>"+r+"</li>";}).join("")+'</ul>'+
+      '<div class="scale">'+
+      '<span>cost of paying</span><div class="bar bar-allow" style="width:'+
+        (g.allow_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+rs(g.allow_cost)+'</span>'+
+      '<span>cost of holding</span><div class="bar bar-block" style="width:'+
+        Math.max(0.6,g.block_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+
+        rs(g.block_cost)+'</span></div>'+
+      // On a wrong block the gate's own estimate of what holding costs is
+      // scaled by its (mistaken) certainty, so it reports close to nothing.
+      // The bill that actually came due belongs next to it, or the panel
+      // reads as though the mistake was free.
+      (g.realised_bill ?
+        '<p class="gate-real">The gate priced holding at '+rs(g.block_cost)+
+        ' because it was sure. It was wrong, so the bill that actually came '+
+        'due was <b>'+rs(g.realised_bill)+'</b>: an agent\'s time, a 35% chance '+
+        'this customer disputes anyway, and the retention cost of withholding '+
+        'money they were owed.</p>' : "");
+    pos.textContent=(i+1)+" of "+G.length;
+    prev.disabled = i===0; next.disabled = i===G.length-1;
+  }
+  function step(d){ i=Math.max(0,Math.min(G.length-1,i+d)); show(); }
+  prev.addEventListener("click",function(){ step(-1); });
+  next.addEventListener("click",function(){ step(1); });
+  [prev,next].forEach(function(b){
+    b.addEventListener("keydown",function(e){
+      if(e.key==="ArrowLeft"){ e.preventDefault(); step(-1); }
+      if(e.key==="ArrowRight"){ e.preventDefault(); step(1); }
+    });
+  });
+  show();
+})();
 
 /* ---- 04 scoreboard ---- */
 var ROWS=[
