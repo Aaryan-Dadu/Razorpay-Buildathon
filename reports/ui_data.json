@@ -1,0 +1,2921 @@
+{
+ "meta": {
+  "seed": 7,
+  "orders": 26450,
+  "events": 9470,
+  "duplicates": 268,
+  "confusers": 5595,
+  "test_orders": 7935,
+  "test_positives": 62
+ },
+ "headline": {
+  "precision": 0.9655172413793104,
+  "recall": 0.9032258064516129,
+  "f1": 0.9333333333333333,
+  "tp": 56,
+  "fp": 2,
+  "fn": 6
+ },
+ "channel_keys": {
+  "refund": {
+   "total": 4010,
+   "no_strong_key": 0
+  },
+  "goodwill": {
+   "total": 3255,
+   "no_strong_key": 2778
+  },
+  "replacement": {
+   "total": 1933,
+   "no_strong_key": 0
+  },
+  "dispute": {
+   "total": 272,
+   "no_strong_key": 272
+  }
+ },
+ "cases": [
+  {
+   "order_id": "ord_0061728",
+   "verdict": "caught",
+   "customer": "cust_0000898",
+   "sku": "LMP-BRS-01",
+   "method": "card",
+   "placed_at": "2026-07-08T20:48:24.236715",
+   "order_value": 1437400,
+   "returned": 2874800,
+   "merchant_cost": 3024800,
+   "ratio": 2.0,
+   "pattern": "refund_then_chargeback",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "rfnd_0061731",
+     "channel": "refund",
+     "at": "2026-07-17T00:46:38.086905",
+     "days_after_order": 8.2,
+     "value": 1437400,
+     "cost": 1437400,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "dspt_0061732",
+     "channel": "dispute",
+     "at": "2026-08-09T06:51:17.319400",
+     "days_after_order": 31.4,
+     "value": 1437400,
+     "cost": 1587400,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": "RZPY LMPFASHION JAI",
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0039830",
+   "verdict": "caught",
+   "customer": "cust_0000885",
+   "sku": "SRE-RED-OS",
+   "method": "card",
+   "placed_at": "2026-07-04T04:26:58.625910",
+   "order_value": 1344000,
+   "returned": 2688000,
+   "merchant_cost": 2838000,
+   "ratio": 2.0,
+   "pattern": "chargeback_then_goodwill",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "dspt_0039833",
+     "channel": "dispute",
+     "at": "2026-07-30T15:50:41.299841",
+     "days_after_order": 26.5,
+     "value": 1344000,
+     "cost": 1494000,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": "RAZORPAY*SREFASHION",
+     "has_strong_key": false
+    },
+    {
+     "id": "gwil_0039834",
+     "channel": "goodwill",
+     "at": "2026-08-03T06:14:14.474086",
+     "days_after_order": 30.1,
+     "value": 1344000,
+     "cost": 1344000,
+     "conf": 0.999,
+     "note": "quality complaint on red saree. small credit to close ticket",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0025496",
+   "verdict": "caught",
+   "customer": "cust_0000838",
+   "sku": "KRT-BLK-L",
+   "method": "upi",
+   "placed_at": "2026-08-18T12:32:41.969115",
+   "order_value": 1499200,
+   "returned": 2998400,
+   "merchant_cost": 2137864,
+   "ratio": 2.0,
+   "pattern": "replacement_then_refund",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "repl_0025499",
+     "channel": "replacement",
+     "at": "2026-08-24T16:39:51.031308",
+     "days_after_order": 6.2,
+     "value": 1499200,
+     "cost": 638664,
+     "conf": 0.992,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "rfnd_0025500",
+     "channel": "refund",
+     "at": "2026-08-28T01:27:15.511482",
+     "days_after_order": 9.5,
+     "value": 1499200,
+     "cost": 1499200,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0057285",
+   "verdict": "caught",
+   "customer": "cust_0000296",
+   "sku": "SRE-RED-OS",
+   "method": "card",
+   "placed_at": "2026-07-30T19:37:41.875518",
+   "order_value": 1478000,
+   "returned": 2956000,
+   "merchant_cost": 2107760,
+   "ratio": 2.0,
+   "pattern": "replacement_then_refund",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "repl_0057288",
+     "channel": "replacement",
+     "at": "2026-08-09T04:53:30.715030",
+     "days_after_order": 9.4,
+     "value": 1478000,
+     "cost": 629760,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "rfnd_0057289",
+     "channel": "refund",
+     "at": "2026-08-21T02:59:09.851446",
+     "days_after_order": 21.3,
+     "value": 1478000,
+     "cost": 1478000,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0043981",
+   "verdict": "caught",
+   "customer": "cust_0000446",
+   "sku": "SNK-WHT-9",
+   "method": "netbanking",
+   "placed_at": "2026-06-24T10:59:04.553604",
+   "order_value": 1264100,
+   "returned": 2528200,
+   "merchant_cost": 1804022,
+   "ratio": 2.0,
+   "pattern": "replacement_then_refund",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "repl_0043984",
+     "channel": "replacement",
+     "at": "2026-07-13T05:13:23.089662",
+     "days_after_order": 18.8,
+     "value": 1264100,
+     "cost": 539922,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "rfnd_0043985",
+     "channel": "refund",
+     "at": "2026-07-23T00:56:31.756223",
+     "days_after_order": 28.6,
+     "value": 1264100,
+     "cost": 1264100,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0050621",
+   "verdict": "caught",
+   "customer": "cust_0000577",
+   "sku": "JNS-IND-32",
+   "method": "card",
+   "placed_at": "2026-06-23T21:01:57.900107",
+   "order_value": 1248600,
+   "returned": 2497200,
+   "merchant_cost": 2647200,
+   "ratio": 2.0,
+   "pattern": "refund_then_chargeback",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "rfnd_0050624",
+     "channel": "refund",
+     "at": "2026-06-29T14:43:56.651583",
+     "days_after_order": 5.7,
+     "value": 1248600,
+     "cost": 1248600,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "dspt_0050625",
+     "channel": "dispute",
+     "at": "2026-08-13T10:52:55.982904",
+     "days_after_order": 50.6,
+     "value": 1248600,
+     "cost": 1398600,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": "RAZORPAY*JNSFASHION",
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0039820",
+   "verdict": "missed",
+   "customer": "cust_0001349",
+   "sku": "JNS-IND-32",
+   "method": "upi",
+   "placed_at": "2026-06-25T21:07:57.868579",
+   "order_value": 613000,
+   "returned": 613000,
+   "merchant_cost": 613000,
+   "ratio": 1.0,
+   "pattern": "double_goodwill",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "gwil_0039824",
+     "channel": "goodwill",
+     "at": "2026-07-12T13:04:27.606907",
+     "days_after_order": 16.7,
+     "value": 613000,
+     "cost": 613000,
+     "conf": 0.989,
+     "note": "broken on arrival order ord_0039820 - indigo jeans. partial credit for inconvenience",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0056224",
+   "verdict": "missed",
+   "customer": "cust_0001147",
+   "sku": "LMP-BRS-01",
+   "method": "card",
+   "placed_at": "2026-07-25T00:57:37.773022",
+   "order_value": 1104400,
+   "returned": 1104400,
+   "merchant_cost": 1104400,
+   "ratio": 1.0,
+   "pattern": "double_goodwill",
+   "is_confuser": false,
+   "events": [
+    {
+     "id": "gwil_0056227",
+     "channel": "goodwill",
+     "at": "2026-08-10T10:18:17.353741",
+     "days_after_order": 16.4,
+     "value": 1104400,
+     "cost": 1104400,
+     "conf": 0.999,
+     "note": "says did not place this. credited and flagged",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0013601",
+   "verdict": "false_positive",
+   "customer": "cust_0000693",
+   "sku": "WCH-STL-42",
+   "method": "card",
+   "placed_at": "2026-06-25T15:48:27.242451",
+   "order_value": 385300,
+   "returned": 625500,
+   "merchant_cost": 625500,
+   "ratio": 1.623,
+   "pattern": null,
+   "is_confuser": true,
+   "events": [
+    {
+     "id": "rfnd_0013604",
+     "channel": "refund",
+     "at": "2026-07-04T16:54:54.694150",
+     "days_after_order": 9.0,
+     "value": 240200,
+     "cost": 240200,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "gwil_0041188",
+     "channel": "goodwill",
+     "at": "2026-08-05T13:20:03.539077",
+     "days_after_order": 40.9,
+     "value": 385300,
+     "cost": 385300,
+     "conf": 0.684,
+     "note": "wireless earbuds arrived damaged order ord_0041184, photos attached. credited",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0049703",
+   "verdict": "false_positive",
+   "customer": "cust_0000278",
+   "sku": "JNS-IND-32",
+   "method": "card",
+   "placed_at": "2026-06-24T10:42:16.516954",
+   "order_value": 203700,
+   "returned": 298100,
+   "merchant_cost": 298100,
+   "ratio": 1.463,
+   "pattern": null,
+   "is_confuser": true,
+   "events": [
+    {
+     "id": "rfnd_0049708",
+     "channel": "refund",
+     "at": "2026-07-08T03:04:04.864026",
+     "days_after_order": 13.7,
+     "value": 203700,
+     "cost": 203700,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "gwil_0049706",
+     "channel": "goodwill",
+     "at": "2026-07-09T13:51:50.436730",
+     "days_after_order": 15.1,
+     "value": 94400,
+     "cost": 94400,
+     "conf": 0.59,
+     "note": "broken on arrival - indigo jeans. partial credit for inconvenience",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0054197",
+   "verdict": "correctly_cleared",
+   "customer": "cust_0000283",
+   "sku": "JNS-IND-32",
+   "method": "upi",
+   "placed_at": "2026-06-22T01:30:41.683353",
+   "order_value": 328000,
+   "returned": 344400,
+   "merchant_cost": 163160,
+   "ratio": 1.05,
+   "pattern": null,
+   "is_confuser": true,
+   "events": [
+    {
+     "id": "repl_0054200",
+     "channel": "replacement",
+     "at": "2026-07-02T20:16:17.214660",
+     "days_after_order": 10.8,
+     "value": 328000,
+     "cost": 146760,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "gwil_0054201",
+     "channel": "goodwill",
+     "at": "2026-07-05T10:53:55.874765",
+     "days_after_order": 13.4,
+     "value": 16400,
+     "cost": 16400,
+     "conf": 0.875,
+     "note": "received other product instead of indigo jeans. adjusted",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0028956",
+   "verdict": "correctly_cleared",
+   "customer": "cust_0000349",
+   "sku": "KRT-BLU-M",
+   "method": "upi",
+   "placed_at": "2026-07-18T01:33:26.116335",
+   "order_value": 346100,
+   "returned": 363400,
+   "merchant_cost": 171662,
+   "ratio": 1.05,
+   "pattern": null,
+   "is_confuser": true,
+   "events": [
+    {
+     "id": "repl_0028959",
+     "channel": "replacement",
+     "at": "2026-07-29T07:50:15.956275",
+     "days_after_order": 11.3,
+     "value": 346100,
+     "cost": 154362,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "gwil_0028960",
+     "channel": "goodwill",
+     "at": "2026-08-02T06:56:55.607404",
+     "days_after_order": 15.2,
+     "value": 17300,
+     "cost": 17300,
+     "conf": 0.695,
+     "note": "wrong size sent order ord_0028956, cust got different blue kurta. credited difference",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0037885",
+   "verdict": "correctly_cleared",
+   "customer": "cust_0000372",
+   "sku": "BAG-TAN-OS",
+   "method": "upi",
+   "placed_at": "2026-06-25T17:11:08.754417",
+   "order_value": 320100,
+   "returned": 336100,
+   "merchant_cost": 159442,
+   "ratio": 1.05,
+   "pattern": null,
+   "is_confuser": true,
+   "events": [
+    {
+     "id": "repl_0037888",
+     "channel": "replacement",
+     "at": "2026-07-08T21:52:07.639630",
+     "days_after_order": 13.2,
+     "value": 320100,
+     "cost": 143442,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "gwil_0037889",
+     "channel": "goodwill",
+     "at": "2026-07-10T04:18:01.779694",
+     "days_after_order": 14.5,
+     "value": 16000,
+     "cost": 16000,
+     "conf": 0.735,
+     "note": "cust claims card used without consent. refunded pending review",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  },
+  {
+   "order_id": "ord_0029819",
+   "verdict": "correctly_cleared",
+   "customer": "cust_0001111",
+   "sku": "BAG-TAN-OS",
+   "method": "cod",
+   "placed_at": "2026-07-12T09:43:01.119838",
+   "order_value": 282100,
+   "returned": 296200,
+   "merchant_cost": 141582,
+   "ratio": 1.05,
+   "pattern": null,
+   "is_confuser": true,
+   "events": [
+    {
+     "id": "repl_0029822",
+     "channel": "replacement",
+     "at": "2026-07-22T02:37:46.213429",
+     "days_after_order": 9.7,
+     "value": 282100,
+     "cost": 127482,
+     "conf": 1.0,
+     "note": null,
+     "descriptor": null,
+     "has_strong_key": true
+    },
+    {
+     "id": "gwil_0029823",
+     "channel": "goodwill",
+     "at": "2026-07-22T20:59:24.892354",
+     "days_after_order": 10.5,
+     "value": 14100,
+     "cost": 14100,
+     "conf": 0.955,
+     "note": "quality complaint on tan sling bag. small credit to close ticket",
+     "descriptor": null,
+     "has_strong_key": false
+    }
+   ]
+  }
+ ],
+ "decisions": [
+  {
+   "order_id": "ord_0025496",
+   "verdict": "block",
+   "p_duplicate": 0.992,
+   "allow_cost": 1264058,
+   "block_cost": 5388,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0,
+   "rationale": [
+    "ledger shows Rs 14,992.00 already returned on a Rs 14,992.00 order (1.00x) across 1 event(s)",
+    "paying Rs 14,992.00 now would reach 2.00x, over the 1.25x line (linkage confidence 0.99)",
+    "if legitimate, holding costs Rs 53.88 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0057285",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 1256300,
+   "block_cost": 0,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0127,
+   "rationale": [
+    "ledger shows Rs 14,780.00 already returned on a Rs 14,780.00 order (1.00x) across 1 event(s)",
+    "paying Rs 14,780.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.3% (21d elapsed)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0061728",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 1221790,
+   "block_cost": 0,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.031,
+   "rationale": [
+    "ledger shows Rs 14,374.00 already returned on a Rs 14,374.00 order (1.00x) across 1 event(s)",
+    "paying Rs 14,374.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 3.1% (31d elapsed)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0039830",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 1142249,
+   "block_cost": 81,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0136,
+   "rationale": [
+    "ledger shows Rs 13,440.00 already returned on a Rs 13,440.00 order (1.00x) across 1 event(s)",
+    "paying Rs 13,440.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.4% (30d elapsed)",
+    "if legitimate, holding costs Rs 0.81 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0043981",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 1074485,
+   "block_cost": 0,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0,
+   "rationale": [
+    "ledger shows Rs 12,641.00 already returned on a Rs 12,641.00 order (1.00x) across 1 event(s)",
+    "paying Rs 12,641.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0050621",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 1061310,
+   "block_cost": 0,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0234,
+   "rationale": [
+    "ledger shows Rs 12,486.00 already returned on a Rs 12,486.00 order (1.00x) across 1 event(s)",
+    "paying Rs 12,486.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 2.3% (51d elapsed)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0064921",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 1058956,
+   "block_cost": 264,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0086,
+   "rationale": [
+    "ledger shows Rs 12,464.00 already returned on a Rs 12,464.00 order (1.00x) across 1 event(s)",
+    "paying Rs 12,464.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "if legitimate, holding costs Rs 2.64 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  },
+  {
+   "order_id": "ord_0061078",
+   "verdict": "block",
+   "p_duplicate": 0.995,
+   "allow_cost": 1042774,
+   "block_cost": 2619,
+   "ratio_before": 1.0,
+   "ratio_after": 2.0,
+   "hazard": 0.0,
+   "rationale": [
+    "ledger shows Rs 12,324.00 already returned on a Rs 12,324.00 order (1.00x) across 1 event(s)",
+    "paying Rs 12,324.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
+    "if legitimate, holding costs Rs 26.19 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true
+  }
+ ],
+ "km": {
+  "period_days": 15,
+  "hazard": [
+   0.0,
+   0.00274,
+   0.00796,
+   0.00824,
+   0.00494,
+   0.00173,
+   0.00095,
+   0.00122,
+   0.00051,
+   0.00019
+  ],
+  "survival": [
+   1.0,
+   0.99726,
+   0.98932,
+   0.98117,
+   0.97632,
+   0.97463,
+   0.97371,
+   0.97252,
+   0.97202,
+   0.97183
+  ]
+ },
+ "censoring": {
+  "naive_rate": 0.022470053696819495,
+  "km_corrected_rate": 0.028167189133904702,
+  "mature_cohort_rate": 0.028741985407915102,
+  "understatement_x": 1.2535434723011634,
+  "n_card_orders": 12105,
+  "n_fully_observed": 4523,
+  "pct_still_at_risk": 0.6263527467988435
+ },
+ "cohorts": [
+  {
+   "observed_days_lo": 0.0,
+   "observed_days_hi": 30.0,
+   "n_orders": 1526.0,
+   "naive_rate": 0.000655307994757536,
+   "exposure_seen": 0.0,
+   "projectable": 0.0,
+   "projected_rate": null,
+   "understatement_x": null
+  },
+  {
+   "observed_days_lo": 30.0,
+   "observed_days_hi": 60.0,
+   "n_orders": 1499.0,
+   "naive_rate": 0.01134089392928619,
+   "exposure_seen": 0.09720643890948592,
+   "projectable": 0.0,
+   "projected_rate": null,
+   "understatement_x": null
+  },
+  {
+   "observed_days_lo": 60.0,
+   "observed_days_hi": 90.0,
+   "n_orders": 1511.0,
+   "naive_rate": 0.027134348113831898,
+   "exposure_seen": 0.6685982603137751,
+   "projectable": 1.0,
+   "projected_rate": 0.040583934665186935,
+   "understatement_x": 1.4956664702218894
+  },
+  {
+   "observed_days_lo": 90.0,
+   "observed_days_hi": 120.0,
+   "n_orders": 1557.0,
+   "naive_rate": 0.0224791265253693,
+   "exposure_seen": 0.9006236812834003,
+   "projectable": 1.0,
+   "projected_rate": 0.024959510828469728,
+   "understatement_x": 1.1103416674264963
+  },
+  {
+   "observed_days_lo": 120.0,
+   "observed_days_hi": 150.0,
+   "n_orders": 1489.0,
+   "naive_rate": 0.03223640026863667,
+   "exposure_seen": 0.9932757162262684,
+   "projectable": 1.0,
+   "projected_rate": 0.03245463444038655,
+   "understatement_x": 1.0067698058694912
+  },
+  {
+   "observed_days_lo": 150.0,
+   "observed_days_hi": 1000000.0,
+   "n_orders": 4523.0,
+   "naive_rate": 0.028741985407915102,
+   "exposure_seen": 1.0,
+   "projectable": 1.0,
+   "projected_rate": 0.028741985407915102,
+   "understatement_x": 1.0
+  }
+ ],
+ "exceptions": 568,
+ "sweep": [
+  {
+   "t": 1.02,
+   "p": 0.2642,
+   "r": 0.9032,
+   "f1": 0.4088,
+   "tp": 56,
+   "fp": 156,
+   "net": -5328573,
+   "prevented": 30862905,
+   "bill": 36191478
+  },
+  {
+   "t": 1.05,
+   "p": 0.9333,
+   "r": 0.9032,
+   "f1": 0.918,
+   "tp": 56,
+   "fp": 4,
+   "net": 29274189,
+   "prevented": 30862905,
+   "bill": 1588716
+  },
+  {
+   "t": 1.08,
+   "p": 0.9492,
+   "r": 0.9032,
+   "f1": 0.9256,
+   "tp": 56,
+   "fp": 3,
+   "net": 29475795,
+   "prevented": 30862905,
+   "bill": 1387110
+  },
+  {
+   "t": 1.11,
+   "p": 0.9492,
+   "r": 0.9032,
+   "f1": 0.9256,
+   "tp": 56,
+   "fp": 3,
+   "net": 29475795,
+   "prevented": 30862905,
+   "bill": 1387110
+  },
+  {
+   "t": 1.14,
+   "p": 0.9492,
+   "r": 0.9032,
+   "f1": 0.9256,
+   "tp": 56,
+   "fp": 3,
+   "net": 29475795,
+   "prevented": 30862905,
+   "bill": 1387110
+  },
+  {
+   "t": 1.17,
+   "p": 0.9492,
+   "r": 0.9032,
+   "f1": 0.9256,
+   "tp": 56,
+   "fp": 3,
+   "net": 29475795,
+   "prevented": 30862905,
+   "bill": 1387110
+  },
+  {
+   "t": 1.2,
+   "p": 0.9492,
+   "r": 0.9032,
+   "f1": 0.9256,
+   "tp": 56,
+   "fp": 3,
+   "net": 29475795,
+   "prevented": 30862905,
+   "bill": 1387110
+  },
+  {
+   "t": 1.23,
+   "p": 0.9655,
+   "r": 0.9032,
+   "f1": 0.9333,
+   "tp": 56,
+   "fp": 2,
+   "net": 30250645,
+   "prevented": 30862905,
+   "bill": 612260
+  },
+  {
+   "t": 1.26,
+   "p": 0.9655,
+   "r": 0.9032,
+   "f1": 0.9333,
+   "tp": 56,
+   "fp": 2,
+   "net": 30250645,
+   "prevented": 30862905,
+   "bill": 612260
+  },
+  {
+   "t": 1.29,
+   "p": 0.9655,
+   "r": 0.9032,
+   "f1": 0.9333,
+   "tp": 56,
+   "fp": 2,
+   "net": 30250645,
+   "prevented": 30862905,
+   "bill": 612260
+  },
+  {
+   "t": 1.32,
+   "p": 0.9649,
+   "r": 0.8871,
+   "f1": 0.9244,
+   "tp": 55,
+   "fp": 2,
+   "net": 30174570,
+   "prevented": 30786830,
+   "bill": 612260
+  },
+  {
+   "t": 1.35,
+   "p": 0.9649,
+   "r": 0.8871,
+   "f1": 0.9244,
+   "tp": 55,
+   "fp": 2,
+   "net": 30174570,
+   "prevented": 30786830,
+   "bill": 612260
+  },
+  {
+   "t": 1.38,
+   "p": 0.9643,
+   "r": 0.871,
+   "f1": 0.9153,
+   "tp": 54,
+   "fp": 2,
+   "net": 30078010,
+   "prevented": 30690270,
+   "bill": 612260
+  },
+  {
+   "t": 1.41,
+   "p": 0.9643,
+   "r": 0.871,
+   "f1": 0.9153,
+   "tp": 54,
+   "fp": 2,
+   "net": 30078010,
+   "prevented": 30690270,
+   "bill": 612260
+  },
+  {
+   "t": 1.44,
+   "p": 0.9643,
+   "r": 0.871,
+   "f1": 0.9153,
+   "tp": 54,
+   "fp": 2,
+   "net": 30078010,
+   "prevented": 30690270,
+   "bill": 612260
+  },
+  {
+   "t": 1.47,
+   "p": 0.9811,
+   "r": 0.8387,
+   "f1": 0.9043,
+   "tp": 52,
+   "fp": 1,
+   "net": 29550625,
+   "prevented": 29914050,
+   "bill": 363425
+  },
+  {
+   "t": 1.5,
+   "p": 0.9804,
+   "r": 0.8065,
+   "f1": 0.885,
+   "tp": 50,
+   "fp": 1,
+   "net": 28792255,
+   "prevented": 29155680,
+   "bill": 363425
+  },
+  {
+   "t": 1.53,
+   "p": 0.9796,
+   "r": 0.7742,
+   "f1": 0.8649,
+   "tp": 48,
+   "fp": 1,
+   "net": 28529605,
+   "prevented": 28893030,
+   "bill": 363425
+  },
+  {
+   "t": 1.56,
+   "p": 0.9792,
+   "r": 0.7581,
+   "f1": 0.8545,
+   "tp": 47,
+   "fp": 1,
+   "net": 28122710,
+   "prevented": 28486135,
+   "bill": 363425
+  },
+  {
+   "t": 1.59,
+   "p": 0.9783,
+   "r": 0.7258,
+   "f1": 0.8333,
+   "tp": 45,
+   "fp": 1,
+   "net": 27882500,
+   "prevented": 28245925,
+   "bill": 363425
+  },
+  {
+   "t": 1.62,
+   "p": 0.9783,
+   "r": 0.7258,
+   "f1": 0.8333,
+   "tp": 45,
+   "fp": 1,
+   "net": 27882500,
+   "prevented": 28245925,
+   "bill": 363425
+  },
+  {
+   "t": 1.65,
+   "p": 1.0,
+   "r": 0.7097,
+   "f1": 0.8302,
+   "tp": 44,
+   "fp": 0,
+   "net": 28070570,
+   "prevented": 28070570,
+   "bill": 0
+  },
+  {
+   "t": 1.68,
+   "p": 1.0,
+   "r": 0.7097,
+   "f1": 0.8302,
+   "tp": 44,
+   "fp": 0,
+   "net": 28070570,
+   "prevented": 28070570,
+   "bill": 0
+  },
+  {
+   "t": 1.71,
+   "p": 1.0,
+   "r": 0.7097,
+   "f1": 0.8302,
+   "tp": 44,
+   "fp": 0,
+   "net": 28070570,
+   "prevented": 28070570,
+   "bill": 0
+  },
+  {
+   "t": 1.74,
+   "p": 1.0,
+   "r": 0.7097,
+   "f1": 0.8302,
+   "tp": 44,
+   "fp": 0,
+   "net": 28070570,
+   "prevented": 28070570,
+   "bill": 0
+  },
+  {
+   "t": 1.77,
+   "p": 1.0,
+   "r": 0.7097,
+   "f1": 0.8302,
+   "tp": 44,
+   "fp": 0,
+   "net": 28070570,
+   "prevented": 28070570,
+   "bill": 0
+  },
+  {
+   "t": 1.8,
+   "p": 1.0,
+   "r": 0.6774,
+   "f1": 0.8077,
+   "tp": 42,
+   "fp": 0,
+   "net": 26994470,
+   "prevented": 26994470,
+   "bill": 0
+  },
+  {
+   "t": 1.83,
+   "p": 1.0,
+   "r": 0.6452,
+   "f1": 0.7843,
+   "tp": 40,
+   "fp": 0,
+   "net": 25760525,
+   "prevented": 25760525,
+   "bill": 0
+  },
+  {
+   "t": 1.86,
+   "p": 1.0,
+   "r": 0.6452,
+   "f1": 0.7843,
+   "tp": 40,
+   "fp": 0,
+   "net": 25760525,
+   "prevented": 25760525,
+   "bill": 0
+  },
+  {
+   "t": 1.89,
+   "p": 1.0,
+   "r": 0.629,
+   "f1": 0.7723,
+   "tp": 39,
+   "fp": 0,
+   "net": 25635065,
+   "prevented": 25635065,
+   "bill": 0
+  },
+  {
+   "t": 1.92,
+   "p": 1.0,
+   "r": 0.6129,
+   "f1": 0.76,
+   "tp": 38,
+   "fp": 0,
+   "net": 24791610,
+   "prevented": 24791610,
+   "bill": 0
+  },
+  {
+   "t": 1.95,
+   "p": 1.0,
+   "r": 0.6129,
+   "f1": 0.76,
+   "tp": 38,
+   "fp": 0,
+   "net": 24791610,
+   "prevented": 24791610,
+   "bill": 0
+  },
+  {
+   "t": 1.98,
+   "p": 1.0,
+   "r": 0.6129,
+   "f1": 0.76,
+   "tp": 38,
+   "fp": 0,
+   "net": 24791610,
+   "prevented": 24791610,
+   "bill": 0
+  },
+  {
+   "t": 2.01,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.04,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.07,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.1,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.13,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.16,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.19,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.22,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.25,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.28,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.31,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.34,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  },
+  {
+   "t": 2.37,
+   "p": 1.0,
+   "r": 0.0,
+   "f1": 0.0,
+   "tp": 0,
+   "fp": 0,
+   "net": 0,
+   "prevented": 0,
+   "bill": 0
+  }
+ ],
+ "puzzles": [
+  {
+   "event": {
+    "id": "gwil_0032370",
+    "channel": "goodwill",
+    "at": "2026-06-23T12:57:47.433802",
+    "value": 19700,
+    "note": "cust claims card used without consent. refunded pending review",
+    "descriptor": null,
+    "email": null,
+    "phone": "+919817815017",
+    "card": "|"
+   },
+   "answer": "ord_0032366",
+   "model_pick": "ord_0042330",
+   "model_conf": 0.377,
+   "n_real_candidates": 15,
+   "options": [
+    {
+     "order_id": "ord_0003149",
+     "at": "2026-06-07T02:19:19.136272",
+     "value": 1274000,
+     "sku": "WCH-STL-42",
+     "method": "upi",
+     "email": "rohan.sharma816@example.in",
+     "descriptor": "RZP*WCHFASHION",
+     "card": "|",
+     "days": 16.4,
+     "score": 0.141
+    },
+    {
+     "order_id": "ord_0042330",
+     "at": "2026-06-09T16:04:26.306375",
+     "value": 377900,
+     "sku": "WCH-STL-42",
+     "method": "cod",
+     "email": "rohan.sharma816@example.in",
+     "descriptor": "RZP*WCHFASHION",
+     "card": "|",
+     "days": 13.9,
+     "score": 0.377
+    },
+    {
+     "order_id": "ord_0012577",
+     "at": "2026-06-18T06:49:48.552007",
+     "value": 1442800,
+     "sku": "KRT-BLK-L",
+     "method": "card",
+     "email": "rohan.sharma816@example.in",
+     "descriptor": "RZPY KRTFASHION LKO",
+     "card": "512345|1574",
+     "days": 5.3,
+     "score": 0.101
+    },
+    {
+     "order_id": "ord_0032366",
+     "at": "2026-06-19T21:51:31.732530",
+     "value": 394700,
+     "sku": "JNS-IND-32",
+     "method": "card",
+     "email": "rohan.sharma816@example.in",
+     "descriptor": "RAZORPAY*JNSFASHION",
+     "card": "512345|1574",
+     "days": 3.6,
+     "score": 0.363
+    }
+   ]
+  },
+  {
+   "event": {
+    "id": "gwil_0026827",
+    "channel": "goodwill",
+    "at": "2026-06-24T09:11:28.504487",
+    "value": 478800,
+    "note": "nothing received. checked AWB, marked delivered but cust denies. goodwill given",
+    "descriptor": null,
+    "email": "meera.gill914@example.in",
+    "phone": "+919881300806",
+    "card": "|"
+   },
+   "answer": "ord_0026823",
+   "model_pick": "ord_0026823",
+   "model_conf": 0.868,
+   "n_real_candidates": 14,
+   "options": [
+    {
+     "order_id": "ord_0034318",
+     "at": "2026-04-15T01:40:00.220166",
+     "value": 1424000,
+     "sku": "SNK-WHT-9",
+     "method": "card",
+     "email": "meera.gill914@example.in",
+     "descriptor": "RAZORPAY*SNKFASHION",
+     "card": "414367|7625",
+     "days": 70.3,
+     "score": 0.001
+    },
+    {
+     "order_id": "ord_0044124",
+     "at": "2026-06-16T07:57:32.489400",
+     "value": 507800,
+     "sku": "EAR-TWS-B",
+     "method": "card",
+     "email": "meera.gill914@example.in",
+     "descriptor": "RAZORPAY*EARFASHION",
+     "card": "414367|7625",
+     "days": 8.1,
+     "score": 0.119
+    },
+    {
+     "order_id": "ord_0044126",
+     "at": "2026-06-16T12:20:25.677756",
+     "value": 491100,
+     "sku": "EAR-TWS-B",
+     "method": "card",
+     "email": "meera.gill914@example.in",
+     "descriptor": "RAZORPAY*EARFASHION",
+     "card": "414367|7625",
+     "days": 7.9,
+     "score": 0.011
+    },
+    {
+     "order_id": "ord_0026823",
+     "at": "2026-06-18T08:06:38.690480",
+     "value": 1251700,
+     "sku": "MAT-YOG-6",
+     "method": "upi",
+     "email": "meera.gill914@example.in",
+     "descriptor": "RZPY MATFASHION HYD",
+     "card": "|",
+     "days": 6.0,
+     "score": 0.868
+    }
+   ]
+  },
+  {
+   "event": {
+    "id": "gwil_0026993",
+    "channel": "goodwill",
+    "at": "2026-06-24T14:32:19.087573",
+    "value": 98400,
+    "note": "received other product instead of yoga mat. adjusted",
+    "descriptor": null,
+    "email": "ananya.das904@example.in",
+    "phone": "+919845199494",
+    "card": "|"
+   },
+   "answer": "ord_0026988",
+   "model_pick": "ord_0026988",
+   "model_conf": 0.741,
+   "n_real_candidates": 14,
+   "options": [
+    {
+     "order_id": "ord_0043508",
+     "at": "2026-04-29T16:27:58.290100",
+     "value": 1413200,
+     "sku": "KRT-BLU-M",
+     "method": "card",
+     "email": "ananya.das904@example.in",
+     "descriptor": "RAZORPAY*KRTFASHION",
+     "card": "601140|4406",
+     "days": 55.9,
+     "score": 0.0
+    },
+    {
+     "order_id": "ord_0043510",
+     "at": "2026-04-29T18:01:50.490800",
+     "value": 1408900,
+     "sku": "KRT-BLU-M",
+     "method": "cod",
+     "email": "ananya.das904@example.in",
+     "descriptor": "RAZORPAY*KRTFASHION",
+     "card": "|",
+     "days": 55.9,
+     "score": 0.0
+    },
+    {
+     "order_id": "ord_0026988",
+     "at": "2026-06-20T07:37:18.233327",
+     "value": 98400,
+     "sku": "MAT-YOG-6",
+     "method": "upi",
+     "email": "ananya.das904@example.in",
+     "descriptor": "RAZORPAY*MATFASHION",
+     "card": "|",
+     "days": 4.3,
+     "score": 0.741
+    },
+    {
+     "order_id": "ord_0026990",
+     "at": "2026-06-20T15:36:33.001026",
+     "value": 106900,
+     "sku": "MAT-YOG-6",
+     "method": "upi",
+     "email": "ananya.das904@example.in",
+     "descriptor": "RAZORPAY*MATFASHION",
+     "card": "|",
+     "days": 4.0,
+     "score": 0.258
+    }
+   ]
+  },
+  {
+   "event": {
+    "id": "gwil_0059145",
+    "channel": "goodwill",
+    "at": "2026-06-25T03:17:34.591004",
+    "value": 20000,
+    "note": "wrong size sent order ord_0059141, cust got different tan sling bag. credited difference",
+    "descriptor": null,
+    "email": "vihaan.verma377@example.in",
+    "phone": "+919872475349",
+    "card": "|"
+   },
+   "answer": "ord_0059141",
+   "model_pick": "ord_0059141",
+   "model_conf": 0.761,
+   "n_real_candidates": 14,
+   "options": [
+    {
+     "order_id": "ord_0067983",
+     "at": "2026-04-28T14:37:12.574754",
+     "value": 485100,
+     "sku": "KRT-BLU-M",
+     "method": "card",
+     "email": "vihaan.verma377@example.in",
+     "descriptor": "RAZORPAY*KRTFASHION",
+     "card": "459150|0365",
+     "days": 57.5,
+     "score": 0.001
+    },
+    {
+     "order_id": "ord_0025444",
+     "at": "2026-06-11T03:18:00.081298",
+     "value": 774000,
+     "sku": "WCH-STL-42",
+     "method": "upi",
+     "email": "vihaan.verma377@example.in",
+     "descriptor": "RZP*WCHFASHION",
+     "card": "|",
+     "days": 14.0,
+     "score": 0.104
+    },
+    {
+     "order_id": "ord_0059141",
+     "at": "2026-06-18T04:27:51.606994",
+     "value": 715500,
+     "sku": "BAG-TAN-OS",
+     "method": "card",
+     "email": "vihaan.verma377@example.in",
+     "descriptor": "RZPY BAGFASHION LKO",
+     "card": "459150|0365",
+     "days": 7.0,
+     "score": 0.761
+    },
+    {
+     "order_id": "ord_0066083",
+     "at": "2026-06-18T13:08:50.851100",
+     "value": 1081100,
+     "sku": "JNS-IND-32",
+     "method": "card",
+     "email": "vihaan.verma377@example.in",
+     "descriptor": "RAZORPAY*JNSFASHION",
+     "card": "459150|0365",
+     "days": 6.6,
+     "score": 0.133
+    }
+   ]
+  }
+ ],
+ "stream": [
+  {
+   "order_id": "ord_0002296",
+   "channel": "refund",
+   "t": 0.0,
+   "value": 267000,
+   "cost": 267000,
+   "order_value": 383500,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0001426",
+   "channel": "refund",
+   "t": 0.26,
+   "value": 489100,
+   "cost": 489100,
+   "order_value": 760600,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0026823",
+   "channel": "refund",
+   "t": 0.6,
+   "value": 772900,
+   "cost": 772900,
+   "order_value": 1251700,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0059141",
+   "channel": "replacement",
+   "t": 0.99,
+   "value": 715500,
+   "cost": 309510,
+   "order_value": 715500,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0032462",
+   "channel": "replacement",
+   "t": 1.26,
+   "value": 1404500,
+   "cost": 598890,
+   "order_value": 1404500,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0047295",
+   "channel": "replacement",
+   "t": 1.42,
+   "value": 423500,
+   "cost": 186870,
+   "order_value": 423500,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0026823",
+   "channel": "goodwill",
+   "t": 1.77,
+   "value": 478800,
+   "cost": 478800,
+   "order_value": 1251700,
+   "note": "nothing received. checked AWB, marked delivered but cust denies. goodwill given",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0002296",
+   "channel": "goodwill",
+   "t": 1.92,
+   "value": 116500,
+   "cost": 116500,
+   "order_value": 383500,
+   "note": "steel watch not delivered order ord_0002296, cust very upset, escalated. approved credit",
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0061879",
+   "channel": "refund",
+   "t": 2.12,
+   "value": 249500,
+   "cost": 249500,
+   "order_value": 450800,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0002558",
+   "channel": "refund",
+   "t": 2.33,
+   "value": 675600,
+   "cost": 675600,
+   "order_value": 1048900,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0059141",
+   "channel": "goodwill",
+   "t": 2.53,
+   "value": 20000,
+   "cost": 20000,
+   "order_value": 715500,
+   "note": "wrong size sent order ord_0059141, cust got different tan sling bag. credited difference",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0019430",
+   "channel": "replacement",
+   "t": 2.61,
+   "value": 214700,
+   "cost": 99174,
+   "order_value": 214700,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0002558",
+   "channel": "goodwill",
+   "t": 2.66,
+   "value": 373300,
+   "cost": 373300,
+   "order_value": 1048900,
+   "note": "cust says steel watch never arrived, courier shows delivered. issued credit",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0017739",
+   "channel": "goodwill",
+   "t": 3.15,
+   "value": 1295400,
+   "cost": 1295400,
+   "order_value": 1295400,
+   "note": "wrong size sent order ord_0017739, cust got different white sneakers. credited difference",
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0069954",
+   "channel": "replacement",
+   "t": 3.32,
+   "value": 348200,
+   "cost": 155244,
+   "order_value": 348200,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0047295",
+   "channel": "goodwill",
+   "t": 3.54,
+   "value": 20000,
+   "cost": 20000,
+   "order_value": 423500,
+   "note": "steel watch colour not as shown on site. goodwill issued",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0001426",
+   "channel": "goodwill",
+   "t": 3.64,
+   "value": 271500,
+   "cost": 271500,
+   "order_value": 760600,
+   "note": "received other product instead of black kurta. adjusted",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0027848",
+   "channel": "replacement",
+   "t": 3.67,
+   "value": 744200,
+   "cost": 321564,
+   "order_value": 744200,
+   "note": null,
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0019430",
+   "channel": "goodwill",
+   "t": 4.17,
+   "value": 10700,
+   "cost": 10700,
+   "order_value": 214700,
+   "note": "brass lamp arrived damaged, photos attached. credited",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0048330",
+   "channel": "refund",
+   "t": 4.2,
+   "value": 895800,
+   "cost": 895800,
+   "order_value": 1424800,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0032462",
+   "channel": "goodwill",
+   "t": 4.33,
+   "value": 20000,
+   "cost": 20000,
+   "order_value": 1404500,
+   "note": "cust says order ord_0032462 red saree never arrived, courier shows delivered. issued credit",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0008508",
+   "channel": "refund",
+   "t": 4.36,
+   "value": 742500,
+   "cost": 742500,
+   "order_value": 1069900,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0066717",
+   "channel": "replacement",
+   "t": 4.57,
+   "value": 387700,
+   "cost": 171834,
+   "order_value": 387700,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0026451",
+   "channel": "refund",
+   "t": 4.61,
+   "value": 819000,
+   "cost": 819000,
+   "order_value": 1315500,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0061879",
+   "channel": "goodwill",
+   "t": 4.65,
+   "value": 201300,
+   "cost": 201300,
+   "order_value": 450800,
+   "note": "cust claims card used without consent. refunded pending review",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0026973",
+   "channel": "refund",
+   "t": 4.71,
+   "value": 965800,
+   "cost": 965800,
+   "order_value": 1396500,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0068837",
+   "channel": "replacement",
+   "t": 4.85,
+   "value": 1023000,
+   "cost": 438660,
+   "order_value": 1023000,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0053067",
+   "channel": "replacement",
+   "t": 4.98,
+   "value": 329800,
+   "cost": 147516,
+   "order_value": 329800,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0012467",
+   "channel": "refund",
+   "t": 5.26,
+   "value": 595500,
+   "cost": 595500,
+   "order_value": 859400,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0032042",
+   "channel": "replacement",
+   "t": 5.58,
+   "value": 925200,
+   "cost": 397584,
+   "order_value": 925200,
+   "note": null,
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0046317",
+   "channel": "replacement",
+   "t": 5.78,
+   "value": 650100,
+   "cost": 282042,
+   "order_value": 650100,
+   "note": null,
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0048330",
+   "channel": "goodwill",
+   "t": 6.04,
+   "value": 529000,
+   "cost": 529000,
+   "order_value": 1424800,
+   "note": "cust claims card used without consent order ord_0048330. refunded pending review",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0026451",
+   "channel": "goodwill",
+   "t": 6.65,
+   "value": 496500,
+   "cost": 496500,
+   "order_value": 1315500,
+   "note": "received other product instead of steel watch order ord_0026451. adjusted",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0050621",
+   "channel": "refund",
+   "t": 7.0,
+   "value": 1248600,
+   "cost": 1248600,
+   "order_value": 1248600,
+   "note": null,
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0015686",
+   "channel": "refund",
+   "t": 7.07,
+   "value": 670300,
+   "cost": 670300,
+   "order_value": 670300,
+   "note": null,
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0069954",
+   "channel": "goodwill",
+   "t": 7.31,
+   "value": 17400,
+   "cost": 17400,
+   "order_value": 348200,
+   "note": "broken on arrival - brass lamp. partial credit for inconvenience",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0068837",
+   "channel": "goodwill",
+   "t": 7.39,
+   "value": 20000,
+   "cost": 20000,
+   "order_value": 1023000,
+   "note": "says did not place this order ord_0068837. credited and flagged",
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0008508",
+   "channel": "goodwill",
+   "t": 7.48,
+   "value": 327400,
+   "cost": 327400,
+   "order_value": 1069900,
+   "note": "cust says blue kurta never arrived, courier shows delivered. issued credit",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0026973",
+   "channel": "goodwill",
+   "t": 7.78,
+   "value": 430700,
+   "cost": 430700,
+   "order_value": 1396500,
+   "note": "cust says white sneakers never arrived, courier shows delivered. issued credit",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0053067",
+   "channel": "goodwill",
+   "t": 7.81,
+   "value": 16400,
+   "cost": 16400,
+   "order_value": 329800,
+   "note": "wireless earbuds arrived damaged, photos attached. credited",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0012467",
+   "channel": "goodwill",
+   "t": 8.4,
+   "value": 263900,
+   "cost": 263900,
+   "order_value": 859400,
+   "note": "quality complaint order ord_0012467 on steel watch. small credit to close ticket",
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0066717",
+   "channel": "goodwill",
+   "t": 8.49,
+   "value": 19300,
+   "cost": 19300,
+   "order_value": 387700,
+   "note": "received other product instead of steel watch order ord_0066717. adjusted",
+   "key": true,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0032042",
+   "channel": "refund",
+   "t": 9.53,
+   "value": 925200,
+   "cost": 925200,
+   "order_value": 925200,
+   "note": null,
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0046317",
+   "channel": "goodwill",
+   "t": 10.2,
+   "value": 20000,
+   "cost": 20000,
+   "order_value": 650100,
+   "note": "nothing received. checked AWB, marked delivered but cust denies. goodwill given",
+   "key": false,
+   "dup": false
+  },
+  {
+   "order_id": "ord_0017739",
+   "channel": "goodwill",
+   "t": 10.5,
+   "value": 590400,
+   "cost": 590400,
+   "order_value": 1295400,
+   "note": "received other product instead of white sneakers order ord_0017739. adjusted",
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0054922",
+   "channel": "goodwill",
+   "t": 12.75,
+   "value": 61900,
+   "cost": 61900,
+   "order_value": 61900,
+   "note": "received other product instead of black kurta. adjusted",
+   "key": false,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0003062",
+   "channel": "goodwill",
+   "t": 13.84,
+   "value": 322800,
+   "cost": 322800,
+   "order_value": 718800,
+   "note": "received other product instead of yoga mat. adjusted",
+   "key": false,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0003062",
+   "channel": "goodwill",
+   "t": 16.41,
+   "value": 718800,
+   "cost": 718800,
+   "order_value": 718800,
+   "note": "wrong size sent, cust got different yoga mat. credited difference",
+   "key": false,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0054922",
+   "channel": "goodwill",
+   "t": 16.75,
+   "value": 61900,
+   "cost": 61900,
+   "order_value": 61900,
+   "note": "received other product instead of black kurta order ord_0054922. adjusted",
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0027848",
+   "channel": "refund",
+   "t": 20.82,
+   "value": 744200,
+   "cost": 744200,
+   "order_value": 744200,
+   "note": null,
+   "key": true,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0015686",
+   "channel": "dispute",
+   "t": 51.08,
+   "value": 670300,
+   "cost": 820300,
+   "order_value": 670300,
+   "note": null,
+   "key": false,
+   "dup": true
+  },
+  {
+   "order_id": "ord_0050621",
+   "channel": "dispute",
+   "t": 51.84,
+   "value": 1248600,
+   "cost": 1398600,
+   "order_value": 1248600,
+   "note": null,
+   "key": false,
+   "dup": true
+  }
+ ],
+ "near": [
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   2.0,
+   1
+  ],
+  [
+   1.918,
+   1
+  ],
+  [
+   1.886,
+   1
+  ],
+  [
+   1.815,
+   1
+  ],
+  [
+   1.813,
+   1
+  ],
+  [
+   1.799,
+   1
+  ],
+  [
+   1.793,
+   1
+  ],
+  [
+   1.624,
+   1
+  ],
+  [
+   1.623,
+   0
+  ],
+  [
+   1.587,
+   1
+  ],
+  [
+   1.56,
+   1
+  ],
+  [
+   1.538,
+   1
+  ],
+  [
+   1.5,
+   1
+  ],
+  [
+   1.5,
+   1
+  ],
+  [
+   1.5,
+   1
+  ],
+  [
+   1.5,
+   1
+  ],
+  [
+   1.463,
+   0
+  ],
+  [
+   1.456,
+   1
+  ],
+  [
+   1.449,
+   1
+  ],
+  [
+   1.356,
+   1
+  ],
+  [
+   1.301,
+   1
+  ],
+  [
+   1.218,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.05,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.049,
+   0
+  ],
+  [
+   1.048,
+   0
+  ],
+  [
+   1.048,
+   0
+  ],
+  [
+   1.048,
+   0
+  ],
+  [
+   1.048,
+   0
+  ],
+  [
+   1.048,
+   0
+  ],
+  [
+   1.047,
+   0
+  ],
+  [
+   1.047,
+   0
+  ],
+  [
+   1.047,
+   0
+  ],
+  [
+   1.047,
+   0
+  ],
+  [
+   1.043,
+   0
+  ],
+  [
+   1.043,
+   0
+  ],
+  [
+   1.043,
+   0
+  ],
+  [
+   1.042,
+   0
+  ],
+  [
+   1.042,
+   0
+  ],
+  [
+   1.041,
+   0
+  ],
+  [
+   1.041,
+   0
+  ],
+  [
+   1.04,
+   0
+  ],
+  [
+   1.039,
+   0
+  ],
+  [
+   1.037,
+   0
+  ],
+  [
+   1.036,
+   0
+  ],
+  [
+   1.036,
+   0
+  ],
+  [
+   1.036,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.035,
+   0
+  ],
+  [
+   1.034,
+   0
+  ]
+ ],
+ "stream_orders": [
+  {
+   "order_id": "ord_0017739",
+   "value": 1295400,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0027848",
+   "value": 744200,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0032042",
+   "value": 925200,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0050621",
+   "value": 1248600,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0015686",
+   "value": 670300,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0054922",
+   "value": 61900,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0003062",
+   "value": 718800,
+   "dup": true,
+   "confuser": false
+  },
+  {
+   "order_id": "ord_0002296",
+   "value": 383500,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0001426",
+   "value": 760600,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0026823",
+   "value": 1251700,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0059141",
+   "value": 715500,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0032462",
+   "value": 1404500,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0047295",
+   "value": 423500,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0061879",
+   "value": 450800,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0002558",
+   "value": 1048900,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0019430",
+   "value": 214700,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0069954",
+   "value": 348200,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0048330",
+   "value": 1424800,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0008508",
+   "value": 1069900,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0066717",
+   "value": 387700,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0026451",
+   "value": 1315500,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0026973",
+   "value": 1396500,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0068837",
+   "value": 1023000,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0053067",
+   "value": 329800,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0012467",
+   "value": 859400,
+   "dup": false,
+   "confuser": true
+  },
+  {
+   "order_id": "ord_0046317",
+   "value": 650100,
+   "dup": false,
+   "confuser": true
+  }
+ ],
+ "chosen_threshold": 1.25
+}

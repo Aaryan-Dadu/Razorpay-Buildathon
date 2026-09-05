@@ -59,6 +59,76 @@ h1 .l2{display:block;padding-left:.09em}
 .hint{position:absolute;right:26px;bottom:24px;z-index:2;font-size:13.5px;
   color:var(--ink-3);font-style:italic}
 
+
+/* ---------- scroll machinery ----------
+   One language for all of it: the page is a ledger being written. The
+   progress bar is a pen ruling the top edge, section rules draw themselves
+   left to right on entry, and the threshold section is scrubbed by the
+   scroll itself rather than by a slider. Nothing fades up from nowhere. */
+#rule-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:40;
+  background:var(--red);transform:scaleX(0);transform-origin:0 50%;
+  will-change:transform}
+section{position:relative}
+section::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--ink);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 1100ms var(--ease-out)}
+section.in::before{transform:scaleX(1)}
+section:first-of-type::before{display:none}
+.beat > div{opacity:0;transform:translateY(14px);
+  transition:opacity 700ms var(--ease-out),transform 700ms var(--ease-out)}
+section.in .beat > div{opacity:1;transform:none}
+section.in .beat > div:nth-child(2){transition-delay:110ms}
+
+/* ---------- pinned threshold scrub ---------- */
+.pin-wrap{height:330vh;padding:0;border-bottom:1px solid var(--rule)}
+.pin{position:sticky;top:0;height:100vh;min-height:600px;display:flex;
+  align-items:center;overflow:hidden}
+.pin-in{max-width:1140px;margin:0 auto;padding:0 26px;width:100%;
+  display:grid;grid-template-columns:minmax(250px,.82fr) minmax(300px,1.18fr);
+  gap:52px;align-items:center}
+@media (max-width:860px){.pin-wrap{height:280vh}
+  .pin-in{grid-template-columns:1fr;gap:26px}}
+.pin h2{margin-bottom:16px}
+.pin-copy{font-size:16.5px;color:var(--ink-2);min-height:7.4em;max-width:44ch}
+.pin-copy b{color:var(--ink);font-weight:600}
+.thr-read{font-family:var(--f-data);font-size:clamp(46px,7vw,82px);font-weight:500;
+  line-height:1;letter-spacing:-.03em;margin-bottom:6px}
+.thr-cap{font-size:14px;color:var(--ink-3);font-style:italic;margin:0 0 26px}
+.grid{display:grid;grid-template-columns:repeat(25,1fr);gap:5px;margin-bottom:22px}
+@media (max-width:600px){.grid{grid-template-columns:repeat(15,1fr)}}
+.dot{aspect-ratio:1;border-radius:50%;background:var(--rule-soft);
+  transition:background 260ms var(--ease-out),transform 260ms var(--spring),
+             box-shadow 260ms var(--ease-out)}
+.dot.caught{background:var(--red);transform:scale(1.28)}
+.dot.alarm{background:transparent;box-shadow:inset 0 0 0 2px var(--ochre);transform:scale(1.1)}
+.dot.missed{background:var(--ink-3);opacity:.42}
+.gl{display:flex;gap:18px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-3);
+  font-style:italic;margin-bottom:22px}
+.gl i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;
+  vertical-align:0;font-style:normal}
+.gl i.a{box-shadow:inset 0 0 0 2px var(--ochre)}
+/* One signed bar off a common baseline, so profit and loss are read on the
+   same scale instead of as two differently-shaped blocks. */
+.rail{position:relative;height:44px;border:1px solid var(--rule);overflow:hidden;
+  font-family:var(--f-data);font-size:13px;margin-bottom:14px;background:var(--sunk)}
+.rail .r-pos{position:absolute;inset:0 auto 0 0;
+  background:color-mix(in srgb,var(--carton) 42%,transparent);
+  transition:width 300ms var(--ease-out),background 300ms linear}
+.rail .r-lab{position:absolute;inset:0;display:flex;align-items:center;
+  padding:0 13px;gap:9px;white-space:nowrap}
+.rail .r-lab b{font-weight:600}
+.rail.neg .r-pos{background:var(--red)}
+.pin-figs{display:flex;gap:30px;flex-wrap:wrap}
+.pf{display:flex;flex-direction:column}
+.pf b{font-family:var(--f-data);font-size:24px;font-weight:500;
+  transition:color 260ms var(--ease-out)}
+.pf b.loss{color:var(--red)} .pf b.gain{color:var(--carton)}
+.pf span{font-size:13.5px;color:var(--ink-3);font-style:italic}
+@media (prefers-reduced-motion:reduce){
+  section::before{transform:scaleX(1)}
+  .beat > div{opacity:1;transform:none}
+}
+
 /* ---------- beats ---------- */
 section{padding:96px 0;border-bottom:1px solid var(--rule)}
 .beat{display:grid;grid-template-columns:minmax(260px,.86fr) minmax(300px,1.14fr);
@@ -91,17 +161,6 @@ tbody tr:last-child td{border-bottom:0}
 .scale-note{margin-top:14px;font-size:14px;color:var(--ink-3);font-style:italic}
 .scale-note b{color:var(--ink-2);font-style:normal;font-weight:600}
 
-/* ---------- money band ---------- */
-.band{display:flex;align-items:stretch;height:74px;border:1px solid var(--rule);
-  font-family:var(--f-data);font-size:14px;overflow:hidden}
-.band div{display:flex;flex-direction:column;justify-content:center;padding:0 17px;
-  white-space:nowrap}
-.band .b-save{background:color-mix(in srgb,var(--carton) 22%,transparent);flex:1 1 auto}
-.band .b-bill{background:var(--red);border-left:1px solid var(--rule);flex:0 0 auto;padding:0}
-.band small{font-size:12.5px;color:var(--ink-3);font-style:italic;
-  font-family:var(--f-text)}
-.band b{font-size:19px;font-weight:600}
-
 /* ---------- cta ---------- */
 .cta{padding:104px 0 118px;text-align:center;border-bottom:0}
 .cta h2{margin-bottom:16px}
@@ -124,6 +183,8 @@ footer{padding:26px 0 46px;font-size:14px;color:var(--ink-3);font-style:italic;
     transition-duration:.01ms!important}
 }
 </style>
+
+<div id="rule-progress"></div>
 
 <div class="hero">
   <canvas id="score" aria-label="Four ledgers running in parallel, with ink ties drawn between records that belong to the same order"></canvas>
@@ -159,24 +220,36 @@ footer{padding:26px 0 46px;font-size:14px;color:var(--ink-3);font-style:italic;
     </div>
   </section>
 
-  <section>
-    <div class="beat">
-      <div>
-        <h2>The bill for guessing</h2>
-        <p>Flagging aggressively feels safe and is not. A wrongly held refund does not
-          merely annoy someone: a share of those customers file the very chargeback the
-          system existed to prevent. <strong>A false positive manufactures the
-          loss.</strong></p>
-        <p>Set the line too low and the bill overtakes everything recovered. The
-          merchant runs the detector and ends up further behind than doing nothing.</p>
-      </div>
-      <div>
-        <div class="band" id="band"></div>
-        <p class="scale-note" id="bandnote"></p>
+  </div>
+
+  <section class="pin-wrap">
+    <div class="pin">
+      <div class="pin-in">
+        <div>
+          <h2>Move the line</h2>
+          <div class="thr-read" id="thr-read">1.25&times;</div>
+          <p class="thr-cap">the duplicate threshold, as a multiple of order value</p>
+          <p class="pin-copy" id="pin-copy"></p>
+        </div>
+        <div>
+          <div class="grid" id="grid"></div>
+          <div class="gl">
+            <span><i style="background:var(--red)"></i>duplicate caught</span>
+            <span><i class="a"></i>legitimate refund held</span>
+            <span><i style="background:var(--ink-3);opacity:.5"></i>duplicate missed</span>
+          </div>
+          <div class="rail" id="rail"></div>
+          <div class="pin-figs">
+            <div class="pf"><b id="pf-p"></b><span>precision</span></div>
+            <div class="pf"><b id="pf-r"></b><span>recall</span></div>
+            <div class="pf"><b id="pf-net"></b><span>net to the merchant</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
+  <div class="wrap">
   <section>
     <div class="beat">
       <div>
@@ -389,23 +462,9 @@ document.getElementById("figs").innerHTML=[
 ].map(function(f){ return '<div class="fig"><b class="'+f[0]+'">'+f[1]+
   "</b><span>"+f[2]+"</span></div>"; }).join("");
 
-var save=D.prevented, bill=D.bill;
-// Truly proportional. An earlier version floored the red segment at 12% so
-// its label would fit, which drew a bill nine times its real size on a page
-// whose whole argument is honest measurement. The sliver is the point: at
-// the shipped threshold the bill is 1.4% of what was stopped. The label
-// moves below rather than the bar being stretched to hold it.
-var w=Math.max(2.2, bill/save*100);
-document.getElementById("band").innerHTML=
-  '<div class="b-save"><b>'+rs(save)+"</b><small>duplicate payout stopped</small></div>"+
-  '<div class="b-bill" style="flex-basis:'+w.toFixed(2)+'%" title="false-positive bill '+
-  rs(bill)+'"></div>';
-document.getElementById("bandnote").innerHTML=
-  "The red sliver is the false-positive bill, <b>"+rs(bill)+"</b>, drawn to scale at "+
-  (bill/save*100).toFixed(1)+"% of what was stopped. Net <b>"+rs(D.net)+
-  "</b> across 25,000 orders at the shipped line. Drop it to 1.02&times; and the same "+
-  "book returns <b>"+rs(D.worst_net)+"</b>, a loss.";
-
+// The static money band was replaced by the scroll-scrubbed rail in the
+// pinned section, which shows the same figures at every threshold rather
+// than only at the shipped one.
 document.getElementById("conf").textContent=
   Math.round(D.meta.confusers/D.meta.duplicates)+" ";
 document.getElementById("score-tbl").innerHTML=[
@@ -421,5 +480,125 @@ document.getElementById("score-tbl").innerHTML=[
 document.getElementById("foot").textContent=
   D.meta.test_orders.toLocaleString("en-IN")+" held-out orders, "+
   D.meta.test_positives+" true duplicates, seed 7.";
+
+/* ==================================================================
+   Scroll. One idea throughout: the page is a ledger being written.
+   The top rule is a pen tracking the page, each section rules its own
+   top edge on arrival, and the threshold section is scrubbed by the
+   scroll rather than by a control, so moving the line and moving down
+   the page are the same gesture.
+   ================================================================== */
+(function(){
+  var bar=document.getElementById("rule-progress");
+  var pinWrap=document.querySelector(".pin-wrap");
+  var SW=D.sweep||[], NEAR=D.near||[];
+  var read=document.getElementById("thr-read"), copy=document.getElementById("pin-copy"),
+      grid=document.getElementById("grid"), rail=document.getElementById("rail");
+  var dots=[], lastIdx=-1;
+
+  NEAR.forEach(function(n){
+    var d=document.createElement("div"); d.className="dot";
+    d.title=n[0].toFixed(2)+"× exposure";
+    grid.appendChild(d); dots.push(d);
+  });
+
+  var maxAbs=Math.max(Math.abs(D.best_net||1), Math.abs(D.worst_net||1));
+  var chosenIdx=0;
+  SW.forEach(function(r,i){
+    if(Math.abs(r.t-D.chosen) < Math.abs(SW[chosenIdx].t-D.chosen)) chosenIdx=i;
+  });
+
+  function paintThreshold(i){
+    if(i===lastIdx) return;
+    lastIdx=i;
+    var r=SW[i];
+    read.innerHTML=r.t.toFixed(2)+"&times;";
+
+    for(var k=0;k<NEAR.length;k++){
+      var ratio=NEAR[k][0], isDup=NEAR[k][1]===1, flagged=ratio>=r.t, cls="dot";
+      if(flagged && isDup) cls+=" caught";
+      else if(flagged) cls+=" alarm";
+      else if(isDup) cls+=" missed";
+      if(dots[k].className!==cls) dots[k].className=cls;
+    }
+
+    var mag = Math.min(100, Math.abs(r.net)/maxAbs*100);
+    rail.className = "rail" + (r.net<0 ? " neg" : "");
+    rail.innerHTML =
+      '<div class="r-pos" style="width:'+mag.toFixed(1)+'%"></div>'+
+      '<div class="r-lab"><b>'+rs(r.net)+"</b><span>"+
+      (r.net<0 ? "lost: a bill of "+rs(r.bill)+" against "+rs(r.prevented)+" stopped"
+               : r.net===0 ? "nothing caught, nothing spent"
+               : rs(r.prevented)+" stopped for a bill of "+rs(r.bill))+
+      "</span></div>";
+
+    document.getElementById("pf-p").textContent=(r.p*100).toFixed(1)+"%";
+    document.getElementById("pf-r").textContent=(r.r*100).toFixed(1)+"%";
+    var n=document.getElementById("pf-net");
+    n.textContent=rs(r.net);
+    n.className = r.net<0 ? "loss" : (r.net>0 ? "gain" : "");
+
+    var msg;
+    if(r.net<0) msg="Down here the detector flags more honest refunds than duplicates. "+
+      "The false-positive bill of <b>"+rs(r.bill)+"</b> outweighs everything it "+
+      "recovers, so the merchant is worse off running it than not. <b>A recall "+
+      "number alone would call this a success.</b>";
+    else if(r.r===0) msg="Nothing reaches this high. Every duplicate walks, at no cost "+
+      "in false alarms and no saving either.";
+    else if(i===chosenIdx) msg="The shipped line, <b>"+r.t.toFixed(2)+"×</b>. Chosen "+
+      "before this curve was computed, and it sits inside a wide flat region: the "+
+      "exact number is not what the result rests on.";
+    else if(r.t>1.7) msg="High enough that only outright double payments trip it. The "+
+      "half refund followed by a full chargeback walks free, and recall falls to <b>"+
+      (r.r*100).toFixed(0)+"%</b>.";
+    else msg="<b>"+(r.p*100).toFixed(1)+"%</b> precision at <b>"+(r.r*100).toFixed(1)+
+      "%</b> recall. Every reading here is a real measurement on held-out orders, not "+
+      "a curve fitted after the fact.";
+    copy.innerHTML=msg;
+  }
+
+  // Deliberately synchronous. An earlier version did all of this inside a
+  // requestAnimationFrame callback, which is the usual advice and was wrong
+  // here: wherever rAF is throttled or suspended the scroll UI simply stops
+  // responding, silently, with no error. The work is cheap by construction
+  // (one getBoundingClientRect, and paintThreshold returns immediately
+  // unless the threshold index actually changed, so the 150 dot updates run
+  // at most 46 times over the whole section), so it can just run inline.
+  function onScroll(){
+    var doc=document.documentElement;
+    var max=doc.scrollHeight-window.innerHeight;
+    bar.style.transform="scaleX("+(max>0?Math.min(1,window.scrollY/max):0).toFixed(4)+")";
+
+    if(pinWrap){
+      var r=pinWrap.getBoundingClientRect();
+      var travel=r.height-window.innerHeight;
+      var prog=travel>0 ? Math.min(1,Math.max(0,-r.top/travel)) : 0;
+      // Ease the ends so the first and last readings hold long enough to be
+      // read instead of flashing past at the section boundaries.
+      var e=prog<.5 ? 2*prog*prog : 1-Math.pow(-2*prog+2,2)/2;
+      paintThreshold(Math.round(e*(SW.length-1)));
+    }
+    // The hero field eases off as it leaves so it never competes with the
+    // section underneath it.
+    var hy=Math.min(1,window.scrollY/(window.innerHeight*0.9));
+    cv.style.opacity=(1-hy*0.85).toFixed(3);
+    cv.style.transform="translateY("+(hy*40).toFixed(1)+"px)";
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", onScroll, {passive:true});
+
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting) en.target.classList.add("in"); });
+    }, {threshold:.14, rootMargin:"0px 0px -8% 0px"});
+    document.querySelectorAll("section").forEach(function(x){ io.observe(x); });
+  } else {
+    document.querySelectorAll("section").forEach(function(x){ x.classList.add("in"); });
+  }
+
+  paintThreshold(0);
+  onScroll();
+})();
+
 })();
 </script>

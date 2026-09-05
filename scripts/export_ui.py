@@ -222,7 +222,15 @@ for oid in watch:
             "dup": oid in T.duplicated_orders})
 stream.sort(key=lambda r: r["t"])
 
-extra = {"sweep": sweep, "puzzles": puzzles, "stream": stream,
+# The orders nearest the duplicate line, for the scroll-scrubbed section on
+# the landing page. Only these matter visually: everything far below the line
+# never lights up at any threshold worth showing, so shipping all 7,935 would
+# be weight without information.
+near = sorted(((round(r, 3), 1 if o in pos else 0)
+               for o, r in ratios.items() if o in te_ids and r >= 1.0),
+              key=lambda x: -x[0])[:150]
+
+extra = {"sweep": sweep, "puzzles": puzzles, "stream": stream, "near": near,
          "stream_orders": [{"order_id": o,
                             "value": led.entries[o].order_value_paise,
                             "dup": o in T.duplicated_orders,

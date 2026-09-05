@@ -28,13 +28,19 @@ DATA = ROOT / "reports" / "ui_data.json"
 
 #: Where the landing page's button points. Set by --instrument, else left as
 #: a relative link so the file works when opened straight off disk.
-INSTRUMENT_DEFAULT = "sentinel.html"
+#: Relative by default so the built site works from any host, and from
+#: the filesystem. `cleanUrls` on Vercel serves it at /instrument too.
+INSTRUMENT_DEFAULT = "./instrument.html"
 
 TARGETS = {
     "instrument": {
         "template": ROOT / "ui" / "sentinel.template.html",
         "data": ROOT / "reports" / "ui_data.json",
         "out": ROOT / "ui" / "sentinel.html",
+        "deploy": ROOT / "web" / "instrument.html",
+        "desc": "Try the join a merchant cannot make, run 52 days of "
+                "remediation forward, and move the duplicate line until the "
+                "false-positive bill overtakes what it recovers.",
         "checks": {
             "case list": 'class="chip"',
             "lane markers": 'class="mark"',
@@ -51,14 +57,19 @@ TARGETS = {
         "template": ROOT / "ui" / "landing.template.html",
         "data": ROOT / "reports" / "landing_data.json",
         "out": ROOT / "ui" / "landing.html",
+        "deploy": ROOT / "web" / "index.html",
+        "desc": "Four systems pay the same customer back, none of them share "
+                "a key, and the second payout leaves unseen.",
         "checks": {
             "lane legend": "Goodwill credit",
             "headline figure": 'class="huge"',
             "figure cards": 'class="fig"',
-            "money band": 'class="b-save"',
             "scoreboard": 'class="ours"',
+            "threshold grid": 'class="dot',
+            "money rail": 'class="r-pos"',
+            "scrub copy": "held-out orders",
         },
-        "interactions": False,
+        "interactions": "landing",
     },
 }
 
@@ -72,6 +83,7 @@ def build(name: str, spec: dict, instrument_url: str) -> int:
     data = spec["data"].read_text()
     json.loads(data)                       # reject NaN and friends early
     OUT = spec["out"]
+    OUT.parent.mkdir(parents=True, exist_ok=True)
 
     match = re.search(r"<script>\n(.*?)\n</script>", tmpl, re.S)
     if match is None:
@@ -94,16 +106,130 @@ def build(name: str, spec: dict, instrument_url: str) -> int:
         print("JavaScript syntax error, refusing to write:\n" + result.stderr[:900])
         return 1
 
+    # The two copies point at different places on purpose. A published
+    # artifact has no sibling file to link to, so it needs the instrument's
+    # own URL; the deployed site does have one, and a relative link there
+    # survives any host and works straight off the filesystem.
     page = tmpl.replace("__DATA__", data).replace("__INSTRUMENT__", instrument_url)
-    if "__DATA__" in page or "__INSTRUMENT__" in page:
+    deploy_page = tmpl.replace("__DATA__", data).replace("__INSTRUMENT__",
+                                                         "./instrument.html")
+    if "__DATA__" in page or "__INSTRUMENT__" in page or "__INSTRUMENT__" in deploy_page:
         print(f"{name}: a placeholder survived substitution")
         return 1
     OUT.write_text(page)
-    print(f"{name}: syntax ok, wrote {OUT.relative_to(ROOT)} ({len(page):,} bytes)")
+    deployed = ""
+    if spec.get("deploy"):
+        dep = spec["deploy"]
+        dep.parent.mkdir(parents=True, exist_ok=True)
+        doc = wrap_document(deploy_page, spec.get("desc", ""))
+        dep.write_text(doc)
+        deployed = f" + {dep.relative_to(ROOT)} ({len(doc):,} bytes)"
+    print(f"{name}: syntax ok, wrote {OUT.relative_to(ROOT)} "
+          f"({len(page):,} bytes){deployed}")
     rc = smoke_test(page, spec["checks"])
     if rc:
         return rc
+    if spec["interactions"] == "landing":
+        return scroll_test(page)
     return interaction_test(page) if spec["interactions"] else 0
+
+
+SCROLL_PROBE = """
+// The page throttles scroll work into requestAnimationFrame, and
+// IntersectionObserver fires asynchronously too. Reading the DOM in the
+// same tick as the scroll therefore measures the previous frame, which
+// makes a working page look inert. Each step yields before it asserts.
+(function(){
+  var L=[], w=document.querySelector(".pin-wrap"), read=document.getElementById("thr-read");
+  function t(n,c){ L.push((c?"PASS  ":"FAIL  ")+n); }
+  function q(sel){ return document.querySelectorAll(sel).length; }
+  function at(frac){
+    var travel=w.offsetHeight-window.innerHeight;
+    window.scrollTo(0, w.offsetTop + travel*frac);
+    window.dispatchEvent(new Event("scroll"));
+  }
+  var lo, hi, steps=[
+    function(){ t("dot grid built", q("#grid .dot")===NEAR_N); at(0); },
+    function(){
+      lo=parseFloat(read.textContent);
+      t("top of the pin gives the lowest line", lo<1.1);
+      t("the lowest line reports a net loss",
+        document.getElementById("pf-net").classList.contains("loss"));
+      t("honest refunds are held there", q("#grid .dot.alarm")>0);
+      at(1);
+    },
+    function(){
+      hi=parseFloat(read.textContent);
+      t("bottom of the pin raises the line", hi>lo);
+      t("nothing is caught at the top of the range", q("#grid .dot.caught")===0);
+      t("every duplicate is missed there", q("#grid .dot.missed")===NEAR_DUPS);
+      at(0.5);
+    },
+    function(){
+      var mid=parseFloat(read.textContent);
+      t("mid-scrub lands between the ends", mid>lo && mid<hi);
+      t("mid-scrub catches duplicates", q("#grid .dot.caught")>0);
+      t("mid-scrub is back in profit",
+        document.getElementById("pf-net").classList.contains("gain"));
+      window.scrollTo(0, document.body.scrollHeight);
+      window.dispatchEvent(new Event("scroll"));
+    },
+    function(){
+      t("progress rule advances with the page",
+        /scale|matrix/.test(getComputedStyle(document.getElementById("rule-progress")).transform));
+      t("sections rule themselves in", q("section.in")>0);
+      document.getElementById("__out").textContent=L.join("\\n");
+    }
+  ];
+  (function run(i){
+    if(i>=steps.length) return;
+    steps[i]();
+    setTimeout(function(){ run(i+1); }, 180);
+  })(0);
+})();
+"""
+
+
+def scroll_test(page: str) -> int:
+    """Drive the pinned section by scroll position and check it responds.
+
+    A scroll-scrubbed section is the easiest thing on the page to break
+    without noticing: the markup renders, the copy reads fine, and the
+    control silently does nothing because a rect calculation went to zero.
+    So this scrolls to the top, middle and bottom of the pin and asserts the
+    threshold, the dot states and the sign of the net all move with it.
+    """
+    chrome = shutil.which("google-chrome") or shutil.which("chromium")
+    if chrome is None:
+        return 0
+    blob = json.loads(TARGETS["landing"]["data"].read_text())
+    near = blob.get("near", [])
+    script = (SCROLL_PROBE
+              .replace("NEAR_DUPS", str(sum(1 for n in near if n[1] == 1)))
+              .replace("NEAR_N", str(len(near))))
+    probe = ('<!doctype html><meta charset="utf-8"><div id="__err"></div>'
+             '<div id="__out"></div><script>addEventListener("error",'
+             'function(e){document.getElementById("__err").textContent='
+             '"ERR "+e.message;});</script>' + page
+             + "<script>" + script + "</script>")
+    with tempfile.TemporaryDirectory() as d:
+        f = pathlib.Path(d) / "scroll.html"
+        f.write_text(probe)
+        r = subprocess.run(
+            [chrome, "--headless", "--disable-gpu", "--no-sandbox",
+             "--window-size=1280,900", "--virtual-time-budget=9000",
+             "--dump-dom", f"file://{f}"],
+            capture_output=True, text=True, timeout=120)
+    out = re.search(r'<div id="__out">(.*?)</div>', r.stdout, re.S)
+    lines = (out.group(1) if out else "").strip()
+    if not lines:
+        print("scroll test produced no result")
+        return 1
+    for line in lines.split("\n"):
+        print("  " + line.strip())
+    fails = lines.count("FAIL")
+    print(f"scroll: {lines.count('PASS')} pass, {fails} fail")
+    return 1 if fails else 0
 
 
 def main() -> int:
@@ -120,6 +246,60 @@ def main() -> int:
         if rc:
             return rc
     return 0
+
+
+#: The Artifact runtime supplies a document shell and a small reset. A file
+#: served straight off a static host gets neither, so the deployable copy is
+#: wrapped here. The reset is reproduced deliberately rather than assumed:
+#: without `body{margin:0}` the full-bleed hero canvas sits inside an 8px
+#: gutter on every edge, which is exactly the kind of difference that only
+#: shows up in production.
+SHELL_HEAD = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="{desc}">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,{icon}">
+<style>
+  *{{box-sizing:border-box}}
+  html{{-webkit-text-size-adjust:100%}}
+  body{{margin:0}}
+  img{{max-width:100%}}
+  [hidden]{{display:none!important}}
+</style>
+{head}
+</head>
+<body>
+{body}
+</body>
+</html>
+"""
+
+ICON = ("%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
+        "%3Ctext y='26' font-size='26'%3E%F0%9F%A7%BE%3C/text%3E%3C/svg%3E")
+
+
+def wrap_document(page: str, desc: str) -> str:
+    """Split the artifact-format page into head and body and wrap it.
+
+    Everything up to the end of the last <style> block is head material
+    (title, font links, the page's own CSS); the rest is markup.
+    """
+    cut = page.rfind("</style>")
+    if cut == -1:
+        head, body = "", page
+    else:
+        cut += len("</style>")
+        head, body = page[:cut], page[cut:]
+    m = re.search(r"<title>(.*?)</title>", head, re.S)
+    title = m.group(1).strip() if m else "Double-Dip Sentinel"
+    return SHELL_HEAD.format(desc=desc, title=title, icon=ICON,
+                             head=head.strip(), body=body.strip())
 
 
 def smoke_test(page: str, checks: dict) -> int:

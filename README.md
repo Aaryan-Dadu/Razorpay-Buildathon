@@ -1,3 +1,54 @@
+## The pages
+
+**Landing** https://claude.ai/code/artifact/85f17b51-e6d9-4441-bb98-7a551ad83500
+
+A canvas score where each column is one real order, its marks the systems it
+touched, and the tie between them the join no merchant can write. Red ties are
+the orders that paid twice; hover isolates one.
+
+Then the page hands over its controls. Scrolling the pinned section *is* the
+duplicate threshold: 150 held-out orders light up as caught, held or missed,
+and the net swings from a loss of Rs 53,285 at 1.02x to Rs 3.02 lakh at the
+shipped line. Recall stays above 90% the whole way down, which is exactly why
+a recall number on its own would call the losing configuration a success.
+
+**Instrument** https://claude.ai/code/artifact/08c0ed9d-9d72-4c48-8924-79ddfd945aa3
+
+Three things you operate rather than read:
+
+- **Try it yourself.** One real support credit and four of the real candidate
+  orders the resolver faced. Nothing in the ticket names an order. Most people
+  guess, and on the first round the linkage model guesses too, at 0.377 against
+  0.363. It was choosing from fifteen candidates, not four.
+- **Run the book forward.** Play 52 real remediation events across 52 days over
+  26 orders. Seven of the twenty-six cross the line. Scrub in either direction.
+- **Move the duplicate line.** Every reading is a real measurement at that
+  threshold.
+
+Every figure, case, alert and curve is exported from an actual run.
+
+## Deploying
+
+The site is two self-contained files. No build step on the host, no runtime
+dependencies, nothing fetched but the two webfonts.
+
+```bash
+make web          # export the run, then build and gate both pages
+vercel deploy     # or point any static host at web/
+make serve        # http://localhost:8000
+```
+
+`vercel.json` sets `web/` as the output directory with clean URLs, so the
+instrument is served at `/instrument` as well as `/instrument.html`.
+
+`scripts/build_ui.py` writes two forms of each page: the artifact copy, which
+links to the instrument's published URL, and the deployable copy, wrapped in a
+document shell with the reset the artifact runtime otherwise supplies. It
+refuses to write either unless the JavaScript parses, every data region
+populates, and the behaviour checks pass in a real browser: 13 interaction
+checks against the instrument's controls, 12 scroll checks against the pinned
+section.
+
 # Double-Dip Sentinel
 
 **A merchant pays the same customer twice for the same order, and nobody notices.**
