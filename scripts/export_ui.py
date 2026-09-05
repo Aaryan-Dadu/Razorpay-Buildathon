@@ -78,6 +78,19 @@ cm = CostModel()
 gate = Gate(cm, TH)
 test_led = Ledger(entries={o: e for o, e in led.entries.items() if o in te_ids})
 decs = replay(test_led, gate, H, hz)
+# Lead with the calls the gate got wrong, then fill with the most expensive
+# correct ones. Ranking purely by value produced a deck of eight wins, which
+# is precisely the cherry-picking this project claims not to do: the two
+# wrong blocks in this run are the most informative decisions in it.
+def _wrong(d):
+    return (d.verdict is Verdict.BLOCK) != (d.order_id in T.duplicated_orders)
+
+wrong = [d for d in decs if _wrong(d)]
+right = sorted((d for d in decs if not _wrong(d)),
+               key=lambda x: -x.expected_allow_cost_paise)
+deck = (wrong[:3] + right)[:8]
+deck.sort(key=lambda d: (not _wrong(d), -d.expected_allow_cost_paise))
+
 dec_json = [{
     "order_id": d.order_id, "verdict": str(d.verdict),
     "p_duplicate": round(d.p_duplicate, 3),
