@@ -1023,12 +1023,21 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
       feed=document.getElementById("feed");
   var node={}, clockT=0, playing=false, raf=null, last=0;
 
+  var detail=document.getElementById("detail"), picked=null;
+
   ORD.forEach(function(o){
     var d=document.createElement("div"); d.className="trk";
+    d.tabIndex=0; d.setAttribute("role","button");
+    d.setAttribute("aria-label","Open the remediation history for order "+o.order_id);
     d.innerHTML='<div class="trk-t"><span>'+o.order_id.replace("ord_","#")+
       '</span><b>0.00&times;</b></div><div class="trk-bar">'+
       '<div class="trk-fill"></div><div class="trk-line" style="left:'+
       (100/SCALE).toFixed(1)+'%"></div></div>';
+    function open(){ picked=o.order_id; renderDetail(); }
+    d.addEventListener("click", open);
+    d.addEventListener("keydown", function(e){
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(); }
+    });
     tracks.appendChild(d);
     node[o.order_id]={el:d, fill:d.querySelector(".trk-fill"),
       val:d.querySelector("b"), value:o.value, dup:o.dup, over:false};
