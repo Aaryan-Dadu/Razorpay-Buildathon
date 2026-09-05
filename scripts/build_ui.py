@@ -380,6 +380,43 @@ setTimeout(function(){
   d.value=d.max; d.dispatchEvent(new Event("input"));
   t("the highest threshold catches nothing",
     document.getElementById("d-r").textContent==="0.0%");
+
+  // gate deck
+  var gp=document.getElementById("g-prev"), gn=document.getElementById("g-next");
+  t("gate opens on the first decision",
+    /^1 of /.test(document.getElementById("g-pos").textContent));
+  t("cannot step back from the first", gp.disabled===true);
+  var first=document.querySelector("#gate .mono").textContent;
+  gn.click();
+  t("stepping forward changes the decision",
+    document.querySelector("#gate .mono").textContent!==first);
+  t("the deck says whether the gate was right",
+    document.querySelectorAll("#gate .gate-truth").length===1);
+  while(!gn.disabled) gn.click();
+  t("the deck reaches its last decision", gn.disabled===true);
+  t("the deck includes at least one call the gate got wrong",
+    GATE_WRONG>0);
+
+  // track detail
+  var trk=document.querySelector("#tracks .trk");
+  trk.click();
+  var det=document.getElementById("detail");
+  t("clicking a track opens its history", !det.hidden);
+  t("the history names the order", /ord_/.test(det.textContent));
+  det.querySelector("#d-close").click();
+  t("the history closes again", det.hidden===true);
+
+  // observation horizon
+  var hz=document.getElementById("hz");
+  var lastNaive=document.getElementById("hz-naive").textContent;
+  hz.value=0; hz.dispatchEvent(new Event("input"));
+  var earlyNaive=parseFloat(document.getElementById("hz-naive").textContent);
+  t("pulling the horizon back lowers the reported rate",
+    earlyNaive<parseFloat(lastNaive));
+  t("the early horizon is flagged as understated",
+    document.getElementById("hz-under").classList.contains("warn"));
+  t("almost the whole early book is still inside the window",
+    parseFloat(document.getElementById("hz-open").textContent)>90);
   document.getElementById("__out").textContent=L.join("\\n");
 }, 900);
 """
