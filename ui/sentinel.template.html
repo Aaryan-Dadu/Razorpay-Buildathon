@@ -247,6 +247,23 @@ svg{display:block;max-width:100%;height:auto}
 .alert .ao{font-family:var(--f-data);font-size:13.5px;font-weight:600;color:var(--chargeback)}
 .alert .am{font-size:13.5px;color:var(--ink-2);margin-top:2px}
 .quiet{font-size:14px;color:var(--ink-3);font-style:italic}
+.detail{grid-column:1/-1;border-top:1px solid var(--rule);background:var(--sunk);
+  padding:14px 16px}
+.detail-h{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:9px}
+.detail-h b{font-family:var(--f-data);font-size:14px}
+.detail-h span{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.detail-h button{margin-left:auto;font:inherit;font-size:13.5px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+  border-radius:2px;padding:3px 10px}
+.detail-h button:hover{border-color:var(--ink-3);color:var(--ink)}
+.detail-h button:focus-visible{outline:2px solid var(--slip);outline-offset:2px}
+.dev{display:flex;gap:14px;align-items:baseline;padding:6px 0;
+  border-top:1px dashed var(--rule-soft);font-size:14px;flex-wrap:wrap}
+.dev:first-of-type{border-top:0}
+.dev .dch{font-family:var(--f-data);font-size:12.5px;font-weight:600;min-width:104px}
+.dev .damt{font-family:var(--f-data);font-size:14px}
+.dev .dnote{color:var(--ink-2);font-style:italic;flex:1;min-width:180px}
+.dev .dday{margin-left:auto;font-family:var(--f-data);font-size:12.5px;color:var(--ink-3)}
 
 /* ---------- threshold ---------- */
 .dial{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
