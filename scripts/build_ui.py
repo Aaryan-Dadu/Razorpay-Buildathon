@@ -74,6 +74,39 @@ TARGETS = {
 }
 
 
+#: Written into web/ as well as living at the repo root. Vercel reads
+#: vercel.json from whatever is configured as the project's Root Directory,
+#: so a project pointed at web/ never sees the root one and silently loses
+#: the redirects. Shipping both copies makes the site behave the same under
+#: either setting.
+SITE_CONFIG = {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "cleanUrls": True,
+    "trailingSlash": False,
+    "redirects": [
+        {"source": "/index.html", "destination": "/", "permanent": False},
+        {"source": "/instrument.html", "destination": "/instrument",
+         "permanent": False},
+    ],
+    "headers": [{
+        "source": "/(.*)",
+        "headers": [
+            {"key": "X-Content-Type-Options", "value": "nosniff"},
+            {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
+            {"key": "X-Frame-Options", "value": "SAMEORIGIN"},
+            {"key": "Cache-Control", "value": "public, max-age=0, must-revalidate"},
+        ],
+    }],
+}
+
+
+def write_site_config() -> None:
+    out = ROOT / "web" / "vercel.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(SITE_CONFIG, indent=2) + "\n")
+    print(f"wrote {out.relative_to(ROOT)} (root-directory-agnostic)")
+
+
 def check_internal_links() -> int:
     """Every relative link in the deployed pages must resolve to a real file.
 
@@ -267,6 +300,7 @@ def main() -> int:
         rc = build(name, spec, a.instrument)
         if rc:
             return rc
+    write_site_config()
     return check_internal_links()
 
 
