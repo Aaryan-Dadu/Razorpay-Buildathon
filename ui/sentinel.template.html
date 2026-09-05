@@ -264,6 +264,67 @@ svg{display:block;max-width:100%;height:auto}
 .dg-v.gain{color:var(--cleared)}
 .dial-note{margin-top:13px;font-size:14.5px;color:var(--ink-2);min-height:2.9em}
 
+
+/* ---------- scroll machinery ----------
+   Same language as the landing page: the document is a ledger being
+   written, so progress is a pen ruling the top edge and each section rules
+   its own edge on arrival. Nothing fades up from nowhere. */
+#rule-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
+  background:var(--chargeback);transform:scaleX(0);transform-origin:0 50%;
+  will-change:transform}
+section{position:relative}
+section > .sec-head{position:relative}
+section > .sec-head::after{content:"";position:absolute;left:0;right:0;bottom:-1px;
+  height:1px;background:var(--chargeback);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 900ms var(--ease-out)}
+section.in > .sec-head::after{transform:scaleX(1)}
+
+/* ---------- gate deck ---------- */
+.gate-nav{display:flex;gap:8px;align-items:center;margin-left:auto}
+.gnav{font:inherit;font-size:14px;width:34px;height:34px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+  border-radius:2px;transition:border-color var(--t-micro) var(--ease-out),
+    color var(--t-micro) var(--ease-out),transform var(--t-micro) var(--spring)}
+.gnav:hover:not(:disabled){border-color:var(--ink-3);color:var(--ink);transform:translateY(-1px)}
+.gnav:active:not(:disabled){transform:scale(.94)}
+.gnav:disabled{opacity:.35;cursor:default}
+.gnav:focus-visible{outline:2px solid var(--slip);outline-offset:2px}
+.gate-pos{font-family:var(--f-data);font-size:13px;color:var(--ink-3);min-width:74px;
+  text-align:right}
+.gate-truth{font-size:13.5px;font-style:italic;padding:3px 9px;border-radius:2px}
+.gate-real{margin:14px 0 0;padding:11px 13px;font-size:14px;line-height:1.5;
+  color:var(--ink-2);border-left:2px solid var(--chargeback);
+  background:color-mix(in srgb,var(--chargeback) 7%,transparent)}
+.gate-real b{color:var(--chargeback);font-family:var(--f-data);font-weight:600}
+.gt-right{color:var(--cleared);background:color-mix(in srgb,var(--cleared) 12%,transparent)}
+.gt-wrong{color:var(--chargeback);background:color-mix(in srgb,var(--chargeback) 12%,transparent)}
+
+/* ---------- observation horizon ---------- */
+.horizon{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  padding:18px;margin-top:22px}
+.hz-top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.hz-top label{font-size:15.5px}
+.hz-top input{flex:1;min-width:190px;accent-color:var(--chargeback);cursor:pointer}
+.hz-day{font-family:var(--f-data);font-size:20px;font-weight:600;min-width:96px;
+  text-align:right}
+.hz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+  gap:16px;margin-top:16px}
+.hz b{font-family:var(--f-data);font-size:22px;font-weight:500;display:block;
+  transition:color var(--t-small) var(--ease-out)}
+.hz b.warn{color:var(--chargeback)}
+.hz span{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.hz-note{margin-top:14px;font-size:14.5px;color:var(--ink-2);min-height:3.2em}
+.hz-note b{color:var(--ink);font-weight:600}
+
+/* ---------- cross-link affordance ---------- */
+.trk{cursor:pointer;border-radius:2px;padding:2px;margin:-2px;
+  transition:background var(--t-micro) var(--ease-out)}
+.trk:hover{background:var(--sunk)}
+.trk:focus-visible{outline:2px solid var(--slip);outline-offset:1px}
+@media (prefers-reduced-motion:reduce){
+  section > .sec-head::after{transform:scaleX(1)}
+}
+
 /* ---------- table ---------- */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--panel)}
 table{border-collapse:collapse;width:100%;font-size:13.5px}
