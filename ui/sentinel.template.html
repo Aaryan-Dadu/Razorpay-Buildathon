@@ -1043,6 +1043,33 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
       val:d.querySelector("b"), value:o.value, dup:o.dup, over:false};
   });
 
+  // The deck answers "which order is in trouble". This answers "why", which
+  // is the next question anyone has, and it stays tied to the clock so it
+  // never shows an event that has not landed yet.
+  function renderDetail(){
+    if(!picked){ detail.hidden=true; return; }
+    var n=node[picked], evs=S.filter(function(e){
+      return e.order_id===picked && e.t+PAD<=clockT; });
+    var sum=evs.reduce(function(a,e){ return a+e.value; },0);
+    var ratio=sum/n.value;
+    detail.hidden=false;
+    detail.innerHTML=
+      '<div class="detail-h"><b>'+picked+'</b>'+
+      '<span>order value '+rs(n.value)+', returned '+rs(sum)+' so far ('+
+      ratio.toFixed(2)+'×)</span>'+
+      '<button type="button" id="d-close">Close</button></div>'+
+      (evs.length ? evs.map(function(e){
+        return '<div class="dev"><span class="dch" style="color:'+CH[e.channel].c+
+          '">'+CH[e.channel].label+'</span><span class="damt">'+rs(e.value)+
+          '</span><span class="dnote">'+(e.note||"no note recorded")+
+          '</span><span class="dday">day '+e.t.toFixed(1)+'</span></div>';
+      }).join("") : '<div class="quiet">Nothing has landed on this order yet. '+
+        'Play forward or scrub to the right.</div>');
+    detail.querySelector("#d-close").addEventListener("click",function(){
+      picked=null; detail.hidden=true;
+    });
+  }
+
   function apply(t, animate){
     var seen=0, caught=0, money=0, alerts=[];
     for(var k in node){ node[k].sum=0; node[k].over=false; }
@@ -1071,6 +1098,7 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
         n.el.classList.add("flash");
       }
     }
+    if(picked) renderDetail();
     document.getElementById("t-ev").textContent=seen;
     document.getElementById("t-dup").textContent=caught;
     var m=document.getElementById("t-money");
