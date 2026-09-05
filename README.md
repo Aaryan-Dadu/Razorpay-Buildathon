@@ -307,7 +307,15 @@ is a table join inside a PSP.
 That is the whole argument. It is not a project. It is a product only a
 payments company is positioned to ship, and nobody currently owns it.
 
-## The page
+## The pages
+
+**Landing:** https://claude.ai/code/artifact/85f17b51-e6d9-4441-bb98-7a551ad83500
+
+A canvas score where each column is one real order, its marks the systems it
+touched, and the tie between them the join no merchant can write. Red ties are
+the orders that paid twice. Hover isolates one.
+
+## The instrument
 
 A published forensic view of the same pipeline output:
 **https://claude.ai/code/artifact/08c0ed9d-9d72-4c48-8924-79ddfd945aa3**

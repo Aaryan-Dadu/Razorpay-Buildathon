@@ -1,0 +1,425 @@
+<title>The Ledger Nobody Owns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,200;1,6..72,300&display=swap">
+<style>
+:root{
+  --paper:#E9ECE3; --panel:#F2F4EC; --sunk:#DDE2D5;
+  --ink:#12151A; --ink-2:#3E4642; --ink-3:#6C756E;
+  --rule:#C6CDBB; --rule-soft:#D6DBCA;
+  --slip:#2C5D89; --red:#B0362A; --ochre:#96690E; --carton:#56663A;
+  --f-text:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0F1214; --panel:#161A1C; --sunk:#0A0D0E;
+  --ink:#E9ECE3; --ink-2:#A6AEA8; --ink-3:#79837C;
+  --rule:#272E31; --rule-soft:#1D2325;
+  --slip:#74AADC; --red:#E4705C; --ochre:#D6A63C; --carton:#9DB068;
+}}
+:root[data-theme="dark"]{
+  --paper:#0F1214; --panel:#161A1C; --sunk:#0A0D0E;
+  --ink:#E9ECE3; --ink-2:#A6AEA8; --ink-3:#79837C;
+  --rule:#272E31; --rule-soft:#1D2325;
+  --slip:#74AADC; --red:#E4705C; --ochre:#D6A63C; --carton:#9DB068;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-text);
+  font-size:17px;line-height:1.62;font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+h1,h2{margin:0;text-wrap:balance;font-weight:300;letter-spacing:-.018em}
+.mono{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:600px;height:min(84vh,760px);
+  display:flex;flex-direction:column;justify-content:center;
+  border-bottom:1px solid var(--rule)}
+#score{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-in{position:relative;z-index:2;max-width:1140px;margin:0 auto;
+  padding:0 26px;width:100%;pointer-events:none}
+.kicker{font-size:15px;color:var(--ink-2);font-style:italic;margin:0 0 14px}
+h1{font-size:clamp(44px,7.4vw,104px);line-height:.94}
+h1 .l2{display:block;padding-left:.09em}
+.sub{margin:24px 0 0;max-width:41ch;font-size:19px;color:var(--ink-2)}
+.cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;
+  font-size:14px;color:var(--ink-3);font-style:italic;display:flex;
+  flex-direction:column;align-items:center;gap:7px}
+.cue span{width:1px;height:26px;background:var(--ink-3);opacity:.5;
+  animation:drop 2.6s var(--ease-out) infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:top}
+  56%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}}
+.legend{position:absolute;left:26px;bottom:24px;z-index:2;display:flex;
+  gap:17px;flex-wrap:wrap;font-family:var(--f-data);font-size:12px;color:var(--ink-3)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;
+  margin-right:6px;vertical-align:0;font-style:normal}
+.hint{position:absolute;right:26px;bottom:24px;z-index:2;font-size:13.5px;
+  color:var(--ink-3);font-style:italic}
+
+/* ---------- beats ---------- */
+section{padding:96px 0;border-bottom:1px solid var(--rule)}
+.beat{display:grid;grid-template-columns:minmax(260px,.86fr) minmax(300px,1.14fr);
+  gap:56px;align-items:start}
+@media (max-width:860px){.beat{grid-template-columns:1fr;gap:30px}}
+h2{font-size:clamp(30px,3.9vw,46px);line-height:1.06}
+.beat p{margin:0 0 18px;color:var(--ink-2);max-width:60ch}
+.beat p:last-child{margin-bottom:0}
+.beat strong{color:var(--ink);font-weight:600}
+.huge{font-size:clamp(88px,16vw,186px);line-height:.82;font-weight:200;
+  letter-spacing:-.035em;color:var(--red)}
+.huge-c{font-size:16px;color:var(--ink-2);font-style:italic;margin-top:16px;
+  display:block;max-width:30ch}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.fig{background:var(--paper);padding:19px 18px}
+.fig b{display:block;font-family:var(--f-data);font-size:27px;font-weight:500;
+  letter-spacing:-.01em}
+.fig b.red{color:var(--red)} .fig b.blue{color:var(--slip)}
+.fig span{display:block;font-size:13.5px;color:var(--ink-3);margin-top:5px;line-height:1.4}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:11px 14px;text-align:right;border-bottom:1px solid var(--rule-soft)}
+th{font-size:14px;font-style:italic;color:var(--ink-3);font-weight:400;
+  border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+td.mono{font-family:var(--f-data)}
+tr.ours td{background:color-mix(in srgb,var(--red) 8%,transparent);font-weight:600}
+tr.ours td:first-child{box-shadow:inset 3px 0 0 var(--red)}
+tbody tr:last-child td{border-bottom:0}
+.scale-note{margin-top:14px;font-size:14px;color:var(--ink-3);font-style:italic}
+.scale-note b{color:var(--ink-2);font-style:normal;font-weight:600}
+
+/* ---------- money band ---------- */
+.band{display:flex;align-items:stretch;height:74px;border:1px solid var(--rule);
+  font-family:var(--f-data);font-size:14px;overflow:hidden}
+.band div{display:flex;flex-direction:column;justify-content:center;padding:0 17px;
+  white-space:nowrap}
+.band .b-save{background:color-mix(in srgb,var(--carton) 22%,transparent);flex:1 1 auto}
+.band .b-bill{background:var(--red);border-left:1px solid var(--rule);flex:0 0 auto;padding:0}
+.band small{font-size:12.5px;color:var(--ink-3);font-style:italic;
+  font-family:var(--f-text)}
+.band b{font-size:19px;font-weight:600}
+
+/* ---------- cta ---------- */
+.cta{padding:104px 0 118px;text-align:center;border-bottom:0}
+.cta h2{margin-bottom:16px}
+.cta p{color:var(--ink-2);max-width:56ch;margin:0 auto 32px}
+.btn{display:inline-block;font-family:var(--f-text);font-size:19px;
+  padding:14px 32px;border:1px solid var(--ink);background:var(--ink);
+  color:var(--paper);text-decoration:none;border-radius:2px;
+  transition:transform 140ms var(--spring),box-shadow 140ms var(--ease-out)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -14px rgba(0,0,0,.6)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn:focus-visible{outline:2px solid var(--slip);outline-offset:3px}
+.btn-2{display:block;margin-top:20px;font-size:15px;color:var(--ink-3);
+  font-style:italic;text-decoration:none;border-bottom:1px solid var(--rule);
+  padding-bottom:2px;width:fit-content;margin-left:auto;margin-right:auto}
+.btn-2:hover{color:var(--ink)}
+footer{padding:26px 0 46px;font-size:14px;color:var(--ink-3);font-style:italic;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important}
+}
+</style>
+
+<div class="hero">
+  <canvas id="score" aria-label="Four ledgers running in parallel, with ink ties drawn between records that belong to the same order"></canvas>
+  <div class="hero-in">
+    <p class="kicker">Razorpay AI Buildathon, track 2</p>
+    <h1>The ledger<span class="l2">nobody owns.</span></h1>
+    <p class="sub">Four systems pay the same customer back. None of them share a key,
+      so the second payout leaves without anyone seeing it.</p>
+  </div>
+  <div class="legend" id="legend"></div>
+  <p class="hint">Every tie is one real order. Hover to isolate one.</p>
+  <div class="cue">scroll<span></span></div>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="beat">
+      <div>
+        <div class="huge" id="big">100%</div>
+        <span class="huge-c">of chargebacks arrive carrying no order ID. The card
+          network never had one to give.</span>
+      </div>
+      <div>
+        <h2>A join that cannot be written</h2>
+        <p>A refund knows its <span class="mono">payment_id</span>. A chargeback knows
+          an <span class="mono">ARN</span> and four digits of a card. A support credit
+          knows whatever the agent typed into a ticket at the time.</p>
+        <p><strong>These are the same order.</strong> No query reaches across them,
+          so nobody at the merchant can answer the only question that matters: how
+          much has this order already paid back?</p>
+        <div class="figs" id="figs"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="beat">
+      <div>
+        <h2>The bill for guessing</h2>
+        <p>Flagging aggressively feels safe and is not. A wrongly held refund does not
+          merely annoy someone: a share of those customers file the very chargeback the
+          system existed to prevent. <strong>A false positive manufactures the
+          loss.</strong></p>
+        <p>Set the line too low and the bill overtakes everything recovered. The
+          merchant runs the detector and ends up further behind than doing nothing.</p>
+      </div>
+      <div>
+        <div class="band" id="band"></div>
+        <p class="scale-note" id="bandnote"></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="beat">
+      <div>
+        <h2>Measured against what exists</h2>
+        <p>Held-out orders only, split on order date, with <strong id="conf"></strong>
+          planted confusers for every real duplicate. Precision had to be earned
+          against cases built to look exactly like the thing being hunted.</p>
+        <p>Hand a naive detector <em>perfect</em> entity resolution and it still
+          reaches 8.1% precision, because most orders touching two channels are
+          entirely legitimate. Linking is only half the problem.</p>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>Detector</th><th>Precision</th><th>Recall</th><th>False alarms</th></tr></thead>
+          <tbody id="score-tbl"></tbody>
+        </table>
+        <p class="scale-note">Stable across seeds 7, 11 and 23. Byte-reproducible
+          across hash seeds.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Now go and operate it</h2>
+    <p>Try the join yourself on a real support credit. Run 52 days of remediation
+      forward and watch seven orders cross the line. Move the duplicate line and
+      watch the net go negative.</p>
+    <a class="btn" href="https://claude.ai/code/artifact/08c0ed9d-9d72-4c48-8924-79ddfd945aa3">Open the instrument</a>
+  </section>
+
+  <footer>
+    <span>Double-Dip Sentinel, a defence-only detector.</span>
+    <span id="foot"></span>
+  </footer>
+</div>
+
+<script id="payload" type="application/json">{"ties":[{"lanes":["refund","dispute"],"days":[8.2,31.4],"ratio":2.0,"dup":true,"id":"ord_0061728"},{"lanes":["dispute","goodwill"],"days":[26.5,30.1],"ratio":2.0,"dup":true,"id":"ord_0039830"},{"lanes":["replacement","refund"],"days":[6.2,9.5],"ratio":2.0,"dup":true,"id":"ord_0025496"},{"lanes":["replacement","refund"],"days":[9.4,21.3],"ratio":2.0,"dup":true,"id":"ord_0057285"},{"lanes":["replacement","refund"],"days":[18.8,28.6],"ratio":2.0,"dup":true,"id":"ord_0043981"},{"lanes":["refund","dispute"],"days":[5.7,50.6],"ratio":2.0,"dup":true,"id":"ord_0050621"},{"lanes":["refund","goodwill"],"days":[9.0,40.9],"ratio":1.623,"dup":true,"id":"ord_0013601"},{"lanes":["refund","goodwill"],"days":[13.7,15.1],"ratio":1.463,"dup":true,"id":"ord_0049703"},{"lanes":["replacement","goodwill"],"days":[10.8,13.4],"ratio":1.05,"dup":false,"id":"ord_0054197"},{"lanes":["replacement","goodwill"],"days":[11.3,15.2],"ratio":1.05,"dup":false,"id":"ord_0028956"},{"lanes":["replacement","goodwill"],"days":[13.2,14.5],"ratio":1.05,"dup":false,"id":"ord_0037885"},{"lanes":["replacement","goodwill"],"days":[9.7,10.5],"ratio":1.05,"dup":false,"id":"ord_0029819"}],"stream":[{"ch":"refund","t":0.0,"dup":false,"order":"ord_0002296"},{"ch":"refund","t":0.26,"dup":false,"order":"ord_0001426"},{"ch":"refund","t":0.6,"dup":false,"order":"ord_0026823"},{"ch":"replacement","t":0.99,"dup":false,"order":"ord_0059141"},{"ch":"replacement","t":1.26,"dup":false,"order":"ord_0032462"},{"ch":"replacement","t":1.42,"dup":false,"order":"ord_0047295"},{"ch":"goodwill","t":1.77,"dup":false,"order":"ord_0026823"},{"ch":"goodwill","t":1.92,"dup":false,"order":"ord_0002296"},{"ch":"refund","t":2.12,"dup":false,"order":"ord_0061879"},{"ch":"refund","t":2.33,"dup":false,"order":"ord_0002558"},{"ch":"goodwill","t":2.53,"dup":false,"order":"ord_0059141"},{"ch":"replacement","t":2.61,"dup":false,"order":"ord_0019430"},{"ch":"goodwill","t":2.66,"dup":false,"order":"ord_0002558"},{"ch":"goodwill","t":3.15,"dup":true,"order":"ord_0017739"},{"ch":"replacement","t":3.32,"dup":false,"order":"ord_0069954"},{"ch":"goodwill","t":3.54,"dup":false,"order":"ord_0047295"},{"ch":"goodwill","t":3.64,"dup":false,"order":"ord_0001426"},{"ch":"replacement","t":3.67,"dup":true,"order":"ord_0027848"},{"ch":"goodwill","t":4.17,"dup":false,"order":"ord_0019430"},{"ch":"refund","t":4.2,"dup":false,"order":"ord_0048330"},{"ch":"goodwill","t":4.33,"dup":false,"order":"ord_0032462"},{"ch":"refund","t":4.36,"dup":false,"order":"ord_0008508"},{"ch":"replacement","t":4.57,"dup":false,"order":"ord_0066717"},{"ch":"refund","t":4.61,"dup":false,"order":"ord_0026451"},{"ch":"goodwill","t":4.65,"dup":false,"order":"ord_0061879"},{"ch":"refund","t":4.71,"dup":false,"order":"ord_0026973"},{"ch":"replacement","t":4.85,"dup":false,"order":"ord_0068837"},{"ch":"replacement","t":4.98,"dup":false,"order":"ord_0053067"},{"ch":"refund","t":5.26,"dup":false,"order":"ord_0012467"},{"ch":"replacement","t":5.58,"dup":true,"order":"ord_0032042"},{"ch":"replacement","t":5.78,"dup":false,"order":"ord_0046317"},{"ch":"goodwill","t":6.04,"dup":false,"order":"ord_0048330"},{"ch":"goodwill","t":6.65,"dup":false,"order":"ord_0026451"},{"ch":"refund","t":7.0,"dup":true,"order":"ord_0050621"},{"ch":"refund","t":7.07,"dup":true,"order":"ord_0015686"},{"ch":"goodwill","t":7.31,"dup":false,"order":"ord_0069954"},{"ch":"goodwill","t":7.39,"dup":false,"order":"ord_0068837"},{"ch":"goodwill","t":7.48,"dup":false,"order":"ord_0008508"},{"ch":"goodwill","t":7.78,"dup":false,"order":"ord_0026973"},{"ch":"goodwill","t":7.81,"dup":false,"order":"ord_0053067"},{"ch":"goodwill","t":8.4,"dup":false,"order":"ord_0012467"},{"ch":"goodwill","t":8.49,"dup":false,"order":"ord_0066717"},{"ch":"refund","t":9.53,"dup":true,"order":"ord_0032042"},{"ch":"goodwill","t":10.2,"dup":false,"order":"ord_0046317"},{"ch":"goodwill","t":10.5,"dup":true,"order":"ord_0017739"},{"ch":"goodwill","t":12.75,"dup":true,"order":"ord_0054922"},{"ch":"goodwill","t":13.84,"dup":true,"order":"ord_0003062"},{"ch":"goodwill","t":16.41,"dup":true,"order":"ord_0003062"},{"ch":"goodwill","t":16.75,"dup":true,"order":"ord_0054922"},{"ch":"refund","t":20.82,"dup":true,"order":"ord_0027848"},{"ch":"dispute","t":51.08,"dup":true,"order":"ord_0015686"},{"ch":"dispute","t":51.84,"dup":true,"order":"ord_0050621"}],"headline":{"precision":0.9655172413793104,"recall":0.9032258064516129,"f1":0.9333333333333333,"tp":56,"fp":2,"fn":6},"channel_keys":{"refund":{"total":4010,"no_strong_key":0},"goodwill":{"total":3255,"no_strong_key":2778},"replacement":{"total":1933,"no_strong_key":0},"dispute":{"total":272,"no_strong_key":272}},"meta":{"seed":7,"orders":26450,"events":9470,"duplicates":268,"confusers":5595,"test_orders":7935,"test_positives":62},"censoring":{"naive_rate":0.022470053696819495,"km_corrected_rate":0.028167189133904702,"mature_cohort_rate":0.028741985407915102,"understatement_x":1.2535434723011634,"n_card_orders":12105,"n_fully_observed":4523,"pct_still_at_risk":0.6263527467988435},"exceptions":568,"best_net":30250645,"worst_net":-5328573,"prevented":33910410,"bill":468895,"net":33441515}</script>
+<script>
+(function(){
+"use strict";
+var D=JSON.parse(document.getElementById("payload").textContent);
+var REDUCED=window.matchMedia("(prefers-reduced-motion: reduce)");
+var LANES=[["refund","Refund","--slip","PSP"],["dispute","Chargeback","--red","Card network"],
+           ["goodwill","Goodwill credit","--ochre","Support"],
+           ["replacement","Replacement","--carton","Fulfilment"]];
+var LI={}; LANES.forEach(function(l,i){ LI[l[0]]=i; });
+
+function rs(p){var n=p<0;p=Math.abs(p);var w=String(Math.floor(p/100)),t=w.slice(-3),
+  h=w.slice(0,-3),a=[];while(h.length>2){a.unshift(h.slice(-2));h=h.slice(0,-2);}
+  if(h)a.unshift(h);return (n?"-":"")+"₹"+(a.length?a.join(",")+","+t:t);}
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+
+/* ---------------- the score ---------------- */
+var cv=document.getElementById("score"), ctx=cv.getContext("2d");
+var W=0,H=0,DPR=1,grain=null;
+var marks=[], ties=[], cols=[], TOTAL=1, t0=performance.now(),
+    hover=-1, mouse={x:-1,y:-1};
+
+function paper(){
+  // A little procedural tooth, drawn once. Flat colour reads as a screen;
+  // this reads as a sheet, which is the whole conceit.
+  var g=document.createElement("canvas"); g.width=g.height=190;
+  var c=g.getContext("2d"), im=c.createImageData(190,190), d=im.data;
+  var dark=css("--ink")==="#E9ECE3"||document.documentElement.dataset.theme==="dark";
+  for(var i=0;i<d.length;i+=4){
+    var v=200+Math.random()*55;
+    d[i]=d[i+1]=d[i+2]=v; d[i+3]=dark?7:13;
+  }
+  c.putImageData(im,0,0); return g;
+}
+
+function laneY(i){ var top=H*0.16, gap=(H*0.70)/3; return top+gap*i; }
+
+function seed(){
+  // One column per order, not a time axis. Real partners can sit 30 days
+  // apart, and drawn against a shared clock those ties stretch across the
+  // whole field and read as a tangle. Grouping an order into its own column
+  // keeps every tie short and legible while the relationships stay exactly
+  // as the resolver found them: the marks are the lanes that order touched,
+  // and the tie is the join no merchant can write.
+  marks=[]; ties=[]; cols=[];
+  var byOrder={}, order=[];
+  D.stream.forEach(function(e){
+    if(!byOrder[e.order]){ byOrder[e.order]=[]; order.push(e.order); }
+    byOrder[e.order].push(e);
+  });
+  var col=0;
+  for(var rep=0; rep<2; rep++){
+    order.forEach(function(oid){
+      var evs=byOrder[oid], dup=evs.some(function(e){return e.dup;});
+      var group=[];
+      evs.forEach(function(e){
+        var m={lane:LI[e.ch]||0, col:col, dup:dup, order:oid+"#"+rep};
+        marks.push(m); group.push(m);
+      });
+      group.sort(function(a,b){ return a.lane-b.lane; });
+      for(var j=1;j<group.length;j++)
+        ties.push({a:group[j-1], b:group[j], dup:dup, col:col, order:oid});
+      cols.push(col);
+      col += 1;
+    });
+  }
+  TOTAL = col;
+}
+
+function draw(now){
+  var el=(now-t0)/1000;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.clearRect(0,0,W,H);
+  if(grain){ var pat=ctx.createPattern(grain,"repeat"); ctx.fillStyle=pat; ctx.fillRect(0,0,W,H); }
+
+  var rule=css("--rule-soft"), ink=css("--ink"), red=css("--red"), ink3=css("--ink-3");
+  var GAP=Math.max(30, Math.min(46, W/26));       // column pitch
+  var span=TOTAL*GAP/2;                            // one pass of the book
+  var shift=REDUCED.matches ? span*0.36 : (el*GAP*1.5) % span;
+
+  ctx.lineWidth=1; ctx.strokeStyle=css("--rule");
+  for(var i=0;i<4;i++){
+    ctx.beginPath();
+    ctx.moveTo(0,Math.round(laneY(i))+.5); ctx.lineTo(W,Math.round(laneY(i))+.5); ctx.stroke();
+  }
+
+  function px(c){ return W - ((c*GAP - shift) % (TOTAL*GAP)) ; }
+
+  ties.forEach(function(t,idx){
+    var x=px(t.col);
+    if(x<-40||x>W+40) return;
+    var y1=laneY(t.a.lane), y2=laneY(t.b.lane), bulge=Math.min(26,(y2-y1)*0.34)+8;
+    var on = hover<0 || hover===idx;
+    ctx.globalAlpha = on ? 1 : .12;
+    ctx.strokeStyle = t.dup ? red : ink;
+    ctx.lineWidth = t.dup ? 2.2 : .85;
+    ctx.beginPath();
+    ctx.moveTo(x,y1);
+    ctx.bezierCurveTo(x+bulge, y1+(y2-y1)*.25, x+bulge, y1+(y2-y1)*.75, x, y2);
+    ctx.stroke();
+    if(t.dup){
+      ctx.globalAlpha = on ? .15 : .04;
+      ctx.lineWidth = 9; ctx.stroke();
+      ctx.globalAlpha = 1;
+      if(on && hover===idx){
+        ctx.fillStyle=red; ctx.font='600 11.5px "IBM Plex Mono",monospace';
+        ctx.fillText("paid twice", x+bulge+8, (y1+y2)/2+4);
+      }
+    }
+    ctx.globalAlpha=1;
+  });
+
+  marks.forEach(function(m){
+    var x=px(m.col);
+    if(x<-14||x>W+14) return;
+    ctx.fillStyle = m.dup ? red : css(LANES[m.lane][2]);
+    ctx.beginPath(); ctx.arc(x, laneY(m.lane), m.dup?4.2:3, 0, 6.2832); ctx.fill();
+  });
+
+  // A scrim so the headline never sits on top of the field. Cheaper and
+  // steadier than nudging the simulation away from the text.
+  var scrimW=W*0.60, g=ctx.createLinearGradient(0,0,scrimW,0), pc=css("--paper");
+  g.addColorStop(0, pc); g.addColorStop(0.34, pc); g.addColorStop(1, "transparent");
+  ctx.save(); ctx.globalAlpha=0.88; ctx.fillStyle=g;
+  ctx.fillRect(0,0,scrimW,H); ctx.restore();
+
+  // Labels last: drawn before the scrim they were washed to nothing, which
+  // is the one piece of text on the canvas that has to stay readable.
+  ctx.fillStyle=ink3; ctx.font='500 11px "IBM Plex Mono",monospace';
+  for(var k=0;k<4;k++) ctx.fillText(LANES[k][3].toLowerCase(), 14, laneY(k)-9);
+
+  if(mouse.x>=0){
+    var best=-1, bd=40*40;
+    ties.forEach(function(t,idx){
+      var mx=px(t.col), my=(laneY(t.a.lane)+laneY(t.b.lane))/2;
+      var d=(mx-mouse.x)*(mx-mouse.x)+(my-mouse.y)*(my-mouse.y);
+      if(d<bd){ bd=d; best=idx; }
+    });
+    hover=best; cv.style.cursor = best>=0 ? "pointer" : "default";
+  } else hover=-1;
+
+  if(!REDUCED.matches) requestAnimationFrame(draw);
+}
+
+function size(){
+  var r=cv.getBoundingClientRect();
+  DPR=Math.min(2,window.devicePixelRatio||1);
+  W=r.width; H=r.height;
+  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+  grain=paper();
+}
+window.addEventListener("resize",function(){ size(); if(REDUCED.matches) draw(performance.now()); });
+cv.addEventListener("mousemove",function(e){
+  var r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
+});
+cv.addEventListener("mouseleave",function(){ mouse.x=mouse.y=-1; });
+size(); seed();
+if(REDUCED.matches) draw(performance.now()); else requestAnimationFrame(draw);
+
+/* ---------------- copy driven by the same numbers ---------------- */
+document.getElementById("legend").innerHTML=LANES.map(function(l){
+  return '<span><i style="background:var('+l[2]+')"></i>'+l[1]+"</span>";}).join("");
+
+var ck=D.channel_keys;
+document.getElementById("big").textContent=
+  Math.round(ck.dispute.no_strong_key/ck.dispute.total*100)+"%";
+document.getElementById("figs").innerHTML=[
+  ["red", Math.round(ck.goodwill.no_strong_key/ck.goodwill.total*100)+"%",
+   "of support credits carry no joinable key either"],
+  ["blue", (D.headline.precision*100).toFixed(1)+"%",
+   "precision at "+(D.headline.recall*100).toFixed(1)+"% recall, held out"],
+  ["", D.exceptions.toLocaleString("en-IN"),
+   "events the resolver refused to guess on, and sent to a person"]
+].map(function(f){ return '<div class="fig"><b class="'+f[0]+'">'+f[1]+
+  "</b><span>"+f[2]+"</span></div>"; }).join("");
+
+var save=D.prevented, bill=D.bill;
+// Truly proportional. An earlier version floored the red segment at 12% so
+// its label would fit, which drew a bill nine times its real size on a page
+// whose whole argument is honest measurement. The sliver is the point: at
+// the shipped threshold the bill is 1.4% of what was stopped. The label
+// moves below rather than the bar being stretched to hold it.
+var w=Math.max(2.2, bill/save*100);
+document.getElementById("band").innerHTML=
+  '<div class="b-save"><b>'+rs(save)+"</b><small>duplicate payout stopped</small></div>"+
+  '<div class="b-bill" style="flex-basis:'+w.toFixed(2)+'%" title="false-positive bill '+
+  rs(bill)+'"></div>';
+document.getElementById("bandnote").innerHTML=
+  "The red sliver is the false-positive bill, <b>"+rs(bill)+"</b>, drawn to scale at "+
+  (bill/save*100).toFixed(1)+"% of what was stopped. Net <b>"+rs(D.net)+
+  "</b> across 25,000 orders at the shipped line. Drop it to 1.02&times; and the same "+
+  "book returns <b>"+rs(D.worst_net)+"</b>, a loss.";
+
+document.getElementById("conf").textContent=
+  Math.round(D.meta.confusers/D.meta.duplicates)+" ";
+document.getElementById("score-tbl").innerHTML=[
+  ["Explicit-key join, what merchants run", "14.4%", "25.8%", "95"],
+  ["Same customer and amount inside 30 days", "0.6%", "21.0%", "2,120"],
+  ["Oracle linkage, then count the events", "8.1%", "100%", "706"],
+  ["The remediation ledger", (D.headline.precision*100).toFixed(1)+"%",
+   (D.headline.recall*100).toFixed(1)+"%", String(D.headline.fp), "ours"]
+].map(function(r){ return '<tr class="'+(r[4]||"")+'"><td>'+r[0]+
+  '</td><td class="mono">'+r[1]+'</td><td class="mono">'+r[2]+
+  '</td><td class="mono">'+r[3]+"</td></tr>"; }).join("");
+
+document.getElementById("foot").textContent=
+  D.meta.test_orders.toLocaleString("en-IN")+" held-out orders, "+
+  D.meta.test_positives+" true duplicates, seed 7.";
+})();
+</script>

@@ -24,19 +24,54 @@ import sys
 import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-TEMPLATE = ROOT / "ui" / "sentinel.template.html"
 DATA = ROOT / "reports" / "ui_data.json"
-OUT = ROOT / "ui" / "sentinel.html"
+
+#: Where the landing page's button points. Set by --instrument, else left as
+#: a relative link so the file works when opened straight off disk.
+INSTRUMENT_DEFAULT = "sentinel.html"
+
+TARGETS = {
+    "instrument": {
+        "template": ROOT / "ui" / "sentinel.template.html",
+        "data": ROOT / "reports" / "ui_data.json",
+        "out": ROOT / "ui" / "sentinel.html",
+        "checks": {
+            "case list": 'class="chip"',
+            "lane markers": 'class="mark"',
+            "event detail": 'class="ev-amt"',
+            "scoreboard": 'class="ours"',
+            "cohort rows": "insufficient",
+            "puzzle options": 'class="opt"',
+            "stream tracks": 'class="trk"',
+            "threshold dial": 'id="d-net"',
+        },
+        "interactions": True,
+    },
+    "landing": {
+        "template": ROOT / "ui" / "landing.template.html",
+        "data": ROOT / "reports" / "landing_data.json",
+        "out": ROOT / "ui" / "landing.html",
+        "checks": {
+            "lane legend": "Goodwill credit",
+            "headline figure": 'class="huge"',
+            "figure cards": 'class="fig"',
+            "money band": 'class="b-save"',
+            "scoreboard": 'class="ours"',
+        },
+        "interactions": False,
+    },
+}
 
 
-def main() -> int:
-    if not DATA.exists():
-        print(f"missing {DATA} -- run scripts/export_ui.py first")
+def build(name: str, spec: dict, instrument_url: str) -> int:
+    if not spec["data"].exists():
+        print(f"{name}: missing {spec['data']} -- run scripts/export_ui.py first")
         return 1
 
-    tmpl = TEMPLATE.read_text()
-    data = DATA.read_text()
+    tmpl = spec["template"].read_text()
+    data = spec["data"].read_text()
     json.loads(data)                       # reject NaN and friends early
+    OUT = spec["out"]
 
     match = re.search(r"<script>\n(.*?)\n</script>", tmpl, re.S)
     if match is None:
@@ -59,16 +94,35 @@ def main() -> int:
         print("JavaScript syntax error, refusing to write:\n" + result.stderr[:900])
         return 1
 
-    page = tmpl.replace("__DATA__", data)
-    if "__DATA__" in page:
-        print("placeholder survived substitution")
+    page = tmpl.replace("__DATA__", data).replace("__INSTRUMENT__", instrument_url)
+    if "__DATA__" in page or "__INSTRUMENT__" in page:
+        print(f"{name}: a placeholder survived substitution")
         return 1
     OUT.write_text(page)
-    print(f"syntax ok -- wrote {OUT.relative_to(ROOT)} ({len(page):,} bytes)")
-    return smoke_test(page)
+    print(f"{name}: syntax ok, wrote {OUT.relative_to(ROOT)} ({len(page):,} bytes)")
+    rc = smoke_test(page, spec["checks"])
+    if rc:
+        return rc
+    return interaction_test(page) if spec["interactions"] else 0
 
 
-def smoke_test(page: str) -> int:
+def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--instrument", default=INSTRUMENT_DEFAULT,
+                    help="URL the landing page's button points at")
+    ap.add_argument("--only", choices=sorted(TARGETS))
+    a = ap.parse_args()
+    for name, spec in TARGETS.items():
+        if a.only and name != a.only:
+            continue
+        rc = build(name, spec, a.instrument)
+        if rc:
+            return rc
+    return 0
+
+
+def smoke_test(page: str, checks: dict) -> int:
     """Load the page in a real browser and check it actually populated.
 
     The syntax gate catches a page that will not parse. It cannot catch a
@@ -102,22 +156,12 @@ def smoke_test(page: str) -> int:
         print("runtime error on load: " + err.group(1).strip()[:300])
         return 1
 
-    checks = {
-        "case list": 'class="chip"',
-        "lane markers": 'class="mark"',
-        "event detail": 'class="ev-amt"',
-        "scoreboard": 'class="ours"',
-        "cohort rows": "insufficient",
-        "puzzle options": 'class="opt"',
-        "stream tracks": 'class="trk"',
-        "threshold dial": 'id="d-net"',
-    }
     missing = [name for name, needle in checks.items() if needle not in dom]
     if missing:
         print("page rendered but these regions are empty: " + ", ".join(missing))
         return 1
     print("render check ok -- every data region populated")
-    return interaction_test(page)
+    return 0
 
 
 INTERACTIONS = """
