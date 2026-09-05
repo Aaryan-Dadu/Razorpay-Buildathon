@@ -547,6 +547,24 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
           <tbody id="cohorts"></tbody></table></div>
       </div>
     </div>
+
+    <div class="horizon">
+      <div class="hz-top">
+        <label for="hz">Pretend today is:</label>
+        <input id="hz" type="range" min="0" max="18" value="18" step="1"
+          aria-label="Observation horizon in days since the first order">
+        <span class="hz-day" id="hz-day"></span>
+      </div>
+      <svg id="hz-chart" viewBox="0 0 900 230" role="img"
+        aria-label="Reported chargeback rate against the censoring-corrected estimate, by observation date"></svg>
+      <div class="hz-grid">
+        <div class="hz"><b id="hz-naive"></b><span>rate the dashboard reports</span></div>
+        <div class="hz"><b id="hz-corr"></b><span>censoring-corrected estimate</span></div>
+        <div class="hz"><b id="hz-under"></b><span>understatement</span></div>
+        <div class="hz"><b id="hz-open"></b><span>of the book still inside the window</span></div>
+      </div>
+      <p class="hz-note" id="hz-note"></p>
+    </div>
   </section>
 
   <footer>
