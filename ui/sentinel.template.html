@@ -1196,5 +1196,81 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
   thr.value=chosen; show(chosen);
 })();
 
+/* ==================================================================
+   Pretend today is an earlier date. The censoring argument is easy to
+   state and hard to feel, so this lets the reader cause it: pull the
+   horizon back and the reported rate collapses while the corrected one
+   holds, because the disputes have not arrived yet rather than because
+   the fraud went away.
+   ================================================================== */
+(function(){
+  var HZ=D.horizons||[]; if(!HZ.length) return;
+  var sl=document.getElementById("hz"), day=document.getElementById("hz-day"),
+      note=document.getElementById("hz-note"), svg=document.getElementById("hz-chart");
+  sl.max=HZ.length-1; sl.value=HZ.length-1;
+
+  var W=900,H=230,L=62,R=18,T=16,B=38, iw=W-L-R, ih=H-T-B;
+  var maxY=Math.max.apply(null,HZ.map(function(h){return h.corrected;}))*1.15;
+  function X(i){ return L+(i/(HZ.length-1))*iw; }
+  function Y(v){ return T+ih-(v/maxY)*ih; }
+
+  function line(vals,color,width,dash){
+    var d=vals.map(function(v,i){return (i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1);}).join(" ");
+    var p=el("path",{d:d,fill:"none",stroke:color,"stroke-width":width,
+      "stroke-linejoin":"round"});
+    if(dash) p.setAttribute("stroke-dasharray",dash);
+    return p;
+  }
+  function frame(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    for(var k=0;k<=4;k++){
+      var v=maxY*k/4;
+      svg.appendChild(el("line",{x1:L,y1:Y(v),x2:W-R,y2:Y(v),
+        stroke:"var(--rule-soft)","stroke-width":"1"}));
+      var t=el("text",{x:L-9,y:Y(v)+4,"text-anchor":"end",fill:"var(--ink-3)",
+        "font-family":"var(--f-data)","font-size":"11"});
+      t.textContent=(v*100).toFixed(1)+"%"; svg.appendChild(t);
+    }
+    svg.appendChild(line(HZ.map(function(h){return h.corrected;}),"var(--slip)","2.6"));
+    svg.appendChild(line(HZ.map(function(h){return h.naive;}),"var(--chargeback)","2.6"));
+    [["corrected for censoring","var(--slip)",HZ[HZ.length-1].corrected],
+     ["what the dashboard shows","var(--chargeback)",HZ[HZ.length-1].naive]]
+      .forEach(function(l){
+        var t=el("text",{x:W-R-4,y:Y(l[2])-9,"text-anchor":"end",fill:l[1],
+          "font-family":"var(--f-text)","font-size":"13.5","font-style":"italic"});
+        t.textContent=l[0]; svg.appendChild(t);
+      });
+    svg.appendChild(el("line",{x1:L,y1:T+ih,x2:W-R,y2:T+ih,
+      stroke:"var(--ink-3)","stroke-width":"1.2"}));
+    var ax=el("text",{x:W-R,y:T+ih+30,"text-anchor":"end",fill:"var(--ink-3)",
+      "font-family":"var(--f-text)","font-size":"13","font-style":"italic"});
+    ax.textContent="days of trading observed"; svg.appendChild(ax);
+  }
+
+  var marker=null, dotN=null, dotC=null;
+  function mark(i){
+    if(marker){ [marker,dotN,dotC].forEach(function(n){ if(n&&n.parentNode) n.parentNode.removeChild(n); }); }
+    var h=HZ[i], x=X(i);
+    marker=el("line",{x1:x,y1:T,x2:x,y2:T+ih,stroke:"var(--ink)",
+      "stroke-width":"1.4","stroke-dasharray":"3 3"});
+    svg.appendChild(marker);
+    dotC=el("circle",{cx:x,cy:Y(h.corrected),r:"5",fill:"var(--slip)",
+      stroke:"var(--panel)","stroke-width":"2"}); svg.appendChild(dotC);
+    dotN=el("circle",{cx:x,cy:Y(h.naive),r:"5",fill:"var(--chargeback)",
+      stroke:"var(--panel)","stroke-width":"2"}); svg.appendChild(dotN);
+  }
+
+  function show(i){
+    var h=HZ[i], under=h.naive>0 ? h.corrected/h.naive : 0;
+    day.textContent="day "+h.day;
+    document.getElementById("hz-naive").textContent=(h.naive*100).toFixed(2)+"%";
+    var c=document.getElementById("hz-corr");
+    c.textContent=(h.corrected*100).toFixed(2)+"%";
+    var u=document.getElementById("hz-under");
+    u.textContent=under.toFixed(2)+"×"; u.className = under>1.4 ? "warn" : "";
+    document.getElementById("hz-open").textContent=(h.pct_open*100).toFixed(0)+"%";
+    mark(i);
+    var msg;
+    if(under>1.7) msg="On this date the merchant's own dashboard reports <b>"+
 })();
 </script>
