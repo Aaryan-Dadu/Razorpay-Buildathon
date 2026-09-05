@@ -306,3 +306,18 @@ is a table join inside a PSP.
 
 That is the whole argument. It is not a project — it is a product only a
 payments company is positioned to ship, and nobody currently owns it.
+
+## The page
+
+A published forensic view of the same pipeline output:
+**https://claude.ai/code/artifact/cf1c312f-230a-45fd-91a4-905a578b76e6**
+
+Four record streams that share no key, then a ledger lane where one order's
+cumulative remediation crosses the 1.25x line on a real day axis, with a
+hatched band for the chargeback that has not arrived yet. Every figure on it
+is exported from an actual run — nothing is mocked.
+
+```bash
+.venv/bin/python scripts/export_ui.py   # run pipeline -> reports/ui_data.json
+.venv/bin/python scripts/build_ui.py    # inline it -> ui/sentinel.html
+```
