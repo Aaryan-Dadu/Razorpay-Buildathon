@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import pathlib
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -64,6 +65,55 @@ def main() -> int:
         return 1
     OUT.write_text(page)
     print(f"syntax ok -- wrote {OUT.relative_to(ROOT)} ({len(page):,} bytes)")
+    return smoke_test(page)
+
+
+def smoke_test(page: str) -> int:
+    """Load the page in a real browser and check it actually populated.
+
+    The syntax gate catches a page that will not parse. It cannot catch a
+    page that parses and then throws: a timing constant named `T` was
+    shadowed by the chart's own `T`, every animation delay became NaN, and
+    `render` died partway leaving the event list silently empty. Valid
+    syntax, blank output. So the build also renders the page and asserts
+    that the data-driven regions have content.
+    """
+    chrome = shutil.which("google-chrome") or shutil.which("chromium")
+    if chrome is None:
+        print("no chrome found -- skipping the render check")
+        return 0
+
+    probe = ('<!doctype html><meta charset="utf-8">'
+             '<div id="__err"></div><script>'
+             'addEventListener("error",function(e){'
+             'document.getElementById("__err").textContent="ERR "+e.message;});'
+             '</script>') + page
+    with tempfile.TemporaryDirectory() as d:
+        f = pathlib.Path(d) / "probe.html"
+        f.write_text(probe)
+        r = subprocess.run(
+            [chrome, "--headless", "--disable-gpu", "--no-sandbox",
+             "--virtual-time-budget=8000", "--dump-dom", f"file://{f}"],
+            capture_output=True, text=True, timeout=120)
+    dom = r.stdout
+
+    err = re.search(r'<div id="__err">(.*?)</div>', dom, re.S)
+    if err and err.group(1).strip():
+        print("runtime error on load: " + err.group(1).strip()[:300])
+        return 1
+
+    checks = {
+        "case list": 'class="chip"',
+        "lane markers": 'class="mark"',
+        "event detail": 'class="ev-amt"',
+        "scoreboard": 'class="ours"',
+        "cohort rows": "insufficient",
+    }
+    missing = [name for name, needle in checks.items() if needle not in dom]
+    if missing:
+        print("page rendered but these regions are empty: " + ", ".join(missing))
+        return 1
+    print("render check ok -- every data region populated")
     return 0
 
 
