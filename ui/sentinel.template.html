@@ -883,7 +883,10 @@ document.getElementById("score").innerHTML=ROWS.map(function(r){
 
 /* ---- 05 KM curve ---- */
 (function(){
-  var W=460,H=250,L=46,R=16,T=16,B=40, iw=W-L-R, ih=H-T-B;
+  // L=46 clipped the leading digit of "100.0%" straight off the viewBox,
+  // so the top gridline read "00.0%". Axis labels have to be measured, not
+  // guessed.
+  var W=460,H=250,L=60,R=16,T=16,B=40, iw=W-L-R, ih=H-T-B;
   var sv=D.km.survival, hz=D.km.hazard, n=sv.length;
   var lo=Math.min.apply(null,sv), y0=Math.max(0,lo-0.006), y1=1.0;
   var x=function(i){return L+(i/(n-1))*iw;}, y=function(v){return T+ih-((v-y0)/(y1-y0))*ih;};
