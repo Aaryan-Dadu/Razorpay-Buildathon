@@ -1272,5 +1272,47 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
     mark(i);
     var msg;
     if(under>1.7) msg="On this date the merchant's own dashboard reports <b>"+
+      (h.naive*100).toFixed(2)+"%</b>, and the true figure is closer to <b>"+
+      (h.corrected*100).toFixed(2)+"%</b>. Nothing about the fraud changed between "+
+      "these two numbers. <b>"+(h.pct_open*100).toFixed(0)+"%</b> of this book is "+
+      "still inside the 150-day dispute window, so most of the chargebacks simply "+
+      "have not been filed yet.";
+    else if(under>1.2) msg="Still understated by <b>"+under.toFixed(2)+"×</b>. The gap "+
+      "closes as the book matures, which is exactly why a single blended rate hides "+
+      "the problem: the error lives in the recent cohort, where the decisions are.";
+    else msg="With <b>"+h.orders.toLocaleString("en-IN")+"</b> orders and most of them "+
+      "past the dispute window, the reported rate has nearly caught up with the "+
+      "corrected one. This is the only region where counting disputes works.";
+    note.innerHTML=msg;
+  }
+  frame();
+  sl.addEventListener("input",function(){ show(parseInt(sl.value,10)); });
+  show(HZ.length-1);
+})();
+
+/* ==================================================================
+   Scroll: the same ledger language as the landing page. Synchronous on
+   purpose, for the reason documented there: work hidden inside
+   requestAnimationFrame stops silently wherever rAF is throttled.
+   ================================================================== */
+(function(){
+  var bar=document.getElementById("rule-progress");
+  function onScroll(){
+    var doc=document.documentElement, max=doc.scrollHeight-window.innerHeight;
+    bar.style.transform="scaleX("+(max>0?Math.min(1,window.scrollY/max):0).toFixed(4)+")";
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  window.addEventListener("resize",onScroll,{passive:true});
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add("in"); });
+    },{threshold:.08,rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll("section").forEach(function(x){ io.observe(x); });
+  } else {
+    document.querySelectorAll("section").forEach(function(x){ x.classList.add("in"); });
+  }
+  onScroll();
+})();
+
 })();
 </script>
