@@ -101,7 +101,17 @@ dec_json = [{
     "hazard": round(d.hazard_future_dispute, 4),
     "rationale": d.rationale,
     "was_duplicate": d.order_id in T.duplicated_orders,
-} for d in sorted(decs, key=lambda x: -x.expected_allow_cost_paise)[:8]]
+    # What the call actually cost once the label is known. The gate's own
+    # block_cost is scaled by its belief that the payout was legitimate, so
+    # on a confident wrong block it reports nearly zero: the panel would say
+    # "holding costs Rs 0.00" directly beside "the gate was wrong". Hindsight
+    # prices it properly.
+    "realised_bill": realised_fp_cost(
+        sum(e.value_paise for e in test_led.entries[d.order_id].events[1:])
+        if d.order_id in test_led.entries else 0, cm)
+        if (d.verdict is Verdict.BLOCK and d.order_id not in T.duplicated_orders)
+        else 0,
+} for d in deck]
 
 ch_keys = {}
 for e in ds.events:
