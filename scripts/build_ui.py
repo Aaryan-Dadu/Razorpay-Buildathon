@@ -438,7 +438,10 @@ def interaction_test(page: str) -> int:
               .replace("STREAM_ORDERS", str(len(blob["stream_orders"])))
               .replace("STREAM_EVENTS", str(len(blob["stream"])))
               .replace("STREAM_DUPS", str(sum(1 for o in blob["stream_orders"]
-                                              if o["dup"]))))
+                                              if o["dup"])))
+              .replace("GATE_WRONG", str(sum(
+                  1 for g in blob["decisions"]
+                  if (g["verdict"] == "block") != g["was_duplicate"]))))
     probe = ('<!doctype html><meta charset="utf-8"><div id="__err"></div>'
              '<div id="__out"></div><script>addEventListener("error",'
              'function(e){document.getElementById("__err").textContent='
