@@ -74,6 +74,28 @@ TARGETS = {
 }
 
 
+def check_internal_links() -> int:
+    """Every relative link in the deployed pages must resolve to a real file.
+
+    The landing page linked to ./instrument.html, which exists on disk and
+    404s in production, because `cleanUrls` serves /instrument and removes
+    the .html form rather than redirecting to it. The file check below would
+    not have caught that on its own, so vercel.json now redirects the .html
+    forms back, and this asserts the target file is actually there.
+    """
+    web = ROOT / "web"
+    bad = []
+    for page in sorted(web.glob("*.html")):
+        for m in re.finditer(r'href="\.\/([^"#?]+)"', page.read_text()):
+            if not (web / m.group(1)).exists():
+                bad.append(f"{page.name} -> ./{m.group(1)}")
+    if bad:
+        print("broken internal links: " + ", ".join(bad))
+        return 1
+    print(f"internal links ok -- {len(list(web.glob('*.html')))} pages cross-link cleanly")
+    return 0
+
+
 def build(name: str, spec: dict, instrument_url: str) -> int:
     if not spec["data"].exists():
         print(f"{name}: missing {spec['data']} -- run scripts/export_ui.py first")
@@ -245,7 +267,7 @@ def main() -> int:
         rc = build(name, spec, a.instrument)
         if rc:
             return rc
-    return 0
+    return check_internal_links()
 
 
 #: The Artifact runtime supplies a document shell and a small reset. A file
