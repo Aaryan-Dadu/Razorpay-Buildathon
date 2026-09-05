@@ -2,18 +2,21 @@
 """Export a real slice of a run for the UI. No synthetic-for-display data:
 every entry, decision and rationale here came out of the pipeline."""
 from __future__ import annotations
-import json, sys
+import json, math, sys
+from datetime import timedelta
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from sentinel.gate import CostModel, Gate, replay
+from sentinel.gate import CostModel, Gate, Verdict, replay
 from sentinel.generate import World, WorldConfig
 from sentinel.hazard import (HazardModel, build_histories, censoring_bias,
                              cohort_bias, kaplan_meier, PERIOD_DAYS)
 from sentinel.ledger import Ledger
-from sentinel.metrics import score
+from sentinel.metrics import realised_fp_cost, score
 from sentinel.resolve.blocking import BlockingIndex
-from sentinel.resolve.matcher import (LinkageModel, Method, order_temporal_split,
+from sentinel.schema import Channel
+from sentinel.resolve.matcher import (LinkageModel, Method, deterministic_link,
+                                      order_temporal_split,
                                       resolve_all)
 
 SEED, N, TH = 7, 25000, 1.25
