@@ -300,6 +300,7 @@ for day in range(60, 241, 10):
     })
 
 extra = {"sweep": sweep, "puzzles": puzzles, "stream": stream, "near": near,
+         "horizons": horizons,
          "stream_orders": [{"order_id": o,
                             "value": led.entries[o].order_value_paise,
                             "dup": o in T.duplicated_orders,
