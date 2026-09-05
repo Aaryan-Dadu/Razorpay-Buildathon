@@ -480,12 +480,18 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
   <section>
     <div class="sec-head">
       <h2 class="sec-t">The gate shows its arithmetic</h2>
-      <span class="sec-d">no model in the money path</span></div>
+      <div class="gate-nav">
+        <button class="gnav" id="g-prev" type="button" aria-label="Previous decision">&larr;</button>
+        <button class="gnav" id="g-next" type="button" aria-label="Next decision">&rarr;</button>
+        <span class="gate-pos" id="g-pos"></span>
+      </div></div>
     <p class="lede">The decision to hold a payout is expected value in rupees, not a score. It has to be,
       because the merchant will be asked why. <strong>A false positive here manufactures the very
       chargeback it was preventing</strong>. A wrongly-held refund escalates about
       35% of the time, so that cost sits inside the arithmetic rather than in a
       footnote.</p>
+    <p class="lede">Step through the decisions the gate actually made on this book,
+      including the ones it got wrong. Arrow keys work.</p>
     <div class="gate" id="gate"></div>
   </section>
 
