@@ -114,7 +114,6 @@ out = {
 }
 # NaN is not valid JSON and JSON.parse rejects it. Cohorts that refuse to
 # project emit NaN by design, so map it to null on the way out.
-import math
 def clean(x):
     if isinstance(x, float) and (math.isnan(x) or math.isinf(x)): return None
     if isinstance(x, dict): return {k: clean(v) for k, v in x.items()}
@@ -130,10 +129,6 @@ print("bytes:", Path("reports/ui_data.json").stat().st_size)
 # ---------------------------------------------------------------------------
 # interactive payloads
 # ---------------------------------------------------------------------------
-import math as _math
-from sentinel.metrics import realised_fp_cost
-from sentinel.schema import Channel
-from sentinel.resolve.matcher import deterministic_link
 
 ratios = {o: e.exposure_ratio for o, e in led.entries.items()}
 over   = {o: e.over_paise for o, e in led.entries.items()}
