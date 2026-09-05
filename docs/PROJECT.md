@@ -359,7 +359,7 @@ field that concerns the build.
 > a merchant can actually run today reaches 14.4% at 25.8%. Net Rs 3.34 lakh
 > saved per 25,000 orders, after the false-positive bill.
 
-**GitHub repo.** The public repository URL.
+**GitHub repo.** https://github.com/Aaryan-Dadu/Razorpay-Buildathon
 
 **Pitch video.** Five minutes, unlisted is fine. Script in
 `docs/DEMO_SCRIPT.md`.
