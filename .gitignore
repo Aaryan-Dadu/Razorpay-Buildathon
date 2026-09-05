@@ -18,3 +18,6 @@ reports/det*.json
 # so a clone can rebuild the site without re-running the 5-minute pipeline.
 !reports/ui_data.json
 !reports/landing_data.json
+
+# Personal teleprompter for the pitch video, not judge-facing.
+docs/DEMO_SCRIPT.md
