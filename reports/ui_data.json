@@ -574,6 +574,57 @@
  ],
  "decisions": [
   {
+   "order_id": "ord_0013601",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 204170,
+   "block_cost": 0,
+   "ratio_before": 0.62,
+   "ratio_after": 1.62,
+   "hazard": 0.0111,
+   "rationale": [
+    "ledger shows Rs 2,402.00 already returned on a Rs 3,853.00 order (0.62x) across 1 event(s)",
+    "paying Rs 3,853.00 now would reach 1.62x, over the 1.25x line (linkage confidence 1.00)",
+    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.1% (41d elapsed)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": false,
+   "realised_bill": 279355
+  },
+  {
+   "order_id": "ord_0049703",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 80240,
+   "block_cost": 0,
+   "ratio_before": 1.0,
+   "ratio_after": 1.46,
+   "hazard": 0.0074,
+   "rationale": [
+    "ledger shows Rs 2,037.00 already returned on a Rs 2,037.00 order (1.00x) across 1 event(s)",
+    "paying Rs 944.00 now would reach 1.46x, over the 1.25x line (linkage confidence 1.00)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": false,
+   "realised_bill": 177540
+  },
+  {
+   "order_id": "ord_0066316",
+   "verdict": "allow",
+   "p_duplicate": 0.0,
+   "allow_cost": 0,
+   "block_cost": 269135,
+   "ratio_before": 0.05,
+   "ratio_after": 0.92,
+   "hazard": 0.0,
+   "rationale": [
+    "ledger shows Rs 200.00 already returned on a Rs 4,071.00 order (0.05x) across 1 event(s)",
+    "if legitimate, holding costs Rs 2,691.35 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true,
+   "realised_bill": 0
+  },
+  {
    "order_id": "ord_0025496",
    "verdict": "block",
    "p_duplicate": 0.992,
@@ -587,7 +638,8 @@
     "paying Rs 14,992.00 now would reach 2.00x, over the 1.25x line (linkage confidence 0.99)",
     "if legitimate, holding costs Rs 53.88 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0057285",
@@ -604,7 +656,8 @@
     "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.3% (21d elapsed)",
     "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0061728",
@@ -621,7 +674,8 @@
     "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 3.1% (31d elapsed)",
     "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0039830",
@@ -638,7 +692,8 @@
     "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.4% (30d elapsed)",
     "if legitimate, holding costs Rs 0.81 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0043981",
@@ -654,56 +709,8 @@
     "paying Rs 12,641.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
     "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
-  },
-  {
-   "order_id": "ord_0050621",
-   "verdict": "block",
-   "p_duplicate": 1.0,
-   "allow_cost": 1061310,
-   "block_cost": 0,
-   "ratio_before": 1.0,
-   "ratio_after": 2.0,
-   "hazard": 0.0234,
-   "rationale": [
-    "ledger shows Rs 12,486.00 already returned on a Rs 12,486.00 order (1.00x) across 1 event(s)",
-    "paying Rs 12,486.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
-    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 2.3% (51d elapsed)",
-    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
-   ],
-   "was_duplicate": true
-  },
-  {
-   "order_id": "ord_0064921",
-   "verdict": "block",
-   "p_duplicate": 1.0,
-   "allow_cost": 1058956,
-   "block_cost": 264,
-   "ratio_before": 1.0,
-   "ratio_after": 2.0,
-   "hazard": 0.0086,
-   "rationale": [
-    "ledger shows Rs 12,464.00 already returned on a Rs 12,464.00 order (1.00x) across 1 event(s)",
-    "paying Rs 12,464.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
-    "if legitimate, holding costs Rs 2.64 (support + 35% escalation risk + retention)"
-   ],
-   "was_duplicate": true
-  },
-  {
-   "order_id": "ord_0061078",
-   "verdict": "block",
-   "p_duplicate": 0.995,
-   "allow_cost": 1042774,
-   "block_cost": 2619,
-   "ratio_before": 1.0,
-   "ratio_after": 2.0,
-   "hazard": 0.0,
-   "rationale": [
-    "ledger shows Rs 12,324.00 already returned on a Rs 12,324.00 order (1.00x) across 1 event(s)",
-    "paying Rs 12,324.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
-    "if legitimate, holding costs Rs 26.19 (support + 35% escalation risk + retention)"
-   ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   }
  ],
  "km": {
@@ -2758,6 +2765,160 @@
    1.034,
    0
   ]
+ ],
+ "horizons": [
+  {
+   "day": 60,
+   "orders": 3069,
+   "naive": 0.00749,
+   "corrected": 0.01472,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 70,
+   "orders": 3547,
+   "naive": 0.00902,
+   "corrected": 0.01855,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 80,
+   "orders": 4027,
+   "naive": 0.01043,
+   "corrected": 0.01933,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 90,
+   "orders": 4525,
+   "naive": 0.01127,
+   "corrected": 0.01933,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 100,
+   "orders": 5033,
+   "naive": 0.01252,
+   "corrected": 0.02058,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 110,
+   "orders": 5532,
+   "naive": 0.0141,
+   "corrected": 0.02617,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 120,
+   "orders": 6014,
+   "naive": 0.0158,
+   "corrected": 0.0251,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 130,
+   "orders": 6516,
+   "naive": 0.01703,
+   "corrected": 0.02557,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 140,
+   "orders": 7035,
+   "naive": 0.01734,
+   "corrected": 0.02525,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 150,
+   "orders": 7569,
+   "naive": 0.01784,
+   "corrected": 0.02545,
+   "pct_open": 0.9999,
+   "mature": null
+  },
+  {
+   "day": 160,
+   "orders": 8071,
+   "naive": 0.01908,
+   "corrected": 0.0265,
+   "pct_open": 0.9419,
+   "mature": 0.03412
+  },
+  {
+   "day": 170,
+   "orders": 8590,
+   "naive": 0.01991,
+   "corrected": 0.02734,
+   "pct_open": 0.8849,
+   "mature": 0.03236
+  },
+  {
+   "day": 180,
+   "orders": 9081,
+   "naive": 0.02015,
+   "corrected": 0.02711,
+   "pct_open": 0.8316,
+   "mature": 0.02812
+  },
+  {
+   "day": 190,
+   "orders": 9555,
+   "naive": 0.01988,
+   "corrected": 0.02642,
+   "pct_open": 0.7857,
+   "mature": 0.03125
+  },
+  {
+   "day": 200,
+   "orders": 10076,
+   "naive": 0.02064,
+   "corrected": 0.02688,
+   "pct_open": 0.7478,
+   "mature": 0.02873
+  },
+  {
+   "day": 210,
+   "orders": 10579,
+   "naive": 0.02098,
+   "corrected": 0.02711,
+   "pct_open": 0.7099,
+   "mature": 0.02802
+  },
+  {
+   "day": 220,
+   "orders": 11086,
+   "naive": 0.02111,
+   "corrected": 0.02692,
+   "pct_open": 0.68,
+   "mature": 0.02735
+  },
+  {
+   "day": 230,
+   "orders": 11581,
+   "naive": 0.02236,
+   "corrected": 0.02815,
+   "pct_open": 0.6523,
+   "mature": 0.02707
+  },
+  {
+   "day": 240,
+   "orders": 12104,
+   "naive": 0.02247,
+   "corrected": 0.02816,
+   "pct_open": 0.6262,
+   "mature": 0.02873
+  }
  ],
  "stream_orders": [
   {
