@@ -74,7 +74,8 @@ for oid in sorted(clean, key=lambda o: -led.entries[o].exposure_ratio)[:4]:
 H = build_histories(ds, {r.event_id: r.order_id for r in res if r.linked})
 haz, surv = kaplan_meier(list(H.values()))
 hz = HazardModel(SEED).fit([h for h in H.values() if h.order.order_id in tr_ids])
-gate = Gate(CostModel(), TH)
+cm = CostModel()
+gate = Gate(cm, TH)
 test_led = Ledger(entries={o: e for o, e in led.entries.items() if o in te_ids})
 decs = replay(test_led, gate, H, hz)
 dec_json = [{
@@ -137,7 +138,6 @@ from sentinel.resolve.matcher import deterministic_link
 ratios = {o: e.exposure_ratio for o, e in led.entries.items()}
 over   = {o: e.over_paise for o, e in led.entries.items()}
 cost   = {o: e.merchant_cost_paise for o, e in led.entries.items()}
-cm = CostModel()
 
 # --- 1. threshold sweep, priced -------------------------------------------
 sweep = []
