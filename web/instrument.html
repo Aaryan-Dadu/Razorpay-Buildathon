@@ -265,6 +265,23 @@ svg{display:block;max-width:100%;height:auto}
 .alert .ao{font-family:var(--f-data);font-size:13.5px;font-weight:600;color:var(--chargeback)}
 .alert .am{font-size:13.5px;color:var(--ink-2);margin-top:2px}
 .quiet{font-size:14px;color:var(--ink-3);font-style:italic}
+.detail{grid-column:1/-1;border-top:1px solid var(--rule);background:var(--sunk);
+  padding:14px 16px}
+.detail-h{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:9px}
+.detail-h b{font-family:var(--f-data);font-size:14px}
+.detail-h span{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.detail-h button{margin-left:auto;font:inherit;font-size:13.5px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+  border-radius:2px;padding:3px 10px}
+.detail-h button:hover{border-color:var(--ink-3);color:var(--ink)}
+.detail-h button:focus-visible{outline:2px solid var(--slip);outline-offset:2px}
+.dev{display:flex;gap:14px;align-items:baseline;padding:6px 0;
+  border-top:1px dashed var(--rule-soft);font-size:14px;flex-wrap:wrap}
+.dev:first-of-type{border-top:0}
+.dev .dch{font-family:var(--f-data);font-size:12.5px;font-weight:600;min-width:104px}
+.dev .damt{font-family:var(--f-data);font-size:14px}
+.dev .dnote{color:var(--ink-2);font-style:italic;flex:1;min-width:180px}
+.dev .dday{margin-left:auto;font-family:var(--f-data);font-size:12.5px;color:var(--ink-3)}
 
 /* ---------- threshold ---------- */
 .dial{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
@@ -281,6 +298,67 @@ svg{display:block;max-width:100%;height:auto}
 .dg-v.loss{color:var(--chargeback)}
 .dg-v.gain{color:var(--cleared)}
 .dial-note{margin-top:13px;font-size:14.5px;color:var(--ink-2);min-height:2.9em}
+
+
+/* ---------- scroll machinery ----------
+   Same language as the landing page: the document is a ledger being
+   written, so progress is a pen ruling the top edge and each section rules
+   its own edge on arrival. Nothing fades up from nowhere. */
+#rule-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
+  background:var(--chargeback);transform:scaleX(0);transform-origin:0 50%;
+  will-change:transform}
+section{position:relative}
+section > .sec-head{position:relative}
+section > .sec-head::after{content:"";position:absolute;left:0;right:0;bottom:-1px;
+  height:1px;background:var(--chargeback);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 900ms var(--ease-out)}
+section.in > .sec-head::after{transform:scaleX(1)}
+
+/* ---------- gate deck ---------- */
+.gate-nav{display:flex;gap:8px;align-items:center;margin-left:auto}
+.gnav{font:inherit;font-size:14px;width:34px;height:34px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);
+  border-radius:2px;transition:border-color var(--t-micro) var(--ease-out),
+    color var(--t-micro) var(--ease-out),transform var(--t-micro) var(--spring)}
+.gnav:hover:not(:disabled){border-color:var(--ink-3);color:var(--ink);transform:translateY(-1px)}
+.gnav:active:not(:disabled){transform:scale(.94)}
+.gnav:disabled{opacity:.35;cursor:default}
+.gnav:focus-visible{outline:2px solid var(--slip);outline-offset:2px}
+.gate-pos{font-family:var(--f-data);font-size:13px;color:var(--ink-3);min-width:74px;
+  text-align:right}
+.gate-truth{font-size:13.5px;font-style:italic;padding:3px 9px;border-radius:2px}
+.gate-real{margin:14px 0 0;padding:11px 13px;font-size:14px;line-height:1.5;
+  color:var(--ink-2);border-left:2px solid var(--chargeback);
+  background:color-mix(in srgb,var(--chargeback) 7%,transparent)}
+.gate-real b{color:var(--chargeback);font-family:var(--f-data);font-weight:600}
+.gt-right{color:var(--cleared);background:color-mix(in srgb,var(--cleared) 12%,transparent)}
+.gt-wrong{color:var(--chargeback);background:color-mix(in srgb,var(--chargeback) 12%,transparent)}
+
+/* ---------- observation horizon ---------- */
+.horizon{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  padding:18px;margin-top:22px}
+.hz-top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.hz-top label{font-size:15.5px}
+.hz-top input{flex:1;min-width:190px;accent-color:var(--chargeback);cursor:pointer}
+.hz-day{font-family:var(--f-data);font-size:20px;font-weight:600;min-width:96px;
+  text-align:right}
+.hz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+  gap:16px;margin-top:16px}
+.hz b{font-family:var(--f-data);font-size:22px;font-weight:500;display:block;
+  transition:color var(--t-small) var(--ease-out)}
+.hz b.warn{color:var(--chargeback)}
+.hz span{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.hz-note{margin-top:14px;font-size:14.5px;color:var(--ink-2);min-height:3.2em}
+.hz-note b{color:var(--ink);font-weight:600}
+
+/* ---------- cross-link affordance ---------- */
+.trk{cursor:pointer;border-radius:2px;padding:2px;margin:-2px;
+  transition:background var(--t-micro) var(--ease-out)}
+.trk:hover{background:var(--sunk)}
+.trk:focus-visible{outline:2px solid var(--slip);outline-offset:1px}
+@media (prefers-reduced-motion:reduce){
+  section > .sec-head::after{transform:scaleX(1)}
+}
 
 /* ---------- table ---------- */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--panel)}
@@ -317,6 +395,8 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
 </style>
 </head>
 <body>
+<div id="rule-progress"></div>
+
 <div class="wrap">
   <header class="masthead">
     <div class="mast-l">
@@ -391,6 +471,7 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
         <div class="tracks" id="tracks"></div>
         <div class="feed" id="feed"><span class="feed-h">Alerts appear here as the ledger crosses the line.</span></div>
       </div>
+      <div class="detail" id="detail" hidden></div>
     </div>
   </section>
 
@@ -419,12 +500,18 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
   <section>
     <div class="sec-head">
       <h2 class="sec-t">The gate shows its arithmetic</h2>
-      <span class="sec-d">no model in the money path</span></div>
+      <div class="gate-nav">
+        <button class="gnav" id="g-prev" type="button" aria-label="Previous decision">&larr;</button>
+        <button class="gnav" id="g-next" type="button" aria-label="Next decision">&rarr;</button>
+        <span class="gate-pos" id="g-pos"></span>
+      </div></div>
     <p class="lede">The decision to hold a payout is expected value in rupees, not a score. It has to be,
       because the merchant will be asked why. <strong>A false positive here manufactures the very
       chargeback it was preventing</strong>. A wrongly-held refund escalates about
       35% of the time, so that cost sits inside the arithmetic rather than in a
       footnote.</p>
+    <p class="lede">Step through the decisions the gate actually made on this book,
+      including the ones it got wrong. Arrow keys work.</p>
     <div class="gate" id="gate"></div>
   </section>
 
@@ -479,6 +566,24 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
           <thead><tr><th>Observed</th><th>Orders</th><th>Naive rate</th><th>Window seen</th><th>Projected</th></tr></thead>
           <tbody id="cohorts"></tbody></table></div>
       </div>
+    </div>
+
+    <div class="horizon">
+      <div class="hz-top">
+        <label for="hz">Pretend today is:</label>
+        <input id="hz" type="range" min="0" max="18" value="18" step="1"
+          aria-label="Observation horizon in days since the first order">
+        <span class="hz-day" id="hz-day"></span>
+      </div>
+      <svg id="hz-chart" viewBox="0 0 900 230" role="img"
+        aria-label="Reported chargeback rate against the censoring-corrected estimate, by observation date"></svg>
+      <div class="hz-grid">
+        <div class="hz"><b id="hz-naive"></b><span>rate the dashboard reports</span></div>
+        <div class="hz"><b id="hz-corr"></b><span>censoring-corrected estimate</span></div>
+        <div class="hz"><b id="hz-under"></b><span>understatement</span></div>
+        <div class="hz"><b id="hz-open"></b><span>of the book still inside the window</span></div>
+      </div>
+      <p class="hz-note" id="hz-note"></p>
     </div>
   </section>
 
@@ -1064,6 +1169,57 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
  ],
  "decisions": [
   {
+   "order_id": "ord_0013601",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 204170,
+   "block_cost": 0,
+   "ratio_before": 0.62,
+   "ratio_after": 1.62,
+   "hazard": 0.0111,
+   "rationale": [
+    "ledger shows Rs 2,402.00 already returned on a Rs 3,853.00 order (0.62x) across 1 event(s)",
+    "paying Rs 3,853.00 now would reach 1.62x, over the 1.25x line (linkage confidence 1.00)",
+    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.1% (41d elapsed)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": false,
+   "realised_bill": 279355
+  },
+  {
+   "order_id": "ord_0049703",
+   "verdict": "block",
+   "p_duplicate": 1.0,
+   "allow_cost": 80240,
+   "block_cost": 0,
+   "ratio_before": 1.0,
+   "ratio_after": 1.46,
+   "hazard": 0.0074,
+   "rationale": [
+    "ledger shows Rs 2,037.00 already returned on a Rs 2,037.00 order (1.00x) across 1 event(s)",
+    "paying Rs 944.00 now would reach 1.46x, over the 1.25x line (linkage confidence 1.00)",
+    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": false,
+   "realised_bill": 177540
+  },
+  {
+   "order_id": "ord_0066316",
+   "verdict": "allow",
+   "p_duplicate": 0.0,
+   "allow_cost": 0,
+   "block_cost": 269135,
+   "ratio_before": 0.05,
+   "ratio_after": 0.92,
+   "hazard": 0.0,
+   "rationale": [
+    "ledger shows Rs 200.00 already returned on a Rs 4,071.00 order (0.05x) across 1 event(s)",
+    "if legitimate, holding costs Rs 2,691.35 (support + 35% escalation risk + retention)"
+   ],
+   "was_duplicate": true,
+   "realised_bill": 0
+  },
+  {
    "order_id": "ord_0025496",
    "verdict": "block",
    "p_duplicate": 0.992,
@@ -1077,7 +1233,8 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
     "paying Rs 14,992.00 now would reach 2.00x, over the 1.25x line (linkage confidence 0.99)",
     "if legitimate, holding costs Rs 53.88 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0057285",
@@ -1094,7 +1251,8 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
     "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.3% (21d elapsed)",
     "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0061728",
@@ -1111,7 +1269,8 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
     "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 3.1% (31d elapsed)",
     "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0039830",
@@ -1128,7 +1287,8 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
     "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 1.4% (30d elapsed)",
     "if legitimate, holding costs Rs 0.81 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   },
   {
    "order_id": "ord_0043981",
@@ -1144,56 +1304,8 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
     "paying Rs 12,641.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
     "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
    ],
-   "was_duplicate": true
-  },
-  {
-   "order_id": "ord_0050621",
-   "verdict": "block",
-   "p_duplicate": 1.0,
-   "allow_cost": 1061310,
-   "block_cost": 0,
-   "ratio_before": 1.0,
-   "ratio_after": 2.0,
-   "hazard": 0.0234,
-   "rationale": [
-    "ledger shows Rs 12,486.00 already returned on a Rs 12,486.00 order (1.00x) across 1 event(s)",
-    "paying Rs 12,486.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
-    "chargeback not yet arrived but hazard puts P(dispute in remaining window) at 2.3% (51d elapsed)",
-    "if legitimate, holding costs Rs 0.00 (support + 35% escalation risk + retention)"
-   ],
-   "was_duplicate": true
-  },
-  {
-   "order_id": "ord_0064921",
-   "verdict": "block",
-   "p_duplicate": 1.0,
-   "allow_cost": 1058956,
-   "block_cost": 264,
-   "ratio_before": 1.0,
-   "ratio_after": 2.0,
-   "hazard": 0.0086,
-   "rationale": [
-    "ledger shows Rs 12,464.00 already returned on a Rs 12,464.00 order (1.00x) across 1 event(s)",
-    "paying Rs 12,464.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
-    "if legitimate, holding costs Rs 2.64 (support + 35% escalation risk + retention)"
-   ],
-   "was_duplicate": true
-  },
-  {
-   "order_id": "ord_0061078",
-   "verdict": "block",
-   "p_duplicate": 0.995,
-   "allow_cost": 1042774,
-   "block_cost": 2619,
-   "ratio_before": 1.0,
-   "ratio_after": 2.0,
-   "hazard": 0.0,
-   "rationale": [
-    "ledger shows Rs 12,324.00 already returned on a Rs 12,324.00 order (1.00x) across 1 event(s)",
-    "paying Rs 12,324.00 now would reach 2.00x, over the 1.25x line (linkage confidence 1.00)",
-    "if legitimate, holding costs Rs 26.19 (support + 35% escalation risk + retention)"
-   ],
-   "was_duplicate": true
+   "was_duplicate": true,
+   "realised_bill": 0
   }
  ],
  "km": {
@@ -3249,6 +3361,160 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
    0
   ]
  ],
+ "horizons": [
+  {
+   "day": 60,
+   "orders": 3069,
+   "naive": 0.00749,
+   "corrected": 0.01472,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 70,
+   "orders": 3547,
+   "naive": 0.00902,
+   "corrected": 0.01855,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 80,
+   "orders": 4027,
+   "naive": 0.01043,
+   "corrected": 0.01933,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 90,
+   "orders": 4525,
+   "naive": 0.01127,
+   "corrected": 0.01933,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 100,
+   "orders": 5033,
+   "naive": 0.01252,
+   "corrected": 0.02058,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 110,
+   "orders": 5532,
+   "naive": 0.0141,
+   "corrected": 0.02617,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 120,
+   "orders": 6014,
+   "naive": 0.0158,
+   "corrected": 0.0251,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 130,
+   "orders": 6516,
+   "naive": 0.01703,
+   "corrected": 0.02557,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 140,
+   "orders": 7035,
+   "naive": 0.01734,
+   "corrected": 0.02525,
+   "pct_open": 1.0,
+   "mature": null
+  },
+  {
+   "day": 150,
+   "orders": 7569,
+   "naive": 0.01784,
+   "corrected": 0.02545,
+   "pct_open": 0.9999,
+   "mature": null
+  },
+  {
+   "day": 160,
+   "orders": 8071,
+   "naive": 0.01908,
+   "corrected": 0.0265,
+   "pct_open": 0.9419,
+   "mature": 0.03412
+  },
+  {
+   "day": 170,
+   "orders": 8590,
+   "naive": 0.01991,
+   "corrected": 0.02734,
+   "pct_open": 0.8849,
+   "mature": 0.03236
+  },
+  {
+   "day": 180,
+   "orders": 9081,
+   "naive": 0.02015,
+   "corrected": 0.02711,
+   "pct_open": 0.8316,
+   "mature": 0.02812
+  },
+  {
+   "day": 190,
+   "orders": 9555,
+   "naive": 0.01988,
+   "corrected": 0.02642,
+   "pct_open": 0.7857,
+   "mature": 0.03125
+  },
+  {
+   "day": 200,
+   "orders": 10076,
+   "naive": 0.02064,
+   "corrected": 0.02688,
+   "pct_open": 0.7478,
+   "mature": 0.02873
+  },
+  {
+   "day": 210,
+   "orders": 10579,
+   "naive": 0.02098,
+   "corrected": 0.02711,
+   "pct_open": 0.7099,
+   "mature": 0.02802
+  },
+  {
+   "day": 220,
+   "orders": 11086,
+   "naive": 0.02111,
+   "corrected": 0.02692,
+   "pct_open": 0.68,
+   "mature": 0.02735
+  },
+  {
+   "day": 230,
+   "orders": 11581,
+   "naive": 0.02236,
+   "corrected": 0.02815,
+   "pct_open": 0.6523,
+   "mature": 0.02707
+  },
+  {
+   "day": 240,
+   "orders": 12104,
+   "naive": 0.02247,
+   "corrected": 0.02816,
+   "pct_open": 0.6262,
+   "mature": 0.02873
+  }
+ ],
  "stream_orders": [
   {
    "order_id": "ord_0017739",
@@ -3647,21 +3913,58 @@ function render(c){
 }
 render(D.cases[0]);
 
-/* ---- 03 gate ---- */
-var g=D.decisions.find(function(d){return d.verdict==="block"&&d.was_duplicate;})||D.decisions[0];
-var mx=Math.max(g.allow_cost,g.block_cost,1);
-document.getElementById("gate").innerHTML=
-  '<div class="gate-h"><span class="gate-v gv-'+g.verdict+'">'+({block:'Hold the payout',allow:'Let it through',hold:'Ask a human'})[g.verdict]+'</span>'+
-  '<span class="mono" style="font-size:13px;font-weight:600">'+g.order_id+'</span>'+
-  '<span class="mono" style="font-size:12px;color:var(--ink-3)">P(duplicate) = '+
-  g.p_duplicate.toFixed(2)+', ledger '+g.ratio_before.toFixed(2)+'× → '+g.ratio_after.toFixed(2)+'×</span></div>'+
-  '<ul class="rat">'+g.rationale.map(function(r){return "<li>"+r+"</li>";}).join("")+'</ul>'+
-  '<div class="scale">'+
-  '<span>cost of paying</span><div class="bar bar-allow" style="width:'+
-    (g.allow_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+rs(g.allow_cost)+'</span>'+
-  '<span>cost of holding</span><div class="bar bar-block" style="width:'+
-    Math.max(0.6,g.block_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+rs(g.block_cost)+'</span>'+
-  '</div>';
+/* ---- 03 gate: a deck, not one cherry-picked call ---- */
+(function(){
+  var G=D.decisions||[]; if(!G.length) return;
+  var box=document.getElementById("gate"), pos=document.getElementById("g-pos"),
+      prev=document.getElementById("g-prev"), next=document.getElementById("g-next");
+  var i=0;
+  var LABEL={block:"Hold the payout",allow:"Let it through",hold:"Ask a human"};
+
+  function show(){
+    var g=G[i], mx=Math.max(g.allow_cost,g.block_cost,1);
+    var correct = (g.verdict==="block") === g.was_duplicate;
+    box.innerHTML=
+      '<div class="gate-h"><span class="gate-v gv-'+g.verdict+'">'+LABEL[g.verdict]+
+      '</span><span class="mono" style="font-size:13px;font-weight:600">'+g.order_id+'</span>'+
+      '<span class="gate-truth '+(correct?"gt-right":"gt-wrong")+'">'+
+      (g.was_duplicate?"this order really was paid twice":"this order was legitimate")+
+      (correct?"":", so the gate was wrong")+'</span>'+
+      '<span style="font-size:15px;color:var(--ink-3)">likelihood it is a duplicate '+
+      '<b class="mono">'+g.p_duplicate.toFixed(2)+'</b>, ledger moving from '+
+      '<b class="mono">'+g.ratio_before.toFixed(2)+'×</b> to <b class="mono">'+
+      g.ratio_after.toFixed(2)+'×</b></span></div>'+
+      '<ul class="rat">'+g.rationale.map(function(r){return "<li>"+r+"</li>";}).join("")+'</ul>'+
+      '<div class="scale">'+
+      '<span>cost of paying</span><div class="bar bar-allow" style="width:'+
+        (g.allow_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+rs(g.allow_cost)+'</span>'+
+      '<span>cost of holding</span><div class="bar bar-block" style="width:'+
+        Math.max(0.6,g.block_cost/mx*100).toFixed(1)+'%"></div><span class="scale-v">'+
+        rs(g.block_cost)+'</span></div>'+
+      // On a wrong block the gate's own estimate of what holding costs is
+      // scaled by its (mistaken) certainty, so it reports close to nothing.
+      // The bill that actually came due belongs next to it, or the panel
+      // reads as though the mistake was free.
+      (g.realised_bill ?
+        '<p class="gate-real">The gate priced holding at '+rs(g.block_cost)+
+        ' because it was sure. It was wrong, so the bill that actually came '+
+        'due was <b>'+rs(g.realised_bill)+'</b>: an agent\'s time, a 35% chance '+
+        'this customer disputes anyway, and the retention cost of withholding '+
+        'money they were owed.</p>' : "");
+    pos.textContent=(i+1)+" of "+G.length;
+    prev.disabled = i===0; next.disabled = i===G.length-1;
+  }
+  function step(d){ i=Math.max(0,Math.min(G.length-1,i+d)); show(); }
+  prev.addEventListener("click",function(){ step(-1); });
+  next.addEventListener("click",function(){ step(1); });
+  [prev,next].forEach(function(b){
+    b.addEventListener("keydown",function(e){
+      if(e.key==="ArrowLeft"){ e.preventDefault(); step(-1); }
+      if(e.key==="ArrowRight"){ e.preventDefault(); step(1); }
+    });
+  });
+  show();
+})();
 
 /* ---- 04 scoreboard ---- */
 var ROWS=[
@@ -3680,7 +3983,10 @@ document.getElementById("score").innerHTML=ROWS.map(function(r){
 
 /* ---- 05 KM curve ---- */
 (function(){
-  var W=460,H=250,L=46,R=16,T=16,B=40, iw=W-L-R, ih=H-T-B;
+  // L=46 clipped the leading digit of "100.0%" straight off the viewBox,
+  // so the top gridline read "00.0%". Axis labels have to be measured, not
+  // guessed.
+  var W=460,H=250,L=60,R=16,T=16,B=40, iw=W-L-R, ih=H-T-B;
   var sv=D.km.survival, hz=D.km.hazard, n=sv.length;
   var lo=Math.min.apply(null,sv), y0=Math.max(0,lo-0.006), y1=1.0;
   var x=function(i){return L+(i/(n-1))*iw;}, y=function(v){return T+ih-((v-y0)/(y1-y0))*ih;};
@@ -3817,16 +4123,52 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
       feed=document.getElementById("feed");
   var node={}, clockT=0, playing=false, raf=null, last=0;
 
+  var detail=document.getElementById("detail"), picked=null;
+
   ORD.forEach(function(o){
     var d=document.createElement("div"); d.className="trk";
+    d.tabIndex=0; d.setAttribute("role","button");
+    d.setAttribute("aria-label","Open the remediation history for order "+o.order_id);
     d.innerHTML='<div class="trk-t"><span>'+o.order_id.replace("ord_","#")+
       '</span><b>0.00&times;</b></div><div class="trk-bar">'+
       '<div class="trk-fill"></div><div class="trk-line" style="left:'+
       (100/SCALE).toFixed(1)+'%"></div></div>';
+    function open(){ picked=o.order_id; renderDetail(); }
+    d.addEventListener("click", open);
+    d.addEventListener("keydown", function(e){
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(); }
+    });
     tracks.appendChild(d);
     node[o.order_id]={el:d, fill:d.querySelector(".trk-fill"),
       val:d.querySelector("b"), value:o.value, dup:o.dup, over:false};
   });
+
+  // The deck answers "which order is in trouble". This answers "why", which
+  // is the next question anyone has, and it stays tied to the clock so it
+  // never shows an event that has not landed yet.
+  function renderDetail(){
+    if(!picked){ detail.hidden=true; return; }
+    var n=node[picked], evs=S.filter(function(e){
+      return e.order_id===picked && e.t+PAD<=clockT; });
+    var sum=evs.reduce(function(a,e){ return a+e.value; },0);
+    var ratio=sum/n.value;
+    detail.hidden=false;
+    detail.innerHTML=
+      '<div class="detail-h"><b>'+picked+'</b>'+
+      '<span>order value '+rs(n.value)+', returned '+rs(sum)+' so far ('+
+      ratio.toFixed(2)+'×)</span>'+
+      '<button type="button" id="d-close">Close</button></div>'+
+      (evs.length ? evs.map(function(e){
+        return '<div class="dev"><span class="dch" style="color:'+CH[e.channel].c+
+          '">'+CH[e.channel].label+'</span><span class="damt">'+rs(e.value)+
+          '</span><span class="dnote">'+(e.note||"no note recorded")+
+          '</span><span class="dday">day '+e.t.toFixed(1)+'</span></div>';
+      }).join("") : '<div class="quiet">Nothing has landed on this order yet. '+
+        'Play forward or scrub to the right.</div>');
+    detail.querySelector("#d-close").addEventListener("click",function(){
+      picked=null; detail.hidden=true;
+    });
+  }
 
   function apply(t, animate){
     var seen=0, caught=0, money=0, alerts=[];
@@ -3856,6 +4198,7 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
         n.el.classList.add("flash");
       }
     }
+    if(picked) renderDetail();
     document.getElementById("t-ev").textContent=seen;
     document.getElementById("t-dup").textContent=caught;
     var m=document.getElementById("t-money");
@@ -3951,6 +4294,124 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
   }
   thr.addEventListener("input",function(){ show(parseInt(thr.value,10)); });
   thr.value=chosen; show(chosen);
+})();
+
+/* ==================================================================
+   Pretend today is an earlier date. The censoring argument is easy to
+   state and hard to feel, so this lets the reader cause it: pull the
+   horizon back and the reported rate collapses while the corrected one
+   holds, because the disputes have not arrived yet rather than because
+   the fraud went away.
+   ================================================================== */
+(function(){
+  var HZ=D.horizons||[]; if(!HZ.length) return;
+  var sl=document.getElementById("hz"), day=document.getElementById("hz-day"),
+      note=document.getElementById("hz-note"), svg=document.getElementById("hz-chart");
+  sl.max=HZ.length-1; sl.value=HZ.length-1;
+
+  var W=900,H=230,L=62,R=18,T=16,B=38, iw=W-L-R, ih=H-T-B;
+  var maxY=Math.max.apply(null,HZ.map(function(h){return h.corrected;}))*1.15;
+  function X(i){ return L+(i/(HZ.length-1))*iw; }
+  function Y(v){ return T+ih-(v/maxY)*ih; }
+
+  function line(vals,color,width,dash){
+    var d=vals.map(function(v,i){return (i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1);}).join(" ");
+    var p=el("path",{d:d,fill:"none",stroke:color,"stroke-width":width,
+      "stroke-linejoin":"round"});
+    if(dash) p.setAttribute("stroke-dasharray",dash);
+    return p;
+  }
+  function frame(){
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    for(var k=0;k<=4;k++){
+      var v=maxY*k/4;
+      svg.appendChild(el("line",{x1:L,y1:Y(v),x2:W-R,y2:Y(v),
+        stroke:"var(--rule-soft)","stroke-width":"1"}));
+      var t=el("text",{x:L-9,y:Y(v)+4,"text-anchor":"end",fill:"var(--ink-3)",
+        "font-family":"var(--f-data)","font-size":"11"});
+      t.textContent=(v*100).toFixed(1)+"%"; svg.appendChild(t);
+    }
+    svg.appendChild(line(HZ.map(function(h){return h.corrected;}),"var(--slip)","2.6"));
+    svg.appendChild(line(HZ.map(function(h){return h.naive;}),"var(--chargeback)","2.6"));
+    [["corrected for censoring","var(--slip)",HZ[HZ.length-1].corrected],
+     ["what the dashboard shows","var(--chargeback)",HZ[HZ.length-1].naive]]
+      .forEach(function(l){
+        var t=el("text",{x:W-R-4,y:Y(l[2])-9,"text-anchor":"end",fill:l[1],
+          "font-family":"var(--f-text)","font-size":"13.5","font-style":"italic"});
+        t.textContent=l[0]; svg.appendChild(t);
+      });
+    svg.appendChild(el("line",{x1:L,y1:T+ih,x2:W-R,y2:T+ih,
+      stroke:"var(--ink-3)","stroke-width":"1.2"}));
+    var ax=el("text",{x:W-R,y:T+ih+30,"text-anchor":"end",fill:"var(--ink-3)",
+      "font-family":"var(--f-text)","font-size":"13","font-style":"italic"});
+    ax.textContent="days of trading observed"; svg.appendChild(ax);
+  }
+
+  var marker=null, dotN=null, dotC=null;
+  function mark(i){
+    if(marker){ [marker,dotN,dotC].forEach(function(n){ if(n&&n.parentNode) n.parentNode.removeChild(n); }); }
+    var h=HZ[i], x=X(i);
+    marker=el("line",{x1:x,y1:T,x2:x,y2:T+ih,stroke:"var(--ink)",
+      "stroke-width":"1.4","stroke-dasharray":"3 3"});
+    svg.appendChild(marker);
+    dotC=el("circle",{cx:x,cy:Y(h.corrected),r:"5",fill:"var(--slip)",
+      stroke:"var(--panel)","stroke-width":"2"}); svg.appendChild(dotC);
+    dotN=el("circle",{cx:x,cy:Y(h.naive),r:"5",fill:"var(--chargeback)",
+      stroke:"var(--panel)","stroke-width":"2"}); svg.appendChild(dotN);
+  }
+
+  function show(i){
+    var h=HZ[i], under=h.naive>0 ? h.corrected/h.naive : 0;
+    day.textContent="day "+h.day;
+    document.getElementById("hz-naive").textContent=(h.naive*100).toFixed(2)+"%";
+    var c=document.getElementById("hz-corr");
+    c.textContent=(h.corrected*100).toFixed(2)+"%";
+    var u=document.getElementById("hz-under");
+    u.textContent=under.toFixed(2)+"×"; u.className = under>1.4 ? "warn" : "";
+    document.getElementById("hz-open").textContent=(h.pct_open*100).toFixed(0)+"%";
+    mark(i);
+    var msg;
+    if(under>1.7) msg="On this date the merchant's own dashboard reports <b>"+
+      (h.naive*100).toFixed(2)+"%</b>, and the true figure is closer to <b>"+
+      (h.corrected*100).toFixed(2)+"%</b>. Nothing about the fraud changed between "+
+      "these two numbers. <b>"+(h.pct_open*100).toFixed(0)+"%</b> of this book is "+
+      "still inside the 150-day dispute window, so most of the chargebacks simply "+
+      "have not been filed yet.";
+    else if(under>1.2) msg="Still understated by <b>"+under.toFixed(2)+"×</b>. The gap "+
+      "closes as the book matures, which is exactly why a single blended rate hides "+
+      "the problem: the error lives in the recent cohort, where the decisions are.";
+    else msg="With <b>"+h.orders.toLocaleString("en-IN")+"</b> orders and most of them "+
+      "past the dispute window, the reported rate has nearly caught up with the "+
+      "corrected one. This is the only region where counting disputes works.";
+    note.innerHTML=msg;
+  }
+  frame();
+  sl.addEventListener("input",function(){ show(parseInt(sl.value,10)); });
+  show(HZ.length-1);
+})();
+
+/* ==================================================================
+   Scroll: the same ledger language as the landing page. Synchronous on
+   purpose, for the reason documented there: work hidden inside
+   requestAnimationFrame stops silently wherever rAF is throttled.
+   ================================================================== */
+(function(){
+  var bar=document.getElementById("rule-progress");
+  function onScroll(){
+    var doc=document.documentElement, max=doc.scrollHeight-window.innerHeight;
+    bar.style.transform="scaleX("+(max>0?Math.min(1,window.scrollY/max):0).toFixed(4)+")";
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  window.addEventListener("resize",onScroll,{passive:true});
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add("in"); });
+    },{threshold:.08,rootMargin:"0px 0px -6% 0px"});
+    document.querySelectorAll("section").forEach(function(x){ io.observe(x); });
+  } else {
+    document.querySelectorAll("section").forEach(function(x){ x.classList.add("in"); });
+  }
+  onScroll();
 })();
 
 })();
