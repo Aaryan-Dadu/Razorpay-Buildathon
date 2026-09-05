@@ -251,6 +251,54 @@ near = sorted(((round(r, 3), 1 if o in pos else 0)
                for o, r in ratios.items() if o in te_ids and r >= 1.0),
               key=lambda x: -x[0])[:150]
 
+# --- 4. what the book looked like on earlier days --------------------------
+# The censoring argument is easy to state and hard to feel. Recomputing the
+# rate as if "today" were an earlier date makes it something the reader
+# causes: pull the horizon back and the naive rate collapses while the
+# corrected one holds, because the disputes have not arrived yet, not
+# because the fraud went away.
+from sentinel.hazard import PERIOD_DAYS, N_PERIODS
+card_h = [h for h in H.values() if h.order.is_card]
+origin = min(h.order.created_at for h in card_h)
+horizons = []
+for day in range(60, 241, 10):
+    cutoff = origin + timedelta(days=day)
+    seen = [h for h in card_h if h.order.created_at <= cutoff]
+    if len(seen) < 200:
+        continue
+    obs = 0
+    at_risk = [0.0] * N_PERIODS
+    events = [0.0] * N_PERIODS
+    for h in seen:
+        watched = (cutoff - h.order.created_at).total_seconds() / 86400.0
+        disputed = h.dispute_day is not None and h.dispute_day <= watched
+        if disputed:
+            obs += 1
+            k = min(int(h.dispute_day // PERIOD_DAYS), N_PERIODS - 1)
+            events[k] += 1
+            for j in range(k + 1):
+                at_risk[j] += 1
+        else:
+            k = min(int(watched // PERIOD_DAYS), N_PERIODS - 1)
+            for j in range(k + 1):
+                at_risk[j] += 1
+    surv = 1.0
+    for k in range(N_PERIODS):
+        if at_risk[k] > 0:
+            surv *= (1.0 - events[k] / at_risk[k])
+    naive = obs / len(seen)
+    mature = [h for h in seen
+              if (cutoff - h.order.created_at).total_seconds() / 86400.0 >= 150]
+    horizons.append({
+        "day": day, "orders": len(seen), "naive": round(naive, 5),
+        "corrected": round(1.0 - surv, 5),
+        "pct_open": round(sum(1 for h in seen
+                              if (cutoff - h.order.created_at).total_seconds()
+                              / 86400.0 < 150) / len(seen), 4),
+        "mature": round(sum(1 for h in mature if h.dispute_day is not None)
+                        / len(mature), 5) if len(mature) >= 100 else None,
+    })
+
 extra = {"sweep": sweep, "puzzles": puzzles, "stream": stream, "near": near,
          "stream_orders": [{"order_id": o,
                             "value": led.entries[o].order_value_paise,
