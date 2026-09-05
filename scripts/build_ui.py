@@ -108,13 +108,98 @@ def smoke_test(page: str) -> int:
         "event detail": 'class="ev-amt"',
         "scoreboard": 'class="ours"',
         "cohort rows": "insufficient",
+        "puzzle options": 'class="opt"',
+        "stream tracks": 'class="trk"',
+        "threshold dial": 'id="d-net"',
     }
     missing = [name for name, needle in checks.items() if needle not in dom]
     if missing:
         print("page rendered but these regions are empty: " + ", ".join(missing))
         return 1
     print("render check ok -- every data region populated")
-    return 0
+    return interaction_test(page)
+
+
+INTERACTIONS = """
+setTimeout(function(){
+  var L=[];
+  function t(n,c){ L.push((c?"PASS  ":"FAIL  ")+n); }
+  var opts=document.querySelectorAll("#try-opts .opt");
+  t("puzzle offers four options", opts.length===4);
+  opts[0].click();
+  var rev=document.getElementById("try-reveal");
+  t("puzzle reveals on answer", !rev.hidden && rev.textContent.length>60);
+  t("answering locks the options", opts[0].disabled===true);
+  t("exactly one option marked correct",
+    document.querySelectorAll("#try-opts .right").length===1);
+  t("stream builds every track",
+    document.querySelectorAll("#tracks .trk").length===STREAM_ORDERS);
+  t("deck opens mid-run rather than empty",
+    +document.getElementById("t-ev").textContent > 0);
+  var sc=document.getElementById("scrub");
+  sc.value=100; sc.dispatchEvent(new Event("input"));
+  t("scrubbing to the end settles every event",
+    document.getElementById("t-ev").textContent===String(STREAM_EVENTS));
+  t("scrubbing to the end catches every duplicate",
+    document.getElementById("t-dup").textContent===String(STREAM_DUPS));
+  t("each catch raises an alert",
+    document.querySelectorAll("#feed .alert").length===STREAM_DUPS);
+  t("money stopped is non-zero", document.getElementById("t-money").textContent!=="0");
+  sc.value=0; sc.dispatchEvent(new Event("input"));
+  t("scrubbing back to zero clears state",
+    document.getElementById("t-ev").textContent==="0" &&
+    document.querySelectorAll("#tracks .trk.over").length===0);
+  var d=document.getElementById("thr");
+  d.value=0; d.dispatchEvent(new Event("input"));
+  t("the lowest threshold reports a net loss",
+    document.getElementById("d-net").classList.contains("loss"));
+  d.value=d.max; d.dispatchEvent(new Event("input"));
+  t("the highest threshold catches nothing",
+    document.getElementById("d-r").textContent==="0.0%");
+  document.getElementById("__out").textContent=L.join("\\n");
+}, 900);
+"""
+
+
+def interaction_test(page: str) -> int:
+    """Drive the page's controls and assert what they did.
+
+    A page can render every region and still have controls that do nothing.
+    These run the three interactive pieces the way a visitor would: answer
+    the puzzle, scrub the stream to the end and back, push the threshold to
+    both extremes.
+    """
+    chrome = shutil.which("google-chrome") or shutil.which("chromium")
+    if chrome is None:
+        return 0
+    blob = json.loads(DATA.read_text())
+    script = (INTERACTIONS
+              .replace("STREAM_ORDERS", str(len(blob["stream_orders"])))
+              .replace("STREAM_EVENTS", str(len(blob["stream"])))
+              .replace("STREAM_DUPS", str(sum(1 for o in blob["stream_orders"]
+                                              if o["dup"]))))
+    probe = ('<!doctype html><meta charset="utf-8"><div id="__err"></div>'
+             '<div id="__out"></div><script>addEventListener("error",'
+             'function(e){document.getElementById("__err").textContent='
+             '"ERR "+e.message;});</script>' + page
+             + "<script>" + script + "</script>")
+    with tempfile.TemporaryDirectory() as d:
+        f = pathlib.Path(d) / "itest.html"
+        f.write_text(probe)
+        r = subprocess.run(
+            [chrome, "--headless", "--disable-gpu", "--no-sandbox",
+             "--virtual-time-budget=9000", "--dump-dom", f"file://{f}"],
+            capture_output=True, text=True, timeout=120)
+    out = re.search(r'<div id="__out">(.*?)</div>', r.stdout, re.S)
+    lines = (out.group(1) if out else "").strip()
+    if not lines:
+        print("interaction test produced no result")
+        return 1
+    for line in lines.split("\n"):
+        print("  " + line.strip())
+    fails = lines.count("FAIL")
+    print(f"interactions: {lines.count('PASS')} pass, {fails} fail")
+    return 1 if fails else 0
 
 
 if __name__ == "__main__":

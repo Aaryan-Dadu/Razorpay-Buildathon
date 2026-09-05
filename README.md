@@ -310,12 +310,25 @@ payments company is positioned to ship, and nobody currently owns it.
 ## The page
 
 A published forensic view of the same pipeline output:
-**https://claude.ai/code/artifact/cf1c312f-230a-45fd-91a4-905a578b76e6**
+**https://claude.ai/code/artifact/08c0ed9d-9d72-4c48-8924-79ddfd945aa3**
 
-Four record streams that share no key, then a ledger lane where one order's
-cumulative remediation crosses the 1.25x line on a real day axis, with a
-hatched band for the chargeback that has not arrived yet. Every figure on it
-is exported from an actual run. Nothing is mocked.
+Three things you operate rather than read:
+
+- **Try it yourself.** One real support credit and four of the real candidate
+  orders the resolver faced. Nothing in the ticket names an order. Most people
+  guess, and on the first round the linkage model guesses too, at a margin of
+  0.377 against 0.363. It was choosing from fifteen candidates, not four.
+- **Run the book forward.** Play 52 real remediation events across 52 days over
+  26 orders. Tracks fill as value flows back, the notch is the order value, and
+  seven of the twenty-six cross the line. Scrub in either direction.
+- **Move the duplicate line.** Every reading is a real measurement at that
+  threshold. Drag it below about 1.1x and the net goes *negative*: the
+  false-positive bill overtakes everything recovered, which is the argument
+  against recall-only metrics made draggable.
+
+Every figure, case, alert and curve is exported from an actual run. Nothing is
+mocked. `scripts/build_ui.py` refuses to write the page unless it parses, every
+data region populates, and thirteen interaction checks pass in a real browser.
 
 ```bash
 .venv/bin/python scripts/export_ui.py   # run pipeline -> reports/ui_data.json

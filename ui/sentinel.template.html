@@ -162,6 +162,108 @@ svg{display:block;max-width:100%;height:auto}
 .bar-block{background:var(--ink-3)}
 .scale-v{text-align:right;font-weight:600}
 
+
+/* ---------- you try it ---------- */
+.tryit{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  margin-top:26px;overflow:hidden}
+.try-h{padding:15px 18px;border-bottom:1px solid var(--rule);display:flex;
+  gap:14px;align-items:baseline;flex-wrap:wrap}
+.try-h b{font-size:19px;font-weight:500}
+.try-score{margin-left:auto;font-family:var(--f-data);font-size:14px;color:var(--ink-3)}
+.try-rec{padding:16px 18px;background:var(--sunk);border-bottom:1px solid var(--rule)}
+.try-rec .rk{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.try-rec .rv{font-family:var(--f-data);font-size:14px;margin-bottom:8px}
+.try-rec .rv:last-child{margin-bottom:0}
+.try-ask{margin:0;padding:13px 18px;font-size:16px;border-bottom:1px solid var(--rule)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(212px,1fr))}
+.opt{padding:14px 16px;border-right:1px solid var(--rule-soft);
+  border-bottom:1px solid var(--rule-soft);background:none;text-align:left;
+  font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;
+  transition:background var(--t-micro) var(--ease-out),
+             transform var(--t-micro) var(--spring)}
+.opt:hover:not(:disabled){background:var(--sunk);transform:translateY(-2px)}
+.opt:active:not(:disabled){transform:translateY(0) scale(.99)}
+.opt:focus-visible{outline:2px solid var(--slip);outline-offset:-3px}
+.opt:disabled{cursor:default}
+.opt .oid{font-family:var(--f-data);font-size:14px;font-weight:600}
+.opt .od{font-size:13.5px;color:var(--ink-3)}
+.opt .ov{font-family:var(--f-data);font-size:15px}
+.opt.right{background:color-mix(in srgb,var(--cleared) 15%,transparent);
+  box-shadow:inset 3px 0 0 var(--cleared)}
+.opt.wrong{background:color-mix(in srgb,var(--chargeback) 14%,transparent);
+  box-shadow:inset 3px 0 0 var(--chargeback)}
+.opt .tag{font-size:12.5px;font-style:italic;margin-top:4px}
+.try-reveal{padding:16px 18px;border-top:1px solid var(--rule);font-size:15.5px;
+  line-height:1.55}
+.try-reveal b{font-weight:600}
+.try-next{margin-top:12px;font:inherit;font-size:15px;padding:7px 15px;cursor:pointer;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:2px;
+  transition:transform var(--t-micro) var(--spring),opacity var(--t-micro)}
+.try-next:hover{transform:translateY(-1px)}
+.try-next:active{transform:translateY(0) scale(.98)}
+.try-next:focus-visible{outline:2px solid var(--slip);outline-offset:2px}
+
+/* ---------- live stream ---------- */
+.deck{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  box-shadow:var(--shadow);overflow:hidden}
+.transport{padding:13px 18px;border-bottom:1px solid var(--rule);display:flex;
+  gap:16px;align-items:center;flex-wrap:wrap}
+.play{font:inherit;font-size:15px;padding:7px 17px;cursor:pointer;border-radius:2px;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);min-width:96px;
+  transition:transform var(--t-micro) var(--spring)}
+.play:hover{transform:translateY(-1px)} .play:active{transform:scale(.98)}
+.play:focus-visible{outline:2px solid var(--slip);outline-offset:2px}
+.scrub{flex:1;min-width:190px;accent-color:var(--chargeback);cursor:pointer}
+.clock{font-family:var(--f-data);font-size:15px;min-width:108px}
+.tally{margin-left:auto;display:flex;gap:22px;flex-wrap:wrap}
+.tally div{display:flex;flex-direction:column}
+.tally .tk{font-size:13px;color:var(--ink-3);font-style:italic}
+.tally .tv{font-family:var(--f-data);font-size:16px;font-weight:600}
+.tally .tv.hot{color:var(--chargeback)}
+.floor{display:grid;grid-template-columns:1.55fr 1fr}
+@media (max-width:840px){.floor{grid-template-columns:1fr}}
+.tracks{padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));
+  gap:9px 14px;border-right:1px solid var(--rule)}
+.trk{display:flex;flex-direction:column;gap:3px}
+.trk-t{display:flex;justify-content:space-between;font-family:var(--f-data);font-size:11.5px;
+  color:var(--ink-3)}
+.trk-t b{color:var(--ink-2);font-weight:400}
+.trk-bar{height:9px;background:var(--sunk);border-radius:1px;position:relative;overflow:hidden}
+.trk-fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--cleared);
+  transition:width 220ms var(--ease-out),background 220ms linear}
+.trk-line{position:absolute;top:-1px;bottom:-1px;width:1px;background:var(--ink-3);opacity:.65}
+.trk.over .trk-fill{background:var(--chargeback)}
+.trk.over .trk-t b{color:var(--chargeback)}
+.trk.flash{animation:flash 620ms var(--ease-out)}
+@keyframes flash{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--chargeback) 55%,transparent)}
+  100%{box-shadow:0 0 0 11px transparent}}
+.feed{padding:14px 16px;display:flex;flex-direction:column;gap:9px;
+  max-height:352px;overflow-y:auto}
+.feed-h{font-size:14px;color:var(--ink-3);font-style:italic}
+.alert{border-left:2px solid var(--chargeback);padding:8px 11px;
+  background:color-mix(in srgb,var(--chargeback) 8%,transparent);
+  animation:slidein 300ms var(--ease-out)}
+@keyframes slidein{from{opacity:0;transform:translateX(-9px)}to{opacity:1;transform:none}}
+.alert .ao{font-family:var(--f-data);font-size:13.5px;font-weight:600;color:var(--chargeback)}
+.alert .am{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+.quiet{font-size:14px;color:var(--ink-3);font-style:italic}
+
+/* ---------- threshold ---------- */
+.dial{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+  padding:18px;margin-top:24px}
+.dial-top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.dial-top label{font-size:15.5px}
+.dial-top input{flex:1;min-width:200px;accent-color:var(--chargeback);cursor:pointer}
+.dial-v{font-family:var(--f-data);font-size:21px;font-weight:600;min-width:74px}
+.dial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(124px,1fr));gap:16px}
+.dg{display:flex;flex-direction:column;gap:1px}
+.dg-k{font-size:13.5px;color:var(--ink-3);font-style:italic}
+.dg-v{font-family:var(--f-data);font-size:22px;font-weight:500;
+  transition:color var(--t-small) var(--ease-out)}
+.dg-v.loss{color:var(--chargeback)}
+.dg-v.gain{color:var(--cleared)}
+.dial-note{margin-top:13px;font-size:14.5px;color:var(--ink-2);min-height:2.9em}
+
 /* ---------- table ---------- */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--panel)}
 table{border-collapse:collapse;width:100%;font-size:13.5px}
@@ -231,11 +333,51 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
       whatever the agent typed. <strong>These are the same order.</strong> No SQL join reaches
       across them, which is why the second payout leaves unnoticed.</p>
     <div class="streams" id="streams"></div>
+
+    <div class="tryit">
+      <div class="try-h">
+        <b>Try it yourself</b>
+        <span class="sec-d">one real support credit, four real candidate orders</span>
+        <span class="try-score" id="try-score">round 1 of 4</span>
+      </div>
+      <div class="try-rec" id="try-rec"></div>
+      <p class="try-ask">Which order was this credit issued against? Pick one.</p>
+      <div class="opts" id="try-opts"></div>
+      <div class="try-reveal" id="try-reveal" hidden></div>
+    </div>
   </section>
 
   <section>
     <div class="sec-head">
-      <h2 class="sec-t">Watch the exposure cross the line</h2>
+      <h2 class="sec-t">Run the book forward</h2>
+      <span class="sec-d">26 real orders, 52 events, 52 days</span></div>
+    <p class="lede">Press play and the remediation events arrive in the order they
+      actually did. Each track fills as value flows back to that customer, and the
+      notch is the order value. Most of these orders touch two channels and stay
+      perfectly legitimate. <strong>Seven of the twenty-six do not.</strong> The
+      ledger sees the second payout coming before it leaves.</p>
+    <div class="deck">
+      <div class="transport">
+        <button class="play" id="play" type="button">Play</button>
+        <input class="scrub" id="scrub" type="range" min="0" max="100" value="0" step="0.1"
+          aria-label="Scrub through the 52-day window">
+        <span class="clock" id="clock">day 0.0</span>
+        <div class="tally">
+          <div><span class="tk">events settled</span><span class="tv" id="t-ev">0</span></div>
+          <div><span class="tk">duplicates caught</span><span class="tv" id="t-dup">0</span></div>
+          <div><span class="tk">payout stopped</span><span class="tv" id="t-money">0</span></div>
+        </div>
+      </div>
+      <div class="floor">
+        <div class="tracks" id="tracks"></div>
+        <div class="feed" id="feed"><span class="feed-h">Alerts appear here as the ledger crosses the line.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-t">Inspect a single case</h2>
       <span class="sec-d">real cases from the held-out split</span></div>
     <p class="lede">Each lane plots one order's remediation on a real day axis. The solid rule is the
       order value: the most a customer can legitimately be made whole. Cross <strong>1.25&times;</strong>
@@ -273,6 +415,23 @@ footer{margin-top:72px;border-top:1px solid var(--ink);padding-top:18px;
     <div class="tbl-wrap"><table>
       <thead><tr><th>Detector</th><th>Precision</th><th>Recall</th><th>F1</th><th>Caught</th><th>False alarms</th></tr></thead>
       <tbody id="score"></tbody></table></div>
+    <div class="dial">
+      <div class="dial-top">
+        <label for="thr">Move the duplicate line:</label>
+        <input id="thr" type="range" min="0" max="45" value="7" step="1"
+          aria-label="Duplicate threshold as a multiple of order value">
+        <span class="dial-v" id="thr-v">1.25&times;</span>
+      </div>
+      <div class="dial-grid">
+        <div class="dg"><span class="dg-k">precision</span><span class="dg-v" id="d-p"></span></div>
+        <div class="dg"><span class="dg-k">recall</span><span class="dg-v" id="d-r"></span></div>
+        <div class="dg"><span class="dg-k">caught</span><span class="dg-v" id="d-tp"></span></div>
+        <div class="dg"><span class="dg-k">false alarms</span><span class="dg-v" id="d-fp"></span></div>
+        <div class="dg"><span class="dg-k">net to the merchant</span><span class="dg-v" id="d-net"></span></div>
+      </div>
+      <p class="dial-note" id="d-note"></p>
+    </div>
+
     <p class="tnote">The row that matters is <b>oracle linkage</b>: hand a naive detector
       <em>perfect</em> entity resolution and it still reaches 8.1% precision, because most orders with
       two remediation events are perfectly legitimate. Linking is only half the problem.</p>
@@ -630,5 +789,230 @@ document.getElementById("cohorts").innerHTML=D.cohorts.map(function(r){
     '<td class="num">'+pct(r.naive_rate,2)+'</td>'+
     '<td class="num">'+pct(r.exposure_seen,0)+'</td>'+
     '<td class="num">'+proj+'</td></tr>';}).join("");
+
+/* ==================================================================
+   You try it: the resolver's actual job, with its actual candidates.
+   The point is not the game. It is that a careful person, given four
+   options instead of the fifteen the system faced, still guesses.
+   ================================================================== */
+(function(){
+  var P=D.puzzles||[], round=0, right=0, answered=false;
+  if(!P.length) return;
+  var rec=document.getElementById("try-rec"), opts=document.getElementById("try-opts"),
+      rev=document.getElementById("try-reveal"), sc=document.getElementById("try-score");
+
+  function draw(){
+    var q=P[round], e=q.event;
+    answered=false; rev.hidden=true; rev.innerHTML="";
+    sc.textContent="round "+(round+1)+" of "+P.length+
+      (round?"  ·  you: "+right+"/"+round:"");
+    sc.textContent=sc.textContent.replace(" · ", ", ");
+    var bits=['<div class="rk">what the support system recorded</div>'];
+    if(e.note) bits.push('<div class="rv">"'+e.note+'"</div>');
+    if(e.descriptor) bits.push('<div class="rv">'+e.descriptor+'</div>');
+    bits.push('<div class="rk">credited</div><div class="rv">'+rs(e.value)+
+      " on "+e.at.slice(0,10)+'</div>');
+    bits.push('<div class="rk">contact on the ticket</div><div class="rv">'+
+      (e.email||e.phone||"none recorded")+'</div>');
+    rec.innerHTML=bits.join("");
+
+    opts.innerHTML="";
+    q.options.forEach(function(o){
+      var b=document.createElement("button");
+      b.className="opt"; b.type="button";
+      b.innerHTML='<span class="oid">'+o.order_id+'</span>'+
+        '<span class="od">'+o.sku+", "+o.method+", "+o.days+' days earlier</span>'+
+        '<span class="ov">'+rs(o.value)+'</span>';
+      b.addEventListener("click",function(){ answer(o.order_id, b); });
+      opts.appendChild(b);
+    });
+  }
+
+  function answer(chosen, btn){
+    if(answered) return;
+    answered=true;
+    var q=P[round], correct = chosen===q.answer;
+    if(correct) right++;
+    Array.prototype.forEach.call(opts.children,function(b,i){
+      var o=q.options[i]; b.disabled=true;
+      if(o.order_id===q.answer){ b.classList.add("right");
+        b.insertAdjacentHTML("beforeend",'<span class="tag">the real order</span>'); }
+      else if(o.order_id===chosen){ b.classList.add("wrong");
+        b.insertAdjacentHTML("beforeend",'<span class="tag">not this one</span>'); }
+    });
+    var modelRight = q.model_pick===q.answer;
+    var msg = correct ? "<b>Correct.</b> " : "<b>Not that one.</b> ";
+    msg += "The support agent never wrote the order number down, so nothing here "+
+      "identifies it outright. The linkage model "+
+      (modelRight ? "also picked <b>"+q.model_pick+"</b>, at "+q.model_conf+
+        " confidence." : "got this one <b>wrong too</b>, picking "+q.model_pick+
+        " at "+q.model_conf+" confidence.")+
+      " And it was choosing from <b>"+q.n_real_candidates+" candidates</b>, not four.";
+    if(!modelRight) msg += " On a margin that thin the resolver is designed to abstain "+
+      "rather than guess, which is why "+D.exceptions+" events in this run went to a human.";
+    rev.innerHTML = msg + (round < P.length-1 ?
+      '<br><button class="try-next" type="button">Next record</button>' :
+      '<br><b>You scored '+right+" of "+P.length+'.</b> This is the job, on four '+
+      'options instead of fifteen, with unlimited time.');
+    rev.hidden=false;
+    var nx=rev.querySelector(".try-next");
+    if(nx) nx.addEventListener("click",function(){ round++; draw(); nx.blur(); });
+  }
+  draw();
+})();
+
+/* ==================================================================
+   Run the book forward. Scrubbing rebuilds state from zero rather
+   than stepping, so dragging backwards is exact rather than an undo
+   of an undo.
+   ================================================================== */
+(function(){
+  var S=D.stream||[], ORD=D.stream_orders||[];
+  if(!S.length) return;
+  // Half a day of lead-in. The first event sits at t=0, so without the pad
+  // it has already landed before the clock starts: the deck opens showing
+  // one settled event and scrubbing back to zero cannot clear it.
+  var PAD=0.5, span=S[S.length-1].t+PAD, TH=D.chosen_threshold||1.25, SCALE=2.5;
+  var playBtn=document.getElementById("play"), scrub=document.getElementById("scrub"),
+      clock=document.getElementById("clock"), tracks=document.getElementById("tracks"),
+      feed=document.getElementById("feed");
+  var node={}, clockT=0, playing=false, raf=null, last=0;
+
+  ORD.forEach(function(o){
+    var d=document.createElement("div"); d.className="trk";
+    d.innerHTML='<div class="trk-t"><span>'+o.order_id.replace("ord_","#")+
+      '</span><b>0.00&times;</b></div><div class="trk-bar">'+
+      '<div class="trk-fill"></div><div class="trk-line" style="left:'+
+      (100/SCALE).toFixed(1)+'%"></div></div>';
+    tracks.appendChild(d);
+    node[o.order_id]={el:d, fill:d.querySelector(".trk-fill"),
+      val:d.querySelector("b"), value:o.value, dup:o.dup, over:false};
+  });
+
+  function apply(t, animate){
+    var seen=0, caught=0, money=0, alerts=[];
+    for(var k in node){ node[k].sum=0; node[k].over=false; }
+    S.forEach(function(ev){
+      if(ev.t+PAD>t) return;
+      seen++;
+      var n=node[ev.order_id]; if(!n) return;
+      var before=n.sum/n.value;
+      n.sum+=ev.value;
+      var after=n.sum/n.value;
+      if(before<TH && after>=TH){
+        n.over=true; caught++;
+        money+=Math.round(ev.cost*0.85);
+        alerts.push({order:ev.order_id, ratio:after, cost:ev.cost,
+                     ch:ev.channel, t:ev.t});
+      }
+    });
+    for(var id in node){
+      var n=node[id], r=n.sum/n.value;
+      n.val.textContent=r.toFixed(2)+"×";
+      n.fill.style.width=Math.min(100,(r/SCALE)*100).toFixed(1)+"%";
+      var wasOver=n.el.classList.contains("over");
+      n.el.classList.toggle("over", n.over);
+      if(n.over && !wasOver && animate && !REDUCED.matches){
+        n.el.classList.remove("flash"); void n.el.offsetWidth;
+        n.el.classList.add("flash");
+      }
+    }
+    document.getElementById("t-ev").textContent=seen;
+    document.getElementById("t-dup").textContent=caught;
+    var m=document.getElementById("t-money");
+    m.textContent=money?rs(money):"0"; m.classList.toggle("hot", money>0);
+    clock.textContent="day "+t.toFixed(1);
+
+    feed.innerHTML = alerts.length ? "" :
+      '<span class="feed-h">Alerts appear here as the ledger crosses the line.</span>';
+    alerts.slice().reverse().forEach(function(a){
+      var d=document.createElement("div"); d.className="alert";
+      d.innerHTML='<div class="ao">'+a.order+' reached '+a.ratio.toFixed(2)+'&times;</div>'+
+        '<div class="am">day '+a.t.toFixed(1)+", a "+a.ch+" would have returned "+
+        rs(a.cost)+" on an order already made whole. Held.</div>";
+      feed.appendChild(d);
+    });
+  }
+
+  function setClock(t, animate){
+    clockT=Math.max(0,Math.min(span,t));
+    scrub.value=(clockT/span*100).toFixed(2);
+    apply(clockT, animate!==false);
+  }
+  function tick(ts){
+    if(!playing) return;
+    if(!last) last=ts;
+    var dt=(ts-last)/1000; last=ts;
+    setClock(clockT + dt*(span/22));          // whole window in ~22 seconds
+    if(clockT>=span){ stop(); }
+    else raf=requestAnimationFrame(tick);
+  }
+  function start(){
+    if(clockT>=span) setClock(0);
+    playing=true; last=0; playBtn.textContent="Pause";
+    raf=requestAnimationFrame(tick);
+  }
+  function stop(){
+    playing=false; playBtn.textContent = clockT>=span ? "Replay" : "Play";
+    if(raf) cancelAnimationFrame(raf); raf=null;
+  }
+  playBtn.addEventListener("click",function(){ playing?stop():start(); });
+  scrub.addEventListener("input",function(){
+    if(playing) stop();
+    setClock(parseFloat(scrub.value)/100*span, false);
+  });
+  // Open part-way through rather than at zero. At day 0 every track reads
+  // 0.00x and the deck is an empty shell that shows nothing about what it
+  // does; opening mid-run means the first frame already has tracks filling
+  // and a caught duplicate in the feed.
+  setClock(span*0.42, false);
+})();
+
+/* ==================================================================
+   The duplicate line, as a thing you can move. Every reading is a
+   real measurement at that threshold, including the region where the
+   false-positive bill exceeds everything recovered.
+   ================================================================== */
+(function(){
+  var SW=D.sweep||[]; if(!SW.length) return;
+  var thr=document.getElementById("thr"), out=document.getElementById("thr-v"),
+      note=document.getElementById("d-note");
+  thr.max=SW.length-1;
+  var chosen=0, best=0;
+  SW.forEach(function(r,i){
+    if(Math.abs(r.t-(D.chosen_threshold||1.25))<Math.abs(SW[chosen].t-(D.chosen_threshold||1.25))) chosen=i;
+    if(r.net>SW[best].net) best=i;
+  });
+  function show(i){
+    var r=SW[i];
+    out.innerHTML=r.t.toFixed(2)+"&times;";
+    document.getElementById("d-p").textContent=(r.p*100).toFixed(1)+"%";
+    document.getElementById("d-r").textContent=(r.r*100).toFixed(1)+"%";
+    document.getElementById("d-tp").textContent=r.tp;
+    document.getElementById("d-fp").textContent=r.fp;
+    var n=document.getElementById("d-net");
+    n.textContent=rs(r.net);
+    n.classList.toggle("loss", r.net<0);
+    n.classList.toggle("gain", r.net>0);
+    var msg;
+    if(r.net<0) msg="Below this line the system flags more legitimate refunds than "+
+      "duplicates. The false-positive bill of "+rs(r.bill)+" outweighs everything "+
+      "recovered, so running it here costs the merchant money. This is what a "+
+      "recall-only metric hides.";
+    else if(r.r===0) msg="Nothing trips at this height. Every duplicate walks, which "+
+      "costs nothing in false alarms and saves nothing either.";
+    else if(i===best) msg="The rupee-optimal line for this book. The shipped threshold "+
+      "is "+SW[chosen].t.toFixed(2)+"×, chosen before this curve was computed.";
+    else if(r.t>1.6) msg="High enough that only outright double-payments trip it. The "+
+      "partial overpayments, a half refund followed by a full chargeback, walk free: "+
+      "recall falls to "+(r.r*100).toFixed(0)+"%.";
+    else msg="Precision "+(r.p*100).toFixed(1)+"% at "+(r.r*100).toFixed(1)+"% recall. "+
+      "The flat region either side is why the exact threshold is not load-bearing.";
+    note.textContent=msg;
+  }
+  thr.addEventListener("input",function(){ show(parseInt(thr.value,10)); });
+  thr.value=chosen; show(chosen);
+})();
+
 })();
 </script>

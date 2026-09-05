@@ -122,3 +122,115 @@ print("cases:", len(cases), "decisions:", len(dec_json))
 print("headline:", {k: round(v,4) if isinstance(v,float) else v for k,v in out["headline"].items()})
 print("channel_keys:", json.dumps(ch_keys))
 print("bytes:", Path("reports/ui_data.json").stat().st_size)
+
+# ---------------------------------------------------------------------------
+# interactive payloads
+# ---------------------------------------------------------------------------
+import math as _math
+from sentinel.metrics import realised_fp_cost
+from sentinel.schema import Channel
+from sentinel.resolve.matcher import deterministic_link
+
+ratios = {o: e.exposure_ratio for o, e in led.entries.items()}
+over   = {o: e.over_paise for o, e in led.entries.items()}
+cost   = {o: e.merchant_cost_paise for o, e in led.entries.items()}
+cm = CostModel()
+
+# --- 1. threshold sweep, priced -------------------------------------------
+sweep = []
+for i in range(46):
+    t = round(1.02 + 0.03 * i, 2)
+    flag = {o for o, r in ratios.items() if r >= t} & te_ids
+    tp, fp = flag & pos, flag - pos
+    prevented = sum(int(over.get(o, 0) * (1 - cm.natural_recovery_rate)) for o in tp)
+    fpbill = sum(realised_fp_cost(cost.get(o, 0), cm) for o in fp)
+    p = len(tp) / len(flag) if flag else 1.0
+    r = len(tp) / len(pos) if pos else 0.0
+    sweep.append({"t": t, "p": round(p, 4), "r": round(r, 4),
+                  "f1": round(2 * p * r / (p + r), 4) if (p + r) else 0.0,
+                  "tp": len(tp), "fp": len(fp),
+                  "net": prevented - fpbill, "prevented": prevented, "bill": fpbill})
+
+# --- 2. "you try it": the resolver's actual job, with its real candidates --
+# Only events stage 1 could not settle -- the ones where a human has nothing
+# but prose, an amount and a clock to go on.
+puzzles = []
+for e in ds.events:
+    if len(puzzles) >= 4:
+        break
+    true_oid = T.event_to_order.get(e.event_id)
+    if true_oid not in te_ids or e.channel is Channel.REFUND:
+        continue
+    cands = idx.candidates(e)
+    if deterministic_link(e, cands) is not None or not (3 <= len(cands) <= 40):
+        continue
+    if not any(c.order_id == true_oid for c in cands):
+        continue
+    ranked = model.rank(e, cands)
+    picked = {c.order_id: s for c, s in ranked}
+    others = [c for c in cands if c.order_id != true_oid]
+    others.sort(key=lambda c: -picked.get(c.order_id, 0))
+    shown = [next(c for c in cands if c.order_id == true_oid)] + others[:3]
+    if len(shown) < 4:
+        continue
+    shown.sort(key=lambda c: c.created_at)
+    puzzles.append({
+        "event": {"id": e.event_id, "channel": str(e.channel),
+                  "at": e.occurred_at.isoformat(),
+                  "value": e.value_paise, "note": e.free_text,
+                  "descriptor": e.descriptor_text,
+                  "email": e.email, "phone": e.phone,
+                  "card": (e.card_bin or "") + "|" + (e.card_last4 or "")},
+        "answer": true_oid,
+        "model_pick": ranked[0][0].order_id,
+        "model_conf": round(float(ranked[0][1]), 3),
+        "n_real_candidates": len(cands),
+        "options": [{"order_id": c.order_id, "at": c.created_at.isoformat(),
+                     "value": c.amount_paise, "sku": c.sku,
+                     "method": str(c.method), "email": c.email,
+                     "descriptor": c.descriptor,
+                     "card": (c.card_bin or "") + "|" + (c.card_last4 or ""),
+                     "days": round((e.occurred_at - c.created_at).total_seconds() / 86400, 1),
+                     "score": round(float(picked.get(c.order_id, 0)), 3)}
+                    for c in shown],
+    })
+
+# --- 3. a playable slice of the stream ------------------------------------
+# A realistic mix. Taking duplicates first made every bar in the stream go
+# critical, which teaches the opposite of the truth: most multi-event orders
+# are perfectly legitimate, and the alert only means something when it is
+# rare among them.
+multi = [o for o in te_ids if o in led.entries and len(led.entries[o].events) >= 2]
+# `legit`, not `clean`: there is already a clean() helper for NaN scrubbing
+# in this file, and shadowing it made the export die at the last line.
+dups  = sorted((o for o in multi if o in pos),
+               key=lambda o: led.entries[o].events[0].occurred_at)[:7]
+legit = sorted((o for o in multi if o not in pos),
+               key=lambda o: led.entries[o].events[0].occurred_at)[:19]
+watch = dups + legit
+t0 = min(led.entries[o].events[0].occurred_at for o in watch)
+stream = []
+for oid in watch:
+    en = led.entries[oid]
+    for ev in en.events:
+        stream.append({
+            "order_id": oid, "channel": str(ev.channel),
+            "t": round((ev.occurred_at - t0).total_seconds() / 86400, 2),
+            "value": ev.value_paise, "cost": ev.merchant_cost_paise,
+            "order_value": en.order_value_paise,
+            "note": ev.free_text, "key": bool(ev.payment_id or ev.order_id_hint or ev.awb),
+            "dup": oid in T.duplicated_orders})
+stream.sort(key=lambda r: r["t"])
+
+extra = {"sweep": sweep, "puzzles": puzzles, "stream": stream,
+         "stream_orders": [{"order_id": o,
+                            "value": led.entries[o].order_value_paise,
+                            "dup": o in T.duplicated_orders,
+                            "confuser": o in T.confuser_orders} for o in watch],
+         "chosen_threshold": TH}
+blob = json.loads(Path("reports/ui_data.json").read_text())
+blob.update(clean(extra))
+Path("reports/ui_data.json").write_text(json.dumps(blob, indent=1, default=str, allow_nan=False))
+print("sweep:", len(sweep), "puzzles:", len(puzzles), "stream:", len(stream),
+      "orders:", len(watch))
+print("bytes:", Path("reports/ui_data.json").stat().st_size)
